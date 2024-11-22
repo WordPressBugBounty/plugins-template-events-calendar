@@ -57,7 +57,7 @@ switch ($style) {
             background: ' . esc_html($featured_event_skin_color) . ';
         }';
         $ect_output_css .= '#ect-events-list-content .style-3 .ev-smalltime{
-            ' . $ect_venue_styles . ';
+            ' . esc_html($ect_venue_styles) . ';
         }';
         break;
 }
@@ -76,7 +76,7 @@ $ect_output_css .= '#ect-events-list-content h2.ect-list-title,
 #ect-events-list-content h2.ect-list-title a.ect-event-url,
 .ect-clslist-event-info .ect-clslist-title a.ect-event-url,
 #ect-no-events p{
-    ' . $title_styles . ';
+    ' . esc_html($title_styles) . ';
 }
 #ect-events-list-content h2.ect-list-title a:hover {
     color: ' . esc_html(tinycolor($ect_title_color)->lighten(10)->toString()) . ';
@@ -84,7 +84,7 @@ $ect_output_css .= '#ect-events-list-content h2.ect-list-title,
 // Default List Description Style
 $ect_output_css .= '#ect-events-list-content .ect-list-post-right .ect-list-description .ect-event-content,
 #ect-events-list-content .ect-list-post-right .ect-list-description .ect-event-content p {
-    ' . $ect_desc_styles . ';
+    ' . esc_html($ect_desc_styles) . ';
 }';
 
 // Default List venue Styles
@@ -93,7 +93,7 @@ $ect_output_css .= '
 #ect-events-list-content .ect-list-venue .ect-venue-details,
 #ect-events-list-content .ect-list-venue .ect-venue-details a,
 #ect-events-list-content .ect-list-venue .ect-venue-details span{
-    ' . $ect_venue_styles . ';
+    ' . esc_html($ect_venue_styles) . ';
 }
 #ect-events-list-content .ect-list-venue .ect-venue-details .ect-google a {
     color: ' . esc_html(tinycolor($ect_venue_color)->darken(3)->toString()) . ';
@@ -101,7 +101,7 @@ $ect_output_css .= '
 
 /*--- Default List Dates Styles - CSS ---*/
 $ect_output_css .= '#ect-events-list-content .ect-list-date .ect-date-area {
-    ' . $ect_date_style . ';
+    ' . esc_html($ect_date_style) . ';
 }';
 // feature and main skin font color to date
 $ect_output_css .= '
@@ -121,7 +121,7 @@ $ect_output_css .= '
 
 // Cost color to title color and styles of desc
 $ect_output_css .= '#ect-events-list-content .ect-rate-area {
-    ' . $ect_desc_styles . ';
+    ' . esc_html($ect_desc_styles) . ';
 }
 #ect-events-list-content .ect-rate-area {
     color: ' . esc_html($ect_title_color) . ';

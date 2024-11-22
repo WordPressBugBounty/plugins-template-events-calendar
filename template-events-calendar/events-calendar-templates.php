@@ -3,9 +3,9 @@
 Plugin Name:Events Shortcodes For The Events Calendar
 Plugin URI:https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
 Description:<a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Shortcodes to show The Events Calendar plugin events list on any page or post in different layouts.
-Version:2.4.3
+Version:2.4.4
 Requires at least: 5.0
-Tested up to:6.6.2
+Tested up to:6.7
 Requires PHP:7.2
 Stable tag:trunk
 Author:Cool Plugins
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit();
 }
 if ( ! defined( 'ECT_VERSION' ) ) {
-	define( 'ECT_VERSION', '2.4.3' );
+	define( 'ECT_VERSION', '2.4.4' );
 }
 /*** Defined constent for later use */
 define( 'ECT_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -75,7 +75,7 @@ if ( ! class_exists( 'EventsCalendarTemplates' ) ) {
 
 			/*** Load required files */
 			add_action( 'plugins_loaded', array( self::$instance, 'ect_load_files' ) );
-
+			add_action( 'init', array( self::$instance, 'ect_load_textdomain' ) );
 			add_action( 'admin_enqueue_scripts', array( self::$instance, 'ect_tc_css' ) );
 			/*** Template Setting Page Link */
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( self::$instance, 'ect_template_settings_page' ) );
@@ -83,7 +83,7 @@ if ( ! class_exists( 'EventsCalendarTemplates' ) ) {
 			foreach ( array( 'post.php', 'post-new.php' ) as $hook ) {
 				add_action( "admin_head-$hook", array( self::$instance, 'ect_rest_url' ) );
 			}
-
+			
 			/*** Include Gutenberg Block */
 			require_once ECT_PLUGIN_DIR . 'admin/gutenberg-block/ect-block.php';
 
@@ -92,15 +92,23 @@ if ( ! class_exists( 'EventsCalendarTemplates' ) ) {
 
 		}
 
-
+		/*** Load Text domain */
+		public function ect_load_textdomain(){
+			load_plugin_textdomain( 'ect', false, basename( dirname( __FILE__ ) ) . '/languages/' );
+		}
 
 		/*** Load required files */
 		public function ect_load_files() {
-			load_plugin_textdomain( 'ect', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 			if ( class_exists( 'Tribe__Events__Main' ) or defined( 'Tribe__Events__Main::VERSION' ) ) {
 				if ( defined( 'WPB_VC_VERSION' ) ) {
 					require_once ECT_PLUGIN_DIR . 'admin/visual-composer/ect-class-vc.php';
 				}
+				include_once ABSPATH . 'wp-admin/includes/plugin.php';
+				if ( ! is_plugin_active( 'events-block-for-the-events-calendar/events-block-for-the-event-calender.php' ) ) {
+					require ECT_PLUGIN_DIR . '/includes/events-shortcode-block/includes/ebec-functions.php';
+					require ECT_PLUGIN_DIR . '/includes/events-shortcode-block/includes/ebec-block.php';
+				}
+				
 			}
 
 			if ( is_admin() ) {
