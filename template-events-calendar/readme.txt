@@ -3,9 +3,9 @@ Contributors: narinder-singh, satindersingh, coolplugins
 Donate link: https://paypal.me/CoolPlugins/50USD/
 Tags: shortcode, the events calendar, event, calendar, coolplugins
 Requires at least: 5.0
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.2
-Stable tag: 2.4.4
+Stable tag: 2.4.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -213,6 +213,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 8. Elementor Page Builder Widget Preview
 
 == Changelog ==
+
+= Version 2.4.5 | April 17, 2025 =
+* Tested Upto: Tested upto with WordPress V6.8 and The Events Calendar V6.11.2.
+
 = Version 2.4.4 | November 22, 2024 =
 * Added: Events Shortcode Gutenberg Block.
 * Fixed: Resolved an issue with the load_plugin_textdomain() function, ensuring correct localization.

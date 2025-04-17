@@ -32,7 +32,8 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 		 */
 		public function __construct() {
 			// register actions
-			$this->create_settings_panel();
+			// $this->create_settings_panel();
+			add_action('init', array($this,'create_settings_panel'));
 
 		}
 
@@ -207,7 +208,7 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 							array(
 								'title'   => 'Update Find Out More label',
 								'id'      => 'events_more_info',
-								'default' => esc_html__( 'Find out more', 'ect' ),
+								'default' => 'Find out more',
 								'type'    => 'text',
 								'desc'    => '',
 							),
@@ -380,6 +381,43 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 									</div>
 									<div class="ect_video-section">
 									<iframe class="ect_events-video" width="560" height="315" src="https://www.youtube.com/embed/q29GUhll4cA?si=2sCT72bRI8nVOfXA3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+									</div>
+								</div>
+								<div class="ect_step ect_col-rev">
+									<div class="ect_step-content">
+										<div class="ect_steps-title">
+											<h2>4. Events Block in (Gutenberg Editor)</h2>
+										</div>
+										<div class="ect_steps-list">
+											<ol>
+												<li class="ect_step-data">
+													<!-- <span class="ect_list-icon"><i class="fa fa-check" aria-hidden="true"></i></span> -->
+													<span class="ect_list-text">Create or edit a page.</span>
+												</li>
+												<li class="ect_step-data">
+					
+													<!-- <span class="ect_list-icon"><i class="fa fa-check" aria-hidden="true"></i></span> -->
+													<span class="ect_list-text">Search for <b>Events Block</b> in the block search box.
+													</span>
+												</li>
+												<li class="ect_step-data">
+													<!-- <span class="ect_list-icon"><i class="fa fa-check" aria-hidden="true"></i></span> -->
+													<span class="ect_list-text">Click on <b>Events block</b> to add the block to the page.</span>
+												</li>
+												<li class="ect_step-data">
+													<!-- <span class="ect_list-icon"><i class="fa fa-check" aria-hidden="true"></i></span> -->
+													<span class="ect_list-text">Once the block is added, you can select the settings under block settings.</span>
+												</li>
+												<li class="ect_step-data">
+													<!-- <span class="ect_list-icon"><i class="fa fa-check" aria-hidden="true"></i></span> -->
+													<span class="ect_list-text">Publish the page and then preview the page.</span>
+												</li>
+					
+											</ol>
+										</div>
+									</div>
+									<div class="ect_video-section">
+									<iframe class="ect_events-video" width="560" height="315" src="https://www.youtube.com/embed/sLGIOmlNPtY?si=QRbKWRF5UQnL5PQe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 									</div>
 								</div>
 
