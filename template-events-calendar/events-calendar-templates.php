@@ -3,7 +3,7 @@
 Plugin Name:Events Shortcodes For The Events Calendar
 Plugin URI:https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
 Description:<a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Shortcodes to show The Events Calendar plugin events list on any page or post in different layouts.
-Version:2.4.5
+Version:2.4.6
 Requires at least: 5.0
 Tested up to:6.8
 Requires PHP:7.2
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit();
 }
 if ( ! defined( 'ECT_VERSION' ) ) {
-	define( 'ECT_VERSION', '2.4.5' );
+	define( 'ECT_VERSION', '2.4.6' );
 }
 /*** Defined constent for later use */
 define( 'ECT_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

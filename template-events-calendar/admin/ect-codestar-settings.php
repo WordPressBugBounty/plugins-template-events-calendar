@@ -32,8 +32,8 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 		 */
 		public function __construct() {
 			// register actions
-			// $this->create_settings_panel();
-			add_action('init', array($this,'create_settings_panel'));
+			$this->create_settings_panel();
+			// add_action('init', array($this,'create_settings_panel'));
 
 		}
 
