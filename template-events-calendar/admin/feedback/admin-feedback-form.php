@@ -10,7 +10,7 @@ class ect_feedback{
         private $plugin_version = ECT_VERSION;
         private $plugin_name = 'template-events-calendar';
         private $plugin_slug = 'ect';
-		//private $feedback_url   = 'http://feedback.coolplugins.net/wp-json/coolplugins-feedback/v1/feedback';
+		
 
 	/*
 	|-----------------------------------------------------------------|
@@ -106,7 +106,7 @@ class ect_feedback{
 					<?php endforeach; ?>
 					
 					<div class="cp-feedback-terms">
-					<input class="cp-feedback-terms-input" id="cp-feedback-terms-input" type="checkbox"><label for="cp-feedback-terms-input"><?php echo esc_html__( 'I agree to share my feedback with Cool Plugins, including site URL and admin email, to enable them to address my inquiry.', 'cool-plugins' ); ?></label>
+					<input class="cp-feedback-terms-input" id="cp-feedback-terms-input" type="checkbox"><label for="cp-feedback-terms-input"><?php echo esc_html__( 'I agree to share anonymous usage data and basic site details (such as server, PHP, and WordPress versions) to support Events Shortcodes For The Events Calendar improvement efforts. Additionally, I allow Cool Plugins to store all information provided through this form and to respond to my inquiry.', 'cool-plugins' ); ?></label>
 					</div>
 
 					<div class="cp-feedback-button-wrapper">
@@ -120,6 +120,67 @@ class ect_feedback{
 		   </div>
 		</div>
 		<?php
+	}
+	function cpfm_get_user_info() {
+		global $wpdb;
+	
+		// Server and WP environment details
+		$server_info = [
+			'server_software'        => isset($_SERVER['SERVER_SOFTWARE']) ? sanitize_text_field($_SERVER['SERVER_SOFTWARE']) : 'N/A',
+			'mysql_version'          => $wpdb ? sanitize_text_field($wpdb->get_var("SELECT VERSION()")) : 'N/A',
+			'php_version'            => sanitize_text_field(phpversion() ?: 'N/A'),
+			'wp_version'             => sanitize_text_field(get_bloginfo('version') ?: 'N/A'),
+			'wp_debug'               => (defined('WP_DEBUG') && WP_DEBUG) ? 'Enabled' : 'Disabled',
+			'wp_memory_limit'        => sanitize_text_field(ini_get('memory_limit') ?: 'N/A'),
+			'wp_max_upload_size'     => sanitize_text_field(ini_get('upload_max_filesize') ?: 'N/A'),
+			'wp_permalink_structure' => sanitize_text_field(get_option('permalink_structure') ?: 'Default'),
+			'wp_multisite'           => is_multisite() ? 'Enabled' : 'Disabled',
+			'wp_language'            => sanitize_text_field(get_option('WPLANG') ?: get_locale()),
+			'wp_prefix'              => isset($wpdb->prefix) ? sanitize_key($wpdb->prefix) : 'N/A',
+			'plugin_initial'         => get_option('ect-initial-save-version') ?: 'N/A',
+		];
+	
+		// Theme details
+		$theme = wp_get_theme();
+		$theme_data = [
+			'name'      => sanitize_text_field($theme->get('Name')),
+			'version'   => sanitize_text_field($theme->get('Version')),
+			'theme_uri' => esc_url($theme->get('ThemeURI')),
+		];
+	
+
+		if (!function_exists('get_plugins')) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		if (!function_exists('get_plugin_data')) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+	
+
+		$plugin_data = [];
+		$active_plugins = get_option('active_plugins', []);
+	
+		foreach ( $active_plugins as $plugin_path ) {
+
+			$plugin_info = get_plugin_data(WP_PLUGIN_DIR . '/' . sanitize_text_field($plugin_path));
+
+			$author_url = ( isset( $plugin_info['AuthorURI'] ) && !empty( $plugin_info['AuthorURI'] ) ) ? esc_url( $plugin_info['AuthorURI'] ) : 'N/A';
+			$plugin_url = ( isset( $plugin_info['PluginURI'] ) && !empty( $plugin_info['PluginURI'] ) ) ? esc_url( $plugin_info['PluginURI'] ) : 'N/A';
+			
+			$plugin_data[] = [
+				'name'       => sanitize_text_field($plugin_info['Name']),
+				'version'    => sanitize_text_field($plugin_info['Version']),
+				'plugin_uri' => !empty($plugin_url) ? $plugin_url : $author_url,
+			];
+		}
+	
+		return [
+			'server_info'   => $server_info,
+			'extra_details' => [
+				'wp_theme'       => $theme_data,
+				'active_plugins' => $plugin_data,
+			],
+		];
 	}
 
 
@@ -155,19 +216,27 @@ class ect_feedback{
 
 			$sanitized_message = empty($_POST['message']) || sanitize_text_field( $_POST['message'] ) == '' ? 'N/A' : sanitize_text_field( $_POST['message'] );
 			$admin_email       = sanitize_email( get_option( 'admin_email' ) );
-			$site_url          = esc_url( site_url() );
-			$feedback_url      = esc_url( 'http://feedback.coolplugins.net/wp-json/coolplugins-feedback/v1/feedback' );
+			$site_url          = esc_url( get_site_url() );
+			$feedback_url      = ECT_FEEDBACK_URL.'wp-json/coolplugins-feedback/v1/feedback' ;
+			$plugin_initial    = get_option('ect-initial-save-version') ?: 'N/A';
+			$install_date      = get_option('ect-install-date') ?: 'N/A';
+			$unique_key        = '20';
+			$site_id        	= $site_url . '-' . $install_date . '-' . $unique_key;
 			$response          = wp_remote_post(
 				$feedback_url,
 				array(
 					'timeout' => 30,
 					'body'    => array(
+						'server_info' => serialize($this->cpfm_get_user_info()['server_info']), 
+						'extra_details' => serialize($this->cpfm_get_user_info()['extra_details']),
 						'plugin_version' => $this->plugin_version,
 						'plugin_name'    => $this->plugin_name,
+						'plugin_initial' => $plugin_initial,
 						'reason'         => $deativation_reason,
 						'review'         => $sanitized_message,
 						'email'          => $admin_email,
 						'domain'         => $site_url,
+						'site_id'    	 => md5($site_id),
 					),
 				)
 			);

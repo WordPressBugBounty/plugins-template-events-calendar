@@ -70,3 +70,9 @@
     font-size: 13px;
     color: #ffffff;
 }
+
+.csf-field.csf-field-checkbox .csf-fieldset {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}

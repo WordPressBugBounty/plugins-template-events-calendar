@@ -1,14 +1,16 @@
 <?php
+
 /**
  *
  * This file is responsible for creating all admin settings in Timeline Builder (post)
  */
-if ( ! defined( 'ABSPATH' ) ) {
-	exit( 'Can not load script outside of WordPress Enviornment!' );
+if (! defined('ABSPATH')) {
+	exit('Can not load script outside of WordPress Enviornment!');
 }
 
-if ( ! class_exists( 'ECTSettings' ) ) {
-	class ECTSettings {
+if (! class_exists('ECTSettings')) {
+	class ECTSettings
+	{
 
 
 		/**
@@ -19,8 +21,9 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 		/**
 		 * Gets an instance of our plugin.
 		 */
-		public static function get_instance() {
-			if ( null === self::$instance ) {
+		public static function get_instance()
+		{
+			if (null === self::$instance) {
 				self::$instance = new self();
 			}
 			return self::$instance;
@@ -30,15 +33,41 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 		/**
 		 * The Constructor
 		 */
-		public function __construct() {
+		public function __construct()
+		{
 			// register actions
 			$this->create_settings_panel();
 			// add_action('init', array($this,'create_settings_panel'));
+			add_action('csf_ects_options_save_after', array($this,'ect_plugin_settings_saved'));
 
+		}
+		public function ect_plugin_settings_saved(){
+
+			$data = get_option('ects_options'); 
+
+ 			$opt_in = !empty($data['ect_cpfm_feedback_data']) ? $data['ect_cpfm_feedback_data']:'';
+			
+			if (!empty($opt_in)) {
+				if(!wp_next_scheduled('ect_extra_data_update')){
+                wp_schedule_event(time(), 'every_30_days', 'ect_extra_data_update');
+				}
+           
+			}else {
+
+				if (wp_next_scheduled('ect_extra_data_update')) {
+					wp_clear_scheduled_hook('ect_extra_data_update');
+				}
+				
+			}
+		}
+		public function cpfm_option_callback() {
+			$cpfm_opt_in_choice_cool_events = get_option('cpfm_opt_in_choice_cool_events');
+			return isset($cpfm_opt_in_choice_cool_events);
 		}
 
 
-		public function create_settings_panel() {
+		public function create_settings_panel()
+		{
 			//
 			// Metabox of the PAGE
 			// Set a unique slug-like ID
@@ -50,7 +79,7 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 			//
 			// Set a unique slug-like ID
 			$prefix = 'ects_options';
-			if ( class_exists( 'CSF' ) ) {
+			if (class_exists('CSF')) {
 				// Create options
 				CSF::createOptions(
 					$prefix,
@@ -184,64 +213,89 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 				//
 				// Create a section
 
-				CSF::createSection(
-					$prefix,
+				$terms_html = '
+                Help us make this plugin more compatible with your site by sharing non-sensitive site data. 
+                <a href="#" class="cpfm-see-terms">[See terms]</a>
+                <div id="termsBox" style="display: none;padding-left: 20px; margin-top: 10px; font-size: 12px; color: #999;">
+                 <p>Opt in to receive email updates about security improvements, new features, helpful tutorials, and occasional special offers. We\'ll collect:</p>
+                    <ul style="list-style-type:auto; padding-left: 20px;">
+                        <li>Your website home URL and WordPress admin email.</li>
+                        <li>To check plugin compatibility, we will collect the following: list of active plugins and themes, server type, MySQL version, WordPress version, memory limit, site language and database prefix.</li>
+                    </ul>
+                </div>';
+				
+				$fields = array(
 					array(
-						'title'  => 'Extra Settings',
-						'fields' => array(
-
-							// A textarea field
-							array(
-								'title' => 'Custom CSS',
-								'id'    => 'custom_css',
-								'type'  => 'code_editor',
-								'desc'  => 'Put your custom CSS rules here',
-								'mode'  => 'css',
-							),
-							array(
-								'title'   => 'No Event Text (Message to show if no event will available)',
-								'id'      => 'events_not_found',
-								'default' => 'There are no upcoming events at this time',
-								'type'    => 'text',
-								'desc'    => '',
-							),
-							array(
-								'title'   => 'Update Find Out More label',
-								'id'      => 'events_more_info',
-								'default' => 'Find out more',
-								'type'    => 'text',
-								'desc'    => '',
-							),
-							array(
-								'id'    => 'ect_no_featured_img',
-								'type'  => 'media',
-								'title' => 'Default Image (select a default image, if no featured image for the event)',
-							),
-							array(
-								'id'      => 'ect_display_categoery',
-								'type'    => 'select',
-								'title'   => 'Display category in templates',
-								'desc'    => '<span style="color:red; font-size:14px;">Available in Pro plugin **</span>',
-								'options' => array(
-									'ect_enable_cat'  => 'Enable',
-									'ect_disable_cat' => 'Disable',
-								),
-								'default' => 'ect_disable_cat',
-							),
-							array(
-								'id'      => 'ect_load_google_font',
-								'type'    => 'select',
-								'title'   => 'Load Google Font',
-								'options' => array(
-									'yes' => 'Yes',
-									'no'  => 'No',
-								),
-								'default' => 'yes',
-							),
-
+						'title' => 'Custom CSS',
+						'id'    => 'custom_css',
+						'type'  => 'code_editor',
+						'desc'  => 'Put your custom CSS rules here',
+						'mode'  => 'css',
+					),
+					array(
+						'title'   => 'No Event Text (Message to show if no event will available)',
+						'id'      => 'events_not_found',
+						'default' => 'There are no upcoming events at this time',
+						'type'    => 'text',
+						'desc'    => '',
+					),
+					array(
+						'title'   => 'Update Find Out More label',
+						'id'      => 'events_more_info',
+						'default' => 'Find out more',
+						'type'    => 'text',
+						'desc'    => '',
+					),
+					array(
+						'id'    => 'ect_no_featured_img',
+						'type'  => 'media',
+						'title' => 'Default Image (select a default image, if no featured image for the event)',
+					),
+					array(
+						'id'      => 'ect_display_categoery',
+						'type'    => 'select',
+						'title'   => 'Display category in templates',
+						'desc'    => '<span style="color:red; font-size:14px;">Available in Pro plugin **</span>',
+						'options' => array(
+							'ect_enable_cat'  => 'Enable',
+							'ect_disable_cat' => 'Disable',
 						),
-					)
+						'default' => 'ect_disable_cat',
+					),
+					array(
+						'id'      => 'ect_load_google_font',
+						'type'    => 'select',
+						'title'   => 'Load Google Font',
+						'options' => array(
+							'yes' => 'Yes',
+							'no'  => 'No',
+						),
+						'default' => 'yes',
+					),
 				);
+				$cpfm_opt_in_choice_cool_events = get_option('cpfm_opt_in_choice_cool_events');
+
+				// Add this conditionally
+				if ( $cpfm_opt_in_choice_cool_events ) {
+					// echo 'yes';die();
+					$fields[] = array(
+						'id'      => 'ect_cpfm_feedback_data',
+						'type'    => 'checkbox',
+						'title'   => 'Usage Data Sharing',
+						'desc'    => $terms_html,
+						'default' => $cpfm_opt_in_choice_cool_events === 'yes' ? true : false,
+					);
+					
+
+				}
+				
+				// Then pass the fields to the section
+				
+				CSF::createSection( $prefix, array(
+					'title'  => 'Extra Settings',
+					'fields' => $fields,
+				) );
+			
 
 				CSF::createSection(
 					$prefix,
@@ -257,17 +311,18 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 							array(
 								'type'     => 'callback',
 								'function' => 'ect_shortcode_attr',
-							// 'style' =>'solid ',
+								// 'style' =>'solid ',
 							),
 
 						),
 					)
 				);
 
-				function ect_demo_page_content() {
+				function ect_demo_page_content()
+				{
 
 					ob_start();
-					?>
+?>
 					<div class="ect_started-section">
 						<div class="ect_tab_btn_wrapper">
 							<button class="button ect_class_post_button ect_tab_active">Events Shortcode</button>
@@ -307,10 +362,10 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 										</div>
 									</div>
 									<div class="ect_video-section">
-									      <iframe class="ect_events-video" width="560" height="315" src="https://www.youtube.com/embed/zNjnMwaP_3A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+										<iframe class="ect_events-video" width="560" height="315" src="https://www.youtube.com/embed/zNjnMwaP_3A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 									</div>
 								</div>
-					
+
 								<div class="ect_step ect_col-rev">
 									<div class="ect_step-content">
 										<div class="ect_steps-title">
@@ -323,7 +378,7 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 													<span class="ect_list-text">Create or edit a page.</span>
 												</li>
 												<li class="ect_step-data">
-					
+
 													<!-- <span class="ect_list-icon"><i class="fa fa-check" aria-hidden="true"></i></span> -->
 													<span class="ect_list-text">Search for <b>Events Shortcodes</b> in the block search box.
 													</span>
@@ -340,15 +395,15 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 													<!-- <span class="ect_list-icon"><i class="fa fa-check" aria-hidden="true"></i></span> -->
 													<span class="ect_list-text">Publish the page and then preview the page.</span>
 												</li>
-					
+
 											</ol>
 										</div>
 									</div>
 									<div class="ect_video-section">
-									<iframe class="ect_events-video" width="560" height="315" src="https://www.youtube.com/embed/kOh2tZGJREA?si=MwZsTcmj73JhzhZU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+										<iframe class="ect_events-video" width="560" height="315" src="https://www.youtube.com/embed/kOh2tZGJREA?si=MwZsTcmj73JhzhZU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 									</div>
 								</div>
-				
+
 								<div class="ect_step">
 									<div class="ect_step-content">
 										<div class="ect_steps-title">
@@ -380,7 +435,7 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 										</div>
 									</div>
 									<div class="ect_video-section">
-									<iframe class="ect_events-video" width="560" height="315" src="https://www.youtube.com/embed/q29GUhll4cA?si=2sCT72bRI8nVOfXA3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+										<iframe class="ect_events-video" width="560" height="315" src="https://www.youtube.com/embed/q29GUhll4cA?si=2sCT72bRI8nVOfXA3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 									</div>
 								</div>
 								<div class="ect_step ect_col-rev">
@@ -395,7 +450,7 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 													<span class="ect_list-text">Create or edit a page.</span>
 												</li>
 												<li class="ect_step-data">
-					
+
 													<!-- <span class="ect_list-icon"><i class="fa fa-check" aria-hidden="true"></i></span> -->
 													<span class="ect_list-text">Search for <b>Events Block</b> in the block search box.
 													</span>
@@ -412,19 +467,19 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 													<!-- <span class="ect_list-icon"><i class="fa fa-check" aria-hidden="true"></i></span> -->
 													<span class="ect_list-text">Publish the page and then preview the page.</span>
 												</li>
-					
+
 											</ol>
 										</div>
 									</div>
 									<div class="ect_video-section">
-									<iframe class="ect_events-video" width="560" height="315" src="https://www.youtube.com/embed/sLGIOmlNPtY?si=QRbKWRF5UQnL5PQe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+										<iframe class="ect_events-video" width="560" height="315" src="https://www.youtube.com/embed/sLGIOmlNPtY?si=QRbKWRF5UQnL5PQe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 									</div>
 								</div>
 
 							</div>
-				
+
 							<div class="ect_wrapper_second" style="display:none;">
-				
+
 								<div class="ect_step">
 									<div class="ect_step-content">
 										<div class="ect_steps-title">
@@ -433,7 +488,7 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 										<div class="ect_steps-list">
 											<ol>
 												<li class="ect_step-data">
-					
+
 													<!-- <span class="ect_list-icon"><i class="fa fa-check" aria-hidden="true"></i></span> -->
 													<span class="ect_list-text">Configure the general settings of Events Shortcode plugin to customize the look for your events.</span>
 												</li>
@@ -452,8 +507,8 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 										<iframe class="ect_events-video" width="560" height="315" src="https://www.youtube.com/embed/RonG0_p2Gok" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 									</div>
 								</div>
-					
-								<div class="ect_step ect_col-rev">	
+
+								<div class="ect_step ect_col-rev">
 									<div class="ect_step-content">
 										<div class="ect_steps-title">
 											<h2>2. Extra Settings (Events Shortcode)</h2>
@@ -480,37 +535,40 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 										</div>
 									</div>
 									<div class="ect_video-section">
-										<iframe class="ect_events-video" width="560" height="315" src="https://www.youtube.com/embed/RonG0_p2Gok?start=148"title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write;encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+										<iframe class="ect_events-video" width="560" height="315" src="https://www.youtube.com/embed/RonG0_p2Gok?start=148" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write;encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 									</div>
 								</div>
 							</div>
 
 							<div class="ect_wrapper_third" style="display:none;">
-							     <h1>Why should you upgrade to PRO?</h1>
-								<div class="ect_get_pro_content"> 
-										    <table><tr>
-												<td style="border: 1px solid #8ad4f9;"><ul class="p_feature-list">
-												<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-grid/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Grid Layout</a> (<b>PRO</b>)</li>
-												<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-masonry/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Masonry Layout</a> (<b>PRO</b>)</li>
-												<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-carousel/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Carousel Layout</a> (<b>PRO</b>)</li>
-												<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-slider/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Slider Layout</a> (<b>PRO</b>)</li>
-												<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-accordion/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Accordion Layout</a> (<b>PRO</b>)</li>
-												<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-calendar/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Calendar Layout</a> (<b>PRO</b>)</li>
-												<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-by-organizer/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Events by Organizer</a> (<b>PRO</b>)</li>
-												<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-by-venue/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Events by Venue</a> (<b>PRO</b>)</li>
-												<li>✅ Events Category Filters Inside Masonry (<b>PRO</b>)</li>
-												<li>✅ Show Only Featured Events (<b>PRO</b>)</li>
-												<li>✅ Events Schema SEO Support (<b>PRO</b>)</li>
-												<li>✅ Premium Design & Settings (<b>PRO</b>)</li>
-												<li>✅ Quick Premium Support (<b>PRO</b>)</li>
-												</ul></td>
-												</tr>
-										    </table>
+								<h1>Why should you upgrade to PRO?</h1>
+								<div class="ect_get_pro_content">
+									<table>
+										<tr>
+											<td style="border: 1px solid #8ad4f9;">
+												<ul class="p_feature-list">
+													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-grid/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Grid Layout</a> (<b>PRO</b>)</li>
+													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-masonry/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Masonry Layout</a> (<b>PRO</b>)</li>
+													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-carousel/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Carousel Layout</a> (<b>PRO</b>)</li>
+													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-slider/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Slider Layout</a> (<b>PRO</b>)</li>
+													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-accordion/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Accordion Layout</a> (<b>PRO</b>)</li>
+													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-calendar/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Calendar Layout</a> (<b>PRO</b>)</li>
+													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-by-organizer/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Events by Organizer</a> (<b>PRO</b>)</li>
+													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-by-venue/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Events by Venue</a> (<b>PRO</b>)</li>
+													<li>✅ Events Category Filters Inside Masonry (<b>PRO</b>)</li>
+													<li>✅ Show Only Featured Events (<b>PRO</b>)</li>
+													<li>✅ Events Schema SEO Support (<b>PRO</b>)</li>
+													<li>✅ Premium Design & Settings (<b>PRO</b>)</li>
+													<li>✅ Quick Premium Support (<b>PRO</b>)</li>
+												</ul>
+											</td>
+										</tr>
+									</table>
 								</div>
 							</div>
 						</div>
 					</div>
-				
+
 					<script>
 						const EventDetailButton = jQuery(".ect_class_post_button");
 						const EventsSettingsButton = jQuery(".ect_events_settings_button");
@@ -519,62 +577,58 @@ if ( ! class_exists( 'ECTSettings' ) ) {
 						const secondWrapper = jQuery(".ect_wrapper_second");
 						const thirdWrapper = jQuery(".ect_wrapper_third");
 						EventDetailButton.on("click", (event) => {
-							firstWrapper.css("display","block");
-							secondWrapper.css("display","none");
-							thirdWrapper.css("display","none");
+							firstWrapper.css("display", "block");
+							secondWrapper.css("display", "none");
+							thirdWrapper.css("display", "none");
 							event.preventDefault();
 							EventDetailButton.siblings().removeClass('ect_tab_active');
 							EventDetailButton.addClass('ect_tab_active');
 						});
 						EventsSettingsButton.on("click", (event) => {
-							firstWrapper.css("display","none");
-							secondWrapper.css("display","block");
-							thirdWrapper.css("display","none");
+							firstWrapper.css("display", "none");
+							secondWrapper.css("display", "block");
+							thirdWrapper.css("display", "none");
 							event.preventDefault();
 							EventsSettingsButton.siblings().removeClass('ect_tab_active');
 							EventsSettingsButton.addClass('ect_tab_active');
 						});
 						EventsShortcodeProButton.on("click", (event) => {
-							firstWrapper.css("display","none");
-							secondWrapper.css("display","none");
-							thirdWrapper.css("display","block");
+							firstWrapper.css("display", "none");
+							secondWrapper.css("display", "none");
+							thirdWrapper.css("display", "block");
 							event.preventDefault();
 							EventsShortcodeProButton.siblings().removeClass('ect_tab_active');
 							EventsShortcodeProButton.addClass('ect_tab_active');
 						});
 					</script>
-						
+
 					<!-- return $data; -->
-					<?php
+<?php
 					return ob_get_clean();
 				}
 
-						// Create a section
-						CSF::createSection(
-							$prefix,
+				// Create a section
+				CSF::createSection(
+					$prefix,
+					array(
+						'title'  => 'Get Started',
+						'fields' => array(
 							array(
-								'title'  => 'Get Started',
-								'fields' => array(
-									array(
-										'id'      => 'shortcode_display',
-										'type'    => 'content',
-										'content' => ect_demo_page_content(),
-									),
-								),
-							)
-						);
+								'id'      => 'shortcode_display',
+								'type'    => 'content',
+								'content' => ect_demo_page_content(),
+							),
+						),
+					)
+				);
 			}
 		}
-
-
-
-
 	}
-
 }
 
-function ect_shortcode_attr() {
-	   echo '
+function ect_shortcode_attr()
+{
+	echo '
       <style>
         table.ect-shortcodes-tbl {
           width: 70%:;
@@ -594,11 +648,11 @@ function ect_shortcode_attr() {
       <li><strong>default</strong></li>
       <li><strong>timeline-view</strong></li>
       <li><strong>minimal-list</strong></li>
-      <li><strong>grid-view</strong> (<a href="' . esc_attr( 'https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-grid/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes' ) . '" target="_blank">Pro Version</a>)</li>
-      <li><strong>carousel-view</strong> (<a href="' . esc_attr( 'https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-carousel/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes' ) . '" target="_blank">Pro Version</a>)</li>
-      <li><strong>slider-view</strong> (<a href="' . esc_attr( 'https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-slider/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes' ) . '" target="_blank">Pro Version</a>)</li>
-      <li><strong>accordion-view</strong> (<a href="' . esc_attr( 'https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-accordion/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes' ) . '" target="_blank">Pro Version</a>)</li>
-	  <li><strong>masonry-view</strong> (<a href="' . esc_attr( 'https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-masonry/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes' ) . '" target="_blank">Pro Version</a>)</li>
+      <li><strong>grid-view</strong> (<a href="' . esc_attr('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-grid/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes') . '" target="_blank">Pro Version</a>)</li>
+      <li><strong>carousel-view</strong> (<a href="' . esc_attr('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-carousel/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes') . '" target="_blank">Pro Version</a>)</li>
+      <li><strong>slider-view</strong> (<a href="' . esc_attr('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-slider/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes') . '" target="_blank">Pro Version</a>)</li>
+      <li><strong>accordion-view</strong> (<a href="' . esc_attr('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-accordion/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes') . '" target="_blank">Pro Version</a>)</li>
+	  <li><strong>masonry-view</strong> (<a href="' . esc_attr('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-masonry/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes') . '" target="_blank">Pro Version</a>)</li>
 	  </ul></td></tr>
 
       <tr style="border:1px solid #ddd"><td  style="border:1px solid #ddd">style</td>
