@@ -552,6 +552,7 @@ if (! class_exists('ECTSettings')) {
 													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-carousel/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Carousel Layout</a> (<b>PRO</b>)</li>
 													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-slider/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Slider Layout</a> (<b>PRO</b>)</li>
 													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-accordion/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Accordion Layout</a> (<b>PRO</b>)</li>
+													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-highlighted-layout-demos/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Highlighted Layout</a> (<b>PRO</b>)</li>
 													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-calendar/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Calendar Layout</a> (<b>PRO</b>)</li>
 													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-by-organizer/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Events by Organizer</a> (<b>PRO</b>)</li>
 													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-by-venue/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Events by Venue</a> (<b>PRO</b>)</li>
@@ -653,6 +654,7 @@ function ect_shortcode_attr()
       <li><strong>slider-view</strong> (<a href="' . esc_attr('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-slider/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes') . '" target="_blank">Pro Version</a>)</li>
       <li><strong>accordion-view</strong> (<a href="' . esc_attr('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-accordion/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes') . '" target="_blank">Pro Version</a>)</li>
 	  <li><strong>masonry-view</strong> (<a href="' . esc_attr('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-masonry/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes') . '" target="_blank">Pro Version</a>)</li>
+	  <li><strong>highlighted-view</strong> (<a href="' . esc_attr('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-highlighted-layout-demos/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes') . '" target="_blank">Pro Version</a>)</li>
 	  </ul></td></tr>
 
       <tr style="border:1px solid #ddd"><td  style="border:1px solid #ddd">style</td>
@@ -660,6 +662,7 @@ function ect_shortcode_attr()
       <li><strong>style-1</strong></li>
       <li><strong>style-2</strong></li>
       <li><strong>style-3</strong></li>
+      <li><strong>style-4</strong> (<a href="' . esc_attr('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-list/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=style_shortcode_attributes#list-style-4') . '" target="_blank">Pro Version</a>)</li>
       </ul></td></tr>
 
       <tr style="border:1px solid #ddd"><td style="border:1px solid #ddd">category</td>
