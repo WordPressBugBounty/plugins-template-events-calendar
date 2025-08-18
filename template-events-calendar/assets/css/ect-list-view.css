@@ -2,6 +2,11 @@
 List Common Styles
 */
 
+#ect-events-list-content a,
+#ect-events-list-content a:hover {
+    text-decoration: none !important;
+}
+
 #ect-events-list-content,
 .ect-list-wrapper {
     display: flex;

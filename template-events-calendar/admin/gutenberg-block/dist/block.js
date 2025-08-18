@@ -356,7 +356,7 @@ wp.apiFetch({
         }, "Get Pro"), wp.element.createElement("a", {
           target: "_blank",
           "class": "button button-primary",
-          href: "https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=shortcode_block_setting"
+          href: "https://eventscalendaraddons.com/demos/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=shortcode_block_setting"
         }, "View Demos"), wp.element.createElement("a", {
           target: "_blank",
           "class": "button button-primary",

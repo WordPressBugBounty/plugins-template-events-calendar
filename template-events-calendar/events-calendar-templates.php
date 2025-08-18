@@ -3,9 +3,9 @@
 Plugin Name:Events Shortcodes For The Events Calendar
 Plugin URI:https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
 Description:<a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Shortcodes to show The Events Calendar plugin events list on any page or post in different layouts.
-Version:2.4.8
+Version:2.4.9
 Requires at least: 5.0
-Tested up to:6.8.1
+Tested up to:6.8.2
 Requires PHP:7.2
 Stable tag:trunk
 Author:Cool Plugins
@@ -22,13 +22,14 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 if (! defined('ECT_VERSION')) {
-	define('ECT_VERSION', '2.4.8');
+	define('ECT_VERSION', '2.4.9');
 }
+
 /*** Defined constent for later use */
 define('ECT_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('ECT_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('ECT_FEEDBACK_URL','https://feedback.coolplugins.net/');
-// define('ECT_FEEDBACK_API',"");
+
 /*** EventsCalendarTemplates main class by CoolPlugins.net */
 if (! class_exists('EventsCalendarTemplates')) {
 	final class EventsCalendarTemplates
@@ -393,24 +394,38 @@ if (! class_exists('EventsCalendarTemplates')) {
 		*/
 
 		// old titan settings panel fields data
-		function get_titan_settings()
-		{
+		function get_titan_settings() {
 			$new_settings = array();
-			if (get_option('ect_options') != false) {
-				$titan_raw_data = get_option('ect_options');
-				if (is_serialized($titan_raw_data)) {
-					$titan_settings = array_filter(maybe_unserialize($titan_raw_data));
-					if (is_array($titan_settings)) {
-						foreach ($titan_settings as $key => $val) {
-							$new_settings[$key] = maybe_unserialize($val);
-						}
-					}
-				}
-				return $new_settings;
-			} else {
+		
+			$titan_raw_data = get_option('ect_options', false);
+		
+			if ($titan_raw_data === false) {
 				return false;
 			}
+		
+			if (is_array($titan_raw_data)) {
+				return $titan_raw_data;
+			}
+		
+			$titan_settings = json_decode($titan_raw_data, true);
+		
+			if (json_last_error() === JSON_ERROR_NONE && is_array($titan_settings)) {
+				return $titan_settings;
+			}
+
+			if (is_serialized($titan_raw_data)) {
+				$titan_settings = @unserialize($titan_raw_data, ['allowed_classes' => false]);
+				if (is_array($titan_settings)) {
+					foreach ($titan_settings as $key => $val) {
+						$new_settings[$key] = is_string($val) ? json_decode($val, true) ?? $val : $val;
+					}
+					return $new_settings;
+				}
+			}
+		
+			return false;
 		}
+		
 
 		function ect_settings_migration()
 		{

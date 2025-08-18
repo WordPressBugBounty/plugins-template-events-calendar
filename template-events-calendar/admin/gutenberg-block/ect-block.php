@@ -93,24 +93,45 @@ add_action( 'plugins_loaded', function () {
  * Block Output
  * */
 function ect_block_callback( $attr ) {
-	extract( $attr );
-	
-	if ( isset( $template ) ) {
-		$shortcode_string = '[events-calendar-templates
-		category="%s"
-		template="%s"
-		style="%s" 
-		date_format="%s"
-		limit="%s"
-		order="%s"
-		hide-venue="%s"
-		time="%s"
-		start_date="%s"
-		end_date="%s"
-		socialshare="%s"]';
-		$shortcode = sprintf($shortcode_string, $category, $template, $style, $dateformat, $limit,
-		$order, $hideVenue, $time, $startDate, $endDate,$socialshare);
-		
-		return $shortcode;
-	}
+    $category    = isset( $attr['category'] )    ? sanitize_text_field( $attr['category'] )    : 'all';
+    $template    = isset( $attr['template'] )    ? sanitize_text_field( $attr['template'] )    : 'default';
+    $style       = isset( $attr['style'] )       ? sanitize_text_field( $attr['style'] )       : 'style-1';
+    $dateformat  = isset( $attr['dateformat'] )  ? sanitize_text_field( $attr['dateformat'] )  : 'default';
+    $limit       = isset( $attr['limit'] )       ? intval( $attr['limit'] )                    : 10;
+    $order       = isset( $attr['order'] )       ? sanitize_text_field( $attr['order'] )       : 'ASC';
+    $hideVenue   = isset( $attr['hideVenue'] )   ? sanitize_text_field( $attr['hideVenue'] )   : 'no';
+    $time        = isset( $attr['time'] )        ? sanitize_text_field( $attr['time'] )        : 'future';
+    $startDate   = isset( $attr['startDate'] )   ? sanitize_text_field( $attr['startDate'] )   : '';
+    $endDate     = isset( $attr['endDate'] )     ? sanitize_text_field( $attr['endDate'] )     : '';
+    $socialshare = isset( $attr['socialshare'] ) ? sanitize_text_field( $attr['socialshare'] ) : 'no';
+
+    if ( ! empty( $template ) ) {
+        $shortcode_string = '[events-calendar-templates
+            category="%s"
+            template="%s"
+            style="%s" 
+            date_format="%s"
+            limit="%s"
+            order="%s"
+            hide-venue="%s"
+            time="%s"
+            start_date="%s"
+            end_date="%s"
+            socialshare="%s"]';
+
+        return sprintf(
+            $shortcode_string,
+            esc_attr( $category ),
+            esc_attr( $template ),
+            esc_attr( $style ),
+            esc_attr( $dateformat ),
+            esc_attr( $limit ),
+            esc_attr( $order ),
+            esc_attr( $hideVenue ),
+            esc_attr( $time ),
+            esc_attr( $startDate ),
+            esc_attr( $endDate ),
+            esc_attr( $socialshare )
+        );
+    }
 }

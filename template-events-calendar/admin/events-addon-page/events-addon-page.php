@@ -62,34 +62,34 @@ if ( !class_exists('cool_plugins_events_addons')) {
             /**
              * handle ajax request for activating plugin from dashboard
              */
-            function cool_plugins_activate(){
-                if(current_user_can('upload_plugins')){
-                   
-                $plugin_slug= isset($_POST["ect_activate_slug"])?sanitize_text_field($_POST["ect_activate_slug"]):'';
-                
-                $wp_nonce = 'ect-plugins-activate-' . $plugin_slug ;
-                if(!empty( $plugin_slug)){
-                    if ( ! check_ajax_referer($wp_nonce,'wp_nonce', false ) ) {
-                        wp_send_json_error( 'Invalid security token sent.' );
-                        wp_die();
-                    }
-                $pluginBase = ( isset( $_POST['ect_activate_pluginbase'] ) && !empty( $_POST['ect_activate_pluginbase'] ) )? sanitize_text_field($_POST['ect_activate_pluginbase']) : null;
-                
-                $plugin_base_arr=explode("/",$pluginBase);
-                if( isset($plugin_base_arr[0]) && $plugin_base_arr[0]==$plugin_slug ){
-                    activate_plugin( $pluginBase );
-                  
-                }else{
-                    wp_send_json_error( 'Something wrong with plugin path.' );
+            public function cool_plugins_activate() {
+                if ( ! current_user_can( 'activate_plugins' ) ) {
+                    wp_send_json_error( 'You have no permission to do this action.' );
                     wp_die();
                 }
-                }else{
+            
+                $plugin_slug = isset( $_POST["ect_activate_slug"] ) ? sanitize_text_field( $_POST["ect_activate_slug"] ) : '';
+            
+                if ( empty( $plugin_slug ) ) {
                     wp_send_json_error( 'Plugin slug is missing.' );
-                    wp_die();  
+                    wp_die();
                 }
-                }else{
-                    wp_send_json_error( 'You have no permission to do this action.' );
-                    wp_die();  
+            
+                $wp_nonce = 'ect-plugins-activate-' . $plugin_slug;
+            
+                if ( ! check_ajax_referer( $wp_nonce, 'wp_nonce', true ) ) {
+                    wp_send_json_error( 'Invalid security token sent.' );
+                    wp_die();
+                }
+            
+                $plugin_base = isset( $_POST['ect_activate_pluginbase'] ) ? sanitize_text_field( $_POST['ect_activate_pluginbase'] ) : '';
+            
+                $plugin_base_arr = explode( "/", $plugin_base );
+                if ( isset( $plugin_base_arr[0] ) && $plugin_base_arr[0] === $plugin_slug ) {
+                    activate_plugin( $plugin_base );
+                } else {
+                    wp_send_json_error( 'Something wrong with plugin path.' );
+                    wp_die();
                 }
             }
 
@@ -97,40 +97,43 @@ if ( !class_exists('cool_plugins_events_addons')) {
              * handle ajax for installing plugin from the dashboard.
              * This function use the core wordpress functionality of installing a plugin through URL
              */
-            function cool_plugins_install(){
-            if(current_user_can('upload_plugins')){
-                $plugin_slug= isset($_POST['ect_slug'])?sanitize_text_field($_POST['ect_slug']):'';
-                $wp_nonce = wp_create_nonce('ect-plugins-download-' . $plugin_slug );
-                if(!empty( $plugin_slug)){
-                    if ( ! check_ajax_referer( 'ect-plugins-download-' . $plugin_slug,'wp_nonce', false ) ) {
-                  
-                        wp_send_json_error( 'Invalid security token sent.' );
-                        wp_die();
-                    }
-                  
-                    require_once 'includes/cool_plugins_downloader.php';
-                        $downloader = new cool_plugins_downloader();
-                      
-                        $plugins = $this->request_wp_plugins_data($this->plugin_tag);
-                       
-                        if(isset($plugins[$plugin_slug])){
-                            $url=$plugins[$plugin_slug]['download_link'];
-                            return  $downloader->install( filter_var($url, FILTER_SANITIZE_URL), 'install' );
-                        
-                        }
-                else{
-                    wp_send_json_error( 'Sorry, You are installing a wrong plugin.' );
+            function cool_plugins_install() {
+                if ( ! current_user_can( 'install_plugins' ) ) {
+                    wp_send_json_error( 'You do not have permission to install plugins.' );
                     wp_die();
                 }
-            }else{
-                wp_send_json_error( 'Plugin slug is missing.' );
-                wp_die();  
+
+                if ( empty( $_POST['ect_slug'] ) ) {
+                    wp_send_json_error( 'Plugin slug is missing.' );
+                    wp_die();
+                }
+        
+                $plugin_slug = sanitize_key( wp_unslash( $_POST['ect_slug'] ) );
+            
+                if ( ! isset( $_POST['wp_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wp_nonce'] ) ), 'ect-plugins-download-' . $plugin_slug ) ) {
+                    wp_send_json_error( 'Invalid security token.' );
+                    wp_die();
+                }
+            
+                require_once 'includes/cool_plugins_downloader.php';
+                $downloader = new cool_plugins_downloader();
+            
+                $plugins = $this->request_wp_plugins_data( $this->plugin_tag );
+            
+                if ( ! isset( $plugins[ $plugin_slug ] ) ) {
+                    wp_send_json_error( 'Invalid plugin slug provided.' );
+                    wp_die();
+                }
+            
+                $url = filter_var( $plugins[ $plugin_slug ]['download_link'], FILTER_VALIDATE_URL );
+                if ( ! $url ) {
+                    wp_send_json_error( 'Invalid plugin download URL.' );
+                    wp_die();
+                }
+            
+                return $downloader->install( $url, 'install' );
             }
-            }else{
-                wp_send_json_error( 'You have no permission to do this action.' );
-                wp_die();  
-            }
-            }
+            
 
 
             /**

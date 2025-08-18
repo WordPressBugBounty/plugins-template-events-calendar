@@ -437,41 +437,75 @@ if ( ! class_exists( 'CSF_Options' ) ) {
 
     // admin menu
     public function add_admin_menu() {
-
-      extract( $this->args );
-
-      if ( $menu_type === 'submenu' ) {
-
-        $menu_page = call_user_func( 'add_submenu_page', $menu_parent, esc_attr( $menu_title ), esc_attr( $menu_title ), $menu_capability, $menu_slug, array( $this, 'add_options_html' ) );
-
+      $menu_type       = isset($this->args['menu_type']) ? $this->args['menu_type'] : '';
+      $menu_parent     = isset($this->args['menu_parent']) ? $this->args['menu_parent'] : '';
+      $menu_title      = isset($this->args['menu_title']) ? $this->args['menu_title'] : '';
+      $menu_capability = isset($this->args['menu_capability']) ? $this->args['menu_capability'] : 'manage_options';
+      $menu_slug       = isset($this->args['menu_slug']) ? $this->args['menu_slug'] : '';
+      $menu_icon       = isset($this->args['menu_icon']) ? $this->args['menu_icon'] : '';
+      $menu_position   = isset($this->args['menu_position']) ? $this->args['menu_position'] : null;
+      $sub_menu_title  = isset($this->args['sub_menu_title']) ? $this->args['sub_menu_title'] : '';
+      $menu_hidden     = isset($this->args['menu_hidden']) ? $this->args['menu_hidden'] : '';
+  
+      if ($menu_type === 'submenu') {
+  
+          $menu_page = call_user_func(
+              'add_submenu_page',
+              $menu_parent,
+              esc_attr($menu_title),
+              esc_attr($menu_title),
+              $menu_capability,
+              $menu_slug,
+              array($this, 'add_options_html')
+          );
+  
       } else {
-
-        $menu_page = call_user_func( 'add_menu_page', esc_attr( $menu_title ), esc_attr( $menu_title ), $menu_capability, $menu_slug, array( $this, 'add_options_html' ), $menu_icon, $menu_position );
-
-        if ( ! empty( $sub_menu_title ) ) {
-          call_user_func( 'add_submenu_page', $menu_slug, esc_attr( $sub_menu_title ), esc_attr( $sub_menu_title ), $menu_capability, $menu_slug, array( $this, 'add_options_html' ) );
-        }
-
-        if ( ! empty( $this->args['show_sub_menu'] ) && count( $this->pre_tabs ) > 1 ) {
-
-          // create submenus
-          foreach ( $this->pre_tabs as $section ) {
-            call_user_func( 'add_submenu_page', $menu_slug, esc_attr( $section['title'] ),  esc_attr( $section['title'] ), $menu_capability, $menu_slug .'#tab='. sanitize_title( $section['title'] ), '__return_null' );
+  
+          $menu_page = call_user_func(
+              'add_menu_page',
+              esc_attr($menu_title),
+              esc_attr($menu_title),
+              $menu_capability,
+              $menu_slug,
+              array($this, 'add_options_html'),
+              $menu_icon,
+              $menu_position
+          );
+  
+          if (!empty($sub_menu_title)) {
+              call_user_func(
+                  'add_submenu_page',
+                  $menu_slug,
+                  esc_attr($sub_menu_title),
+                  esc_attr($sub_menu_title),
+                  $menu_capability,
+                  $menu_slug,
+                  array($this, 'add_options_html')
+              );
           }
-
-          remove_submenu_page( $menu_slug, $menu_slug );
-
-        }
-
-        if ( ! empty( $menu_hidden ) ) {
-          remove_menu_page( $menu_slug );
-        }
-
+  
+          if (!empty($this->args['show_sub_menu']) && count($this->pre_tabs) > 1) {
+              foreach ($this->pre_tabs as $section) {
+                  call_user_func(
+                      'add_submenu_page',
+                      $menu_slug,
+                      esc_attr($section['title']),
+                      esc_attr($section['title']),
+                      $menu_capability,
+                      $menu_slug . '#tab=' . sanitize_title($section['title']),
+                      '__return_null'
+                  );
+              }
+              remove_submenu_page($menu_slug, $menu_slug);
+          }
+  
+          if (!empty($menu_hidden)) {
+              remove_menu_page($menu_slug);
+          }
       }
-
-      add_action( 'load-'. $menu_page, array( $this, 'add_page_on_load' ) );
-
-    }
+  
+      add_action('load-' . $menu_page, array($this, 'add_page_on_load'));
+  }
 
     public function add_page_on_load() {
 

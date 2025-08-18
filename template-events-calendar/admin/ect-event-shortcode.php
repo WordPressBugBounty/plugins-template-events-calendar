@@ -88,8 +88,17 @@ if (!class_exists('ECT_event_shortcode')) {
 
         public function ect_event_shortcode()
         {
-            $id = isset($GLOBALS['_GET']['post'])?absint($GLOBALS['_GET']['post']):'';
-            $post_type = isset($GLOBALS['_GET']['post_type'][0])?wp_kses_post($GLOBALS['_GET']['post_type'][0]):get_post_type($id);
+            $id = isset($_GET['post']) ? absint($_GET['post']) : '';
+    
+            if (isset($_GET['post_type'])) {
+                if (is_array($_GET['post_type'])) {
+                    $post_type = sanitize_text_field($_GET['post_type'][0]);
+                } else {
+                    $post_type = sanitize_text_field($_GET['post_type']);
+                }
+            } else {
+                $post_type = get_post_type($id);
+            }
             if($post_type!=='page' && $post_type!=='post' && $post_type!='') { 
                 return;
             }

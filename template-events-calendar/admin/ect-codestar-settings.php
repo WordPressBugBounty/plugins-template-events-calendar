@@ -217,7 +217,7 @@ if (! class_exists('ECTSettings')) {
                 Help us make this plugin more compatible with your site by sharing non-sensitive site data. 
                 <a href="#" class="cpfm-see-terms">[See terms]</a>
                 <div id="termsBox" style="display: none;padding-left: 20px; margin-top: 10px; font-size: 12px; color: #999;">
-                 <p>Opt in to receive email updates about security improvements, new features, helpful tutorials, and occasional special offers. We\'ll collect:</p>
+                 <p>Opt in to receive email updates about security improvements, new features, helpful tutorials, and occasional special offers. We\'ll collect: <a href="https://my.coolplugins.net/terms/usage-tracking/" target="_blank">Click Here</a></p>
                     <ul style="list-style-type:auto; padding-left: 20px;">
                         <li>Your website home URL and WordPress admin email.</li>
                         <li>To check plugin compatibility, we will collect the following: list of active plugins and themes, server type, MySQL version, WordPress version, memory limit, site language and database prefix.</li>
@@ -627,104 +627,139 @@ if (! class_exists('ECTSettings')) {
 	}
 }
 
-function ect_shortcode_attr()
-{
-	echo '
-      <style>
+function ect_shortcode_attr() {
+    ?>
+    <style>
         table.ect-shortcodes-tbl {
-          width: 70%:;
-          margin: auto;
-          width: 50%;
-        }   
-        table.ect-shortcodes-tbl tr td{
-          padding:15px;
+            margin: auto;
+            width: 50%;
         }
-      </style>
+        table.ect-shortcodes-tbl tr td {
+            padding: 15px;
+        }
+    </style>
 
-      <h3>Shortcode Attributes</h3>
-      <table class="ect-shortcodes-tbl" style="border:1px solid #ddd;">
-      <tr style="border:1px solid #ddd"><th style="border:1px solid #ddd">Attribute</th><th style="border:1px solid #ddd">Value</th></tr>
-      <tr style="border:1px solid #ddd"><td style="border:1px solid #ddd">template</td>
-      <td style="border:1px solid #ddd"><ul>
-      <li><strong>default</strong></li>
-      <li><strong>timeline-view</strong></li>
-      <li><strong>minimal-list</strong></li>
-      <li><strong>grid-view</strong> (<a href="' . esc_attr('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-grid/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes') . '" target="_blank">Pro Version</a>)</li>
-      <li><strong>carousel-view</strong> (<a href="' . esc_attr('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-carousel/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes') . '" target="_blank">Pro Version</a>)</li>
-      <li><strong>slider-view</strong> (<a href="' . esc_attr('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-slider/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes') . '" target="_blank">Pro Version</a>)</li>
-      <li><strong>accordion-view</strong> (<a href="' . esc_attr('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-accordion/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes') . '" target="_blank">Pro Version</a>)</li>
-	  <li><strong>masonry-view</strong> (<a href="' . esc_attr('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-masonry/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes') . '" target="_blank">Pro Version</a>)</li>
-	  <li><strong>highlighted-view</strong> (<a href="' . esc_attr('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-highlighted-layout-demos/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes') . '" target="_blank">Pro Version</a>)</li>
-	  </ul></td></tr>
+    <h3>Shortcode Attributes</h3>
+    <table class="ect-shortcodes-tbl" style="border:1px solid #ddd;">
+        <tr style="border:1px solid #ddd">
+            <th style="border:1px solid #ddd">Attribute</th>
+            <th style="border:1px solid #ddd">Value</th>
+        </tr>
 
-      <tr style="border:1px solid #ddd"><td  style="border:1px solid #ddd">style</td>
-      <td style="border:1px solid #ddd"><ul>
-      <li><strong>style-1</strong></li>
-      <li><strong>style-2</strong></li>
-      <li><strong>style-3</strong></li>
-      <li><strong>style-4</strong> (<a href="' . esc_attr('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-list/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=style_shortcode_attributes#list-style-4') . '" target="_blank">Pro Version</a>)</li>
-      </ul></td></tr>
+        <tr style="border:1px solid #ddd">
+            <td style="border:1px solid #ddd">template</td>
+            <td style="border:1px solid #ddd">
+                <ul>
+                    <li><strong>default</strong></li>
+                    <li><strong>timeline-view</strong></li>
+                    <li><strong>minimal-list</strong></li>
+                    <li><strong>grid-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-grid/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
+                    <li><strong>carousel-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-carousel/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
+                    <li><strong>slider-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-slider/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
+                    <li><strong>accordion-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-accordion/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
+                    <li><strong>masonry-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-masonry/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
+                    <li><strong>highlighted-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-highlighted-layout-demos/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
+                </ul>
+            </td>
+        </tr>
 
-      <tr style="border:1px solid #ddd"><td style="border:1px solid #ddd">category</td>
-      <td style="border:1px solid #ddd"><ul>
-      <li><strong>all</strong></li>
-      <li><strong>custom-slug</strong> (events category slug)</li>
-      </ul></td></tr>
+        <tr style="border:1px solid #ddd">
+            <td style="border:1px solid #ddd">style</td>
+            <td style="border:1px solid #ddd">
+                <ul>
+                    <li><strong>style-1</strong></li>
+                    <li><strong>style-2</strong></li>
+                    <li><strong>style-3</strong></li>
+                    <li><strong>style-4</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-list/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=style_shortcode_attributes#list-style-4'); ?>" target="_blank">Pro Version</a>)</li>
+                </ul>
+            </td>
+        </tr>
 
-      <tr style="border:1px solid #ddd"><td style="border:1px solid #ddd">date_format</td>
-      <td style="border:1px solid #ddd"><ul>
-      <li><strong>default</strong> (01 January 2025)</li>
-      <li><strong>MD,Y</strong> (Jan 01, 2025)</li>
-      <li><strong>FD,Y</strong> (January 01, 2025)</li>
-      <li><strong>DM</strong> (01 Jan)</li>
-      <li><strong>DML</strong> (01 Jan Monday)</li>
-      <li><strong>DF</strong> (01 January)</li>
-      <li><strong>MD</strong> (Jan 01)</li>
-      <li><strong>FD</strong> (January 01)</li>
-      <li><strong>MD,YT</strong> (Jan 01, 2025 8:00am-5:00pm)</li>
-      <li><strong>full</strong> (01 January 2025 8:00am-5:00pm)</li>
-	  <li><strong>jMl</strong> (1 Jan Monday)</li>
-	  <li><strong>d.FY</strong> (01. January 2025)</li>
-	  <li><strong>d.F</strong> (01. January )</li>
-	  <li><strong>lDF</strong> (Monday 01 January)</li>
-	  <li><strong>Mdl</strong> (Jan 01 Monday)</li>
-	  <li><strong>d.Ml</strong> (01. Jan Monday)</li>
-	  <li><strong>dFT</strong> (01 January 8:00am - 5:00pm)</li>
+        <tr style="border:1px solid #ddd">
+            <td style="border:1px solid #ddd">category</td>
+            <td style="border:1px solid #ddd">
+                <ul>
+                    <li><strong>all</strong></li>
+                    <li><strong>custom-slug</strong> (events category slug)</li>
+                </ul>
+            </td>
+        </tr>
 
-      </ul></td></tr>
+        <tr style="border:1px solid #ddd">
+            <td style="border:1px solid #ddd">date_format</td>
+            <td style="border:1px solid #ddd">
+                <ul>
+                    <li><strong>default</strong> (01 January 2025)</li>
+                    <li><strong>MD,Y</strong> (Jan 01, 2025)</li>
+                    <li><strong>FD,Y</strong> (January 01, 2025)</li>
+                    <li><strong>DM</strong> (01 Jan)</li>
+                    <li><strong>DML</strong> (01 Jan Monday)</li>
+                    <li><strong>DF</strong> (01 January)</li>
+                    <li><strong>MD</strong> (Jan 01)</li>
+                    <li><strong>FD</strong> (January 01)</li>
+                    <li><strong>MD,YT</strong> (Jan 01, 2025 8:00am-5:00pm)</li>
+                    <li><strong>full</strong> (01 January 2025 8:00am-5:00pm)</li>
+                    <li><strong>jMl</strong> (1 Jan Monday)</li>
+                    <li><strong>d.FY</strong> (01. January 2025)</li>
+                    <li><strong>d.F</strong> (01. January)</li>
+                    <li><strong>lDF</strong> (Monday 01 January)</li>
+                    <li><strong>Mdl</strong> (Jan 01 Monday)</li>
+                    <li><strong>d.Ml</strong> (01. Jan Monday)</li>
+                    <li><strong>dFT</strong> (01 January 8:00am - 5:00pm)</li>
+                </ul>
+            </td>
+        </tr>
 
-      <tr style="border:1px solid #ddd"><td style="border:1px solid #ddd">start_date<br/>end_date</td>
-      <td style="border:1px solid #ddd"><ul>
-      <li><strong>YY-MM-DD</strong> (show events in between a date interval)</li>
-      </ul></td></tr>
+        <tr style="border:1px solid #ddd">
+            <td style="border:1px solid #ddd">start_date<br/>end_date</td>
+            <td style="border:1px solid #ddd"><ul><li><strong>YY-MM-DD</strong> (show events in between a date interval)</li></ul></td>
+        </tr>
 
-      <tr style="border:1px solid #ddd"><td style="border:1px solid #ddd">limit</td>
-      <td style="border:1px solid #ddd"><ul>
-      <li><strong>10</strong> (number of events to show)</li>
-      </ul></td></tr>
+        <tr style="border:1px solid #ddd">
+            <td style="border:1px solid #ddd">limit</td>
+            <td style="border:1px solid #ddd"><ul><li><strong>10</strong> (number of events to show)</li></ul></td>
+        </tr>
 
-      <tr style="border:1px solid #ddd"><td style="border:1px solid #ddd">order</td>
-      <td style="border:1px solid #ddd"><ul>
-      <li><strong>ASC</strong></li>
-      <li><strong>DESC</strong></li>
-      </ul></td></tr>
+        <tr style="border:1px solid #ddd">
+            <td style="border:1px solid #ddd">order</td>
+            <td style="border:1px solid #ddd">
+                <ul>
+                    <li><strong>ASC</strong></li>
+                    <li><strong>DESC</strong></li>
+                </ul>
+            </td>
+        </tr>
 
-      <tr style="border:1px solid #ddd"><td style="border:1px solid #ddd">hide_venue</td>
-      <td style="border:1px solid #ddd"><ul>
-      <li><strong>yes</strong></li>
-      <li><strong>no</strong></li>
-      </ul></td></tr>
-      <tr style="border:1px solid #ddd"><td style="border:1px solid #ddd">socialshare</td>
-      <td style="border:1px solid #ddd"><ul>
-      <li><strong>yes</strong></li>
-      <li><strong>no</strong></li>
-      </ul></td></tr>
-      <tr style="border:1px solid #ddd"><td style="border:1px solid #ddd">time</td>
-      <td style="border:1px solid #ddd"><ul>
-      <li><strong>future</strong> (show future events)</li>
-      <li><strong>past</strong> (show past events)</li>
-      <li><strong>all</strong> (show all events)</li>
-      </ul></td></tr>
+        <tr style="border:1px solid #ddd">
+            <td style="border:1px solid #ddd">hide_venue</td>
+            <td style="border:1px solid #ddd">
+                <ul>
+                    <li><strong>yes</strong></li>
+                    <li><strong>no</strong></li>
+                </ul>
+            </td>
+        </tr>
 
-      </table>';
+        <tr style="border:1px solid #ddd">
+            <td style="border:1px solid #ddd">socialshare</td>
+            <td style="border:1px solid #ddd">
+                <ul>
+                    <li><strong>yes</strong></li>
+                    <li><strong>no</strong></li>
+                </ul>
+            </td>
+        </tr>
+
+        <tr style="border:1px solid #ddd">
+            <td style="border:1px solid #ddd">time</td>
+            <td style="border:1px solid #ddd">
+                <ul>
+                    <li><strong>future</strong> (show future events)</li>
+                    <li><strong>past</strong> (show past events)</li>
+                    <li><strong>all</strong> (show all events)</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+    <?php
 }

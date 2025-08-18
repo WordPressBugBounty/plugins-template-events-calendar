@@ -329,13 +329,12 @@ class EventsShortcode {
 		 * Function to remove sql injection spacing to prevent sql statement to execute.
 		 */
 	public function events_attr_filter( $attr ) {
-		$pattern    = '#[*\(\)\[\]{}"\'\\\\/;$]#';
+		$pattern = '#[*\(\)\[\]{}"\'\\\\/;$]#';
 		$attributes = array();
-		foreach ( $attr as $key => $values ) {
-				$value              = preg_replace( $pattern, '', $values );
-				$value              = preg_replace( '/\s+/', '', $value );
-				$value              = esc_html( $value );
-				$attributes[ $key ] = $value;
+		foreach ( (array) $attr as $key => $values ) {
+			$value = preg_replace( $pattern, '', $values );
+			$value = preg_replace( '/\s+/', '', $value );
+			$attributes[ sanitize_key( $key ) ] = esc_html( $value );
 		}
 		return $attributes;
 	}
