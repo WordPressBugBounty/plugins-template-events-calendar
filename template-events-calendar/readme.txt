@@ -5,7 +5,7 @@ Tags: shortcode, the events calendar, event, calendar, coolplugins
 Requires at least: 5.0
 Tested up to: 6.8.2
 Requires PHP: 7.2
-Stable tag: 2.4.9
+Stable tag: 2.4.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Easily add The Events Calendar shortcode or Gutenberg event block on any page and show upcoming events list.
@@ -119,8 +119,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= Version 2.4.9 | August 18, 2025 =
+= Version 2.4.10 | September 02, 2025 =
+* Updated: Internal Links.
 
+= Version 2.4.9 | August 18, 2025 =
 * Fixed: Security issues.
 * Improved: Minor code improvements.
 * Tested upto: WordPress version 6.8.2

@@ -3,13 +3,13 @@
 Plugin Name:Events Shortcodes For The Events Calendar
 Plugin URI:https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
 Description:<a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Shortcodes to show The Events Calendar plugin events list on any page or post in different layouts.
-Version:2.4.9
+Version:2.4.10
 Requires at least: 5.0
 Tested up to:6.8.2
 Requires PHP:7.2
 Stable tag:trunk
 Author:Cool Plugins
-Author URI:https://coolplugins.net/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=dashboard
+Author URI:https://coolplugins.net/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
 License URI:https://www.gnu.org/licenses/gpl-2.0.html
 Domain Path: /languages
 Text Domain:ect
@@ -22,7 +22,7 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 if (! defined('ECT_VERSION')) {
-	define('ECT_VERSION', '2.4.9');
+	define('ECT_VERSION', '2.4.10');
 }
 
 /*** Defined constent for later use */
@@ -320,7 +320,7 @@ if (! class_exists('EventsCalendarTemplates')) {
 		{
 			$links[] = '<a style="font-weight:bold" href="' . esc_url(get_admin_url(null, 'admin.php?page=tribe_events-events-template-settings')) . '">Shortcodes Settings</a>';
 			// $links[] = '<a  style="font-weight:bold" href="https://eventscalendartemplates.com/" target="_blank">View Demos</a>';
-			$plugin_visit_website = 'https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_list';
+			$plugin_visit_website = 'https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugins_list';
 			$links[]              = '<a  style="font-weight:bold" href="' . esc_url($plugin_visit_website) . '" target="_blank">' . __('Get Pro', 'ect') . '</a>';
 			return $links;
 		}
