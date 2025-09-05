@@ -2,7 +2,17 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+if ( ! function_exists( 'darkenColor' ) ) {
+    function darkenColor($color, $percent) {
+        $num = hexdec(ltrim($color, '#'));
+        $amt = round(2.55 * $percent);
+        $R = ($num >> 16) - $amt;
+        $G = (($num >> 8) & 0x00FF) - $amt;
+        $B = ($num & 0x0000FF) - $amt;
 
+        return sprintf("#%02x%02x%02x", max(0, $R), max(0, $G), max(0, $B));
+    }
+}
 // dynamic css
 $selectors = '
 .ebec-block-' . $ebec_block_id . ' .ebec-header-year 
@@ -31,7 +41,7 @@ $selectors = '
      font-weight:' . $event_title_weight . ';
      text-transform:' . $event_title_transform . ';
      font-style:' . $event_title_style . ';
-     text-decoration:' . $event_title_decoration . ';
+     text-decoration:' . $event_title_decoration . ' !important;
      line-height:' . ( 'initial' === $event_title_line_height ? 'initial' : $event_title_line_height . 'px' ) . ';
      letter-spacing:' . $event_title_letter_spacing . 'px
  }
@@ -76,7 +86,7 @@ $selectors = '
      font-weight:' . $event_link_weight . ';
      text-transform:' . $event_link_transform . ';
      font-style:' . $event_link_style . ';
-     text-decoration:' . $event_link_decoration . ';
+     text-decoration:' . $event_link_decoration . ' !important;
      line-height:' . ( 'initial' === $event_link_line_height ? 'initial' : $event_link_line_height . 'px' ) . ';
      letter-spacing:' . $event_link_letter_spacing . 'px
  }
@@ -86,4 +96,12 @@ $selectors = '
 
  .ebec-block-' . $ebec_block_id . ' .ebec-list-cost {
    color:' . $main_skin_color . ';
+ }
+   .ebec-minimal-list-wrapper .ebec-list-posts.style-1.ebec-simple-event .ebec-event-date-tag{
+   background-color:' . $event_simple_color . ';
+   border-left: 4px solid ' . darkenColor($event_simple_color, 20) . ';
+ }
+ .ebec-minimal-list-wrapper .ebec-list-posts.style-1.ebec-featured-event .ebec-event-date-tag{
+   background-color:' . $event_featured_color . ';
+   border-left: 4px solid ' . darkenColor($event_featured_color, 20) . ';
  }';

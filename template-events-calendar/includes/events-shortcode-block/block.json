@@ -5,8 +5,9 @@
 	"description": "Events Gutenberg Block For Create List Events In Block Editor.",
 	"keywords": [ "event", "events", "calender" ],
 	"textdomain": "ebec",
-	"editorScript": "file:./dist/blocks.build.js",
-	"style": "file:./dist/blocks.style.build.css",
+	"editorScript": "file:./dist/index.js",
+	"style": "file:./dist/style-index.css",
+
     "attributes":{
         	"ebec_ev_category":{
 				"type":"array",
@@ -237,6 +238,18 @@
 			"event_link_letter_spacing":{
 				"type":"number",
 				"default":0
+		},
+			"event_header_type":{
+				"type":"string",
+				"default":"show_header"
+		},
+			"event_simple_color":{
+				"type":"string",
+				"default":"#00445e"
+		},
+			"event_featured_color":{
+				"type":"string",
+				"default":"#00445e"
 		},
 			"event_link_name":{
 				"type":"string",

@@ -24,6 +24,7 @@ class EBEC_Register_Block {
 		add_action( 'enqueue_block_assets', array( $this, 'ebec_editor_assets' ) );
 		add_action( 'enqueue_block_editor_assets', array( $this, 'ebec_block_editor_assets' ) );
 		add_action( 'init', array( $this, 'ebec_register_block' ) );
+		add_action('init', array($this, 'ebec_modify_rest_api_limits'), 20);
 	}
 
 	public function ebec_editor_assets() {
@@ -38,6 +39,17 @@ class EBEC_Register_Block {
 			wp_enqueue_script( 'ebec-block-editor', ECT_PLUGIN_URL . 'includes/events-shortcode-block/dist/index.js', array( 'wp-blocks', 'wp-i18n', 'wp-editor', 'wp-components', 'wp-element' ) );
 			wp_enqueue_style( 'ebec-block-style-editor', ECT_PLUGIN_URL . 'includes/events-shortcode-block/dist/style-index.css', array( 'wp-edit-blocks' ), null, null, 'all' );
 	}
+	public function ebec_modify_rest_api_limits() {
+        add_filter('tribe_rest_event_max_per_page', function($max) {
+            return 999;
+        });
+        add_filter('rest_tribe_events_collection_params', function($params) {
+            if (isset($params['per_page'])) {
+                $params['per_page']['maximum'] = 999;
+            }
+            return $params;
+        });
+    }
 
 
 		/**
@@ -294,6 +306,18 @@ class EBEC_Register_Block {
 				'event_desc_type' => array(
 					'type' => 'string',
 					'default' => 'short'
+				),
+				'event_header_type' => array(
+					'type' => 'string',
+					'default' => 'show_header'
+				),
+				'event_simple_color' => array(
+					'type' => 'string',
+					'default' => '#99d6b6'
+				),
+				'event_featured_color' => array(
+					'type' => 'string',
+					'default' => '#66baff'
 				)
 			);
 
@@ -388,7 +412,7 @@ class EBEC_Register_Block {
 				$block_id      = isset( $attributes['ebec_block_id'] ) ? $attributes['ebec_block_id'] : '';
 				$build_url     = 'https://fonts.googleapis.com/css?family=';
 				$build_url    .= implode( '|', array_filter( $font_family_array ) );
-				wp_enqueue_style( 'ebec-google-font-' . $block_id, "$build_url", array(), null, null, 'all' );
+				wp_enqueue_style( 'ebec-google-font-' . $block_id, "$build_url", array(), null, 'all' );
 				$events         = '';
 				$html           = '';
 				$display_month  = '';

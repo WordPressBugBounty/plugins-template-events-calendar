@@ -3,8 +3,30 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-$longMonthStart  = DateTime::createFromFormat( '!m', $event_value['event_start_date_details_month'] )->format( 'F' );
-$shortMonthStart = DateTime::createFromFormat( '!m', $event_value['event_start_date_details_month'] )->format( 'M' );
+$monthNumber = $event_value['event_start_date_details_month'];
+
+$formatterLong = new IntlDateFormatter(
+    get_locale(), // Current WordPress locale
+    IntlDateFormatter::LONG,
+    IntlDateFormatter::NONE,
+    null,
+    null,
+    'LLLL' // Full month name
+);
+$formatterShort = new IntlDateFormatter(
+    get_locale(),
+    IntlDateFormatter::LONG,
+    IntlDateFormatter::NONE,
+    null,
+    null,
+    'LLL' // Short month name
+);
+
+$dateObject = DateTime::createFromFormat('!m', $monthNumber);
+
+$longMonthStart  = $formatterLong->format($dateObject);
+$shortMonthStart = $formatterShort->format($dateObject);
+
 $event_type      = tribe( 'tec.featured_events' )->is_featured( $event_id ) ? 'ebec-featured-event' : 'ebec-simple-event';
 $description     = ! empty( $event_value['event_description'] ) ? $event_value['event_description'] : tribe_events_get_the_excerpt( $event_id );
 if ( 'full' !== $desc_type ) {
@@ -23,7 +45,7 @@ if ( 'full' !== $desc_type ) {
 }
 
 // Layout
-if ( $display_header === true && 'minimal' !== $layout ) {
+if ( $display_header === true && $attributes['event_header_type'] === 'show_header' && 'minimal' !== $layout ) {
 	$html .= '<div class="ebec-month-header ' . esc_attr( $event_type ) . '"><span class="ebec-header-year" >' . esc_html( $longMonthStart ) . ' ' . esc_html( $event_value['event_start_date_details_year'] ) . '</span><span class="ebec-header-line"></span></div>';
 }
 
@@ -38,7 +60,7 @@ if ( $display_header === true && 'minimal' !== $layout ) {
              ' . ebec_date_style( $event, $attributes ) . '
              </span>
              </div>';
-	$html .= '<a href=' . esc_url( $event_value['event_url'] ) . ' class="ebec-events-title" >' . esc_html( $event_value['event_title'] ) . '</a>';
+	$html .= '<a href=' . esc_url( $event_value['event_url'] ) . ' class="ebec-events-title" >' . wp_kses_post( $event_value['event_title'] ) . '</a>';
 if ( $attributes['ebec_venue'] == 'no' && tribe_has_venue( $event_id ) && 'minimal' !== $layout ) {
 	$html .= '<div class="ebec-list-venue" >';
 	if ( $event_value['have_venue_address'] ) {
@@ -59,7 +81,7 @@ if ( $attributes['ebec_display_desc'] == 'yes' && ! empty( $description ) && 'mi
 if ( ! empty( $event_value['event_cost'] ) && 'minimal' !== $layout ) {
 	$html .= '<div class="ebec-list-cost">' . esc_html( $event_value['event_cost'] ) . '</div>';
 }
-		$html .= '<div class="ebec-style-1-more" ><a href=' . esc_url( $event_value['event_url'] ) . ' class="ebec-events-read-more" rel="bookmark" >' . esc_html( $attributes['event_link_name'], 'ebec' ) . '</a></div>';
+		$html .= '<div class="ebec-style-1-more" ><a href=' . esc_url( $event_value['event_url'] ) . ' class="ebec-events-read-more" rel="bookmark" >' . esc_html__( $attributes['event_link_name'], 'ebec' ) . '</a></div>';
 	$html     .= '</div>';
 if ( 'minimal' !== $layout ) {
 	$html .= '<div class="ebec-right-wrapper">';
@@ -71,4 +93,3 @@ if ( 'minimal' !== $layout ) {
 		$html .= '  </div>';
 }
 	$html .= '</div>';
-
