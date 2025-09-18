@@ -3,7 +3,7 @@
 Plugin Name:Events Shortcodes For The Events Calendar
 Plugin URI:https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
 Description:<a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Shortcodes to show The Events Calendar plugin events list on any page or post in different layouts.
-Version:2.5.0
+Version:2.5.1
 Requires at least: 5.0
 Tested up to:6.8.2
 Requires PHP:7.2
@@ -22,7 +22,7 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 if (! defined('ECT_VERSION')) {
-	define('ECT_VERSION', '2.5.0');
+	define('ECT_VERSION', '2.5.1');
 }
 
 /*** Defined constent for later use */
@@ -117,6 +117,8 @@ if (! class_exists('EventsCalendarTemplates')) {
 		/*** Load required files */
 		public function ect_load_files()
 		{
+			
+			
 			if (class_exists('Tribe__Events__Main') or defined('Tribe__Events__Main::VERSION')) {
 				if (defined('WPB_VC_VERSION')) {
 					require_once ECT_PLUGIN_DIR . 'admin/visual-composer/ect-class-vc.php';
@@ -130,7 +132,8 @@ if (! class_exists('EventsCalendarTemplates')) {
 
 			if (is_admin()) {
 				/*** Plugin review notice file */
-				require_once ECT_PLUGIN_DIR . '/admin/notices/admin-notices.php';
+				require_once ECT_PLUGIN_DIR . 'admin/marketing/ect-marketing.php';
+				require_once ECT_PLUGIN_DIR . '/admin/feedback-notice/feedback-notice.php';
 				require_once ECT_PLUGIN_DIR . '/admin/feedback/admin-feedback-form.php';
 				require_once ECT_PLUGIN_DIR . 'admin/cpfm-feedback/cron/class-cron.php';
 				
@@ -192,32 +195,8 @@ if (! class_exists('EventsCalendarTemplates')) {
 			EventsShortcode::registers();
 			require_once ECT_PLUGIN_DIR . 'admin/ect-event-shortcode.php';
 		}
-		public static function is_theme_activate($target)
-		{
-			$theme = wp_get_theme();
-			if ($theme->name == $target || stripos($theme->parent_theme, $target) !== false) {
-				return true;
-			}
-			return false;
-		}
 		public static function onInit()
 		{
-			if (self::is_theme_activate('Divi')) {
-				ect_create_admin_notice(
-					array(
-						'id'              => 'ect-divi-module-notice',
-						'message'         => __(
-							'Greetings! We have noticed that you are currently using the <strong>Divi Page Builder</strong>.</br> 
-					We would like to suggest trying out the latest <strong> <a href="https://wordpress.org/plugins/events-calendar-modules-for-divi/" target="_blank"> Events Calendar Modules For Divi </a></strong> plugin. <a class="button button-primary" href="https://wordpress.org/plugins/events-calendar-modules-for-divi/" target="_blank">Try it now!</a> </br>',
-							'ect'
-						),
-						'review_interval' => 3,
-						'logo'            => ECT_PLUGIN_URL . 'assets/images/icon-events-module-divi.svg',
-						'plugin_name' => 'Timeline Module For Divi',
-					)
-				);
-			}
-
 			if (version_compare(get_option('ect-v'), '2.4.0', '<')) {
 				ect_create_admin_notice(
 					array(
@@ -237,23 +216,6 @@ if (! class_exists('EventsCalendarTemplates')) {
 					)
 				);
 			}
-			if (did_action('elementor/loaded') && ! class_exists('Events_Calendar_Addon')) {
-				ect_create_admin_notice(
-					array(
-						'id'              => 'ect-elementor-addon-notice',
-						'message'         => wp_kses_post(
-							__(
-								'Hi! We checked that you are using <strong>Elementor Page Builder</strong>.
-					<br/>We suggest you to try "<a target="_blank" href="https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=ectbe_inside_notice"><strong>Events Widgets For Elementor</strong></a>," a new addon by <a target="_blank" href="https://coolplugins.net/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=ectbe_inside_notice">Cool Plugins</a>.
-					<br/>It enables you to display <strong>The Events Calendar</strong> plugin events in Elementor pages.',
-								'ect'
-							)
-						),
-						'review_interval' => 3,
-						'logo'            => ECT_PLUGIN_URL . 'assets/images/icon-events-widgets.svg',
-					)
-				);
-			}
 			/*** Plugin review notice file */
 			ect_create_admin_notice(
 				array(
@@ -262,7 +224,6 @@ if (! class_exists('EventsCalendarTemplates')) {
 					'review'          => true,     // required and set to be true for review box
 					'review_url'      => esc_url('https://wordpress.org/support/plugin/template-events-calendar/reviews/#new-post'), // required
 					'plugin_name'     => 'Events Shortcodes  Addon',    // required
-					'logo'            => ECT_PLUGIN_URL . 'assets/images/icon-events-shortcodes.svg',    // optional: it will display logo
 					'review_interval' => 3,                    // optional: this will display review notice
 					// after 5 days from the installation_time
 					// default is 3

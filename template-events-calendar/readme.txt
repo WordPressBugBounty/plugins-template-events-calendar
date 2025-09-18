@@ -5,7 +5,7 @@ Tags: shortcode, the events calendar, event, calendar, coolplugins
 Requires at least: 5.0
 Tested up to: 6.8.2
 Requires PHP: 7.2
-Stable tag: 2.5.0
+Stable tag: 2.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Easily add The Events Calendar shortcode or Gutenberg event block on any page and show upcoming events list.
@@ -118,6 +118,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 8. Elementor Page Builder Widget Preview
 
 == Changelog ==
+
+= Version 2.5.1 | September 18, 2025 =
+* Fixed: Issue with load google fonts on events block.
+* Improvement: Other plugins recommendations.
+* Tested upto: The Events Calendar version 6.15.4
+
 
 = Version 2.5.0 | September 05, 2025 =
 * Added: Support for Arial font family in the Events block.

@@ -21,7 +21,7 @@ class EBEC_Register_Block {
 		 * @access private
 		 */
 	private function __construct() {
-		add_action( 'enqueue_block_assets', array( $this, 'ebec_editor_assets' ) );
+		// add_action( 'enqueue_block_assets', array( $this, 'ebec_editor_assets' ) );
 		add_action( 'enqueue_block_editor_assets', array( $this, 'ebec_block_editor_assets' ) );
 		add_action( 'init', array( $this, 'ebec_register_block' ) );
 		add_action('init', array($this, 'ebec_modify_rest_api_limits'), 20);
@@ -38,6 +38,13 @@ class EBEC_Register_Block {
 	public function ebec_block_editor_assets() {
 			wp_enqueue_script( 'ebec-block-editor', ECT_PLUGIN_URL . 'includes/events-shortcode-block/dist/index.js', array( 'wp-blocks', 'wp-i18n', 'wp-editor', 'wp-components', 'wp-element' ) );
 			wp_enqueue_style( 'ebec-block-style-editor', ECT_PLUGIN_URL . 'includes/events-shortcode-block/dist/style-index.css', array( 'wp-edit-blocks' ), null, null, 'all' );
+			
+			// Localize script to pass Google Fonts setting to JavaScript
+			$options = get_option( 'ects_options' );
+			$load_google_fonts = ! empty( $options['ect_load_google_font'] ) ? $options['ect_load_google_font'] : 'yes';
+			wp_localize_script( 'ebec-block-editor', 'ebecBlockData', array(
+				'loadGoogleFonts' => $load_google_fonts
+			) );
 	}
 	public function ebec_modify_rest_api_limits() {
         add_filter('tribe_rest_event_max_per_page', function($max) {
@@ -410,9 +417,13 @@ class EBEC_Register_Block {
 				$attributes['event_link_family'],
 			);
 				$block_id      = isset( $attributes['ebec_block_id'] ) ? $attributes['ebec_block_id'] : '';
-				$build_url     = 'https://fonts.googleapis.com/css?family=';
-				$build_url    .= implode( '|', array_filter( $font_family_array ) );
-				wp_enqueue_style( 'ebec-google-font-' . $block_id, "$build_url", array(), null, 'all' );
+				$options = get_option( 'ects_options' );
+				$load_google_fonts = ! empty( $options['ect_load_google_font'] ) ? $options['ect_load_google_font'] : 'yes';
+				if ( $load_google_fonts == 'yes' ) {
+					$build_url     = 'https://fonts.googleapis.com/css?family=';
+					$build_url    .= implode( '|', array_filter( $font_family_array ) );
+					wp_enqueue_style( 'ebec-google-font-' . $block_id, "$build_url", array(), null, 'all' );
+				}
 				$events         = '';
 				$html           = '';
 				$display_month  = '';
@@ -424,8 +435,9 @@ class EBEC_Register_Block {
 				$desc_type      = isset( $attributes['event_desc_type'] ) ? $attributes['event_desc_type'] : 'short';
 				include ECT_PLUGIN_DIR . '/includes/events-shortcode-block/includes/ebec-style-setting.php';
 				include ECT_PLUGIN_DIR . '/includes/events-shortcode-block/Layouts/list/ebec-list-style.php';
+				wp_enqueue_style( 'ebec-block-style-front', ECT_PLUGIN_URL . 'includes/events-shortcode-block/assets/css/ebec-style.css', array(), null, null, 'all' );
 			if ( isset( $selectors ) ) {
-				wp_add_inline_style( 'ebec-google-font-' . $block_id, $selectors );
+				wp_add_inline_style( 'ebec-block-style-front', $selectors );
 			}
 
 				$html .= '<!---------- Event List Block Version:' . esc_html(ECT_VERSION) . ' By Cool Plugins Team-------------->';
