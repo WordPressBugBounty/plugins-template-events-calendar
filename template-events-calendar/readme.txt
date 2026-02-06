@@ -3,9 +3,9 @@ Contributors: narinder-singh, satindersingh, coolplugins
 Donate link: https://paypal.me/CoolPlugins/50USD/
 Tags: shortcode, the events calendar, event, calendar, coolplugins
 Requires at least: 5.0
-Tested up to: 6.8.2
+Tested up to: 6.9.1
 Requires PHP: 7.2
-Stable tag: 2.5.1
+Stable tag: 2.5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Easily add The Events Calendar shortcode or Gutenberg event block on any page and show upcoming events list.
@@ -119,9 +119,16 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
+= Version 2.5.3 | February 05, 2026 =
+* Improved: Code quality and overall performance.
+
+= Version 2.5.2 | November 18, 2025 =
+* Improved: Rating div styling.
+* Tested upto: The Events Calendar version 6.15.11
+
 = Version 2.5.1 | September 18, 2025 =
 * Fixed: Issue with load google fonts on events block.
-* Improvement: Other plugins recommendations.
+* Improved: Other plugins recommendations.
 * Tested upto: The Events Calendar version 6.15.4
 
 
@@ -133,7 +140,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fixed: Addressed security vulnerabilities.
 * Fixed: Minor CSS fixes.
 * Fixed: 50 + Events loading issue on the editor side for the Events block.
-* Improvements: Code Improved
+* Improved: Code Improved
 
 = Version 2.4.10 | September 02, 2025 =
 * Updated: Internal Links.

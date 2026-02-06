@@ -3,9 +3,9 @@ Contributors: narinder-singh, satindersingh, coolplugins
 Donate link: https://paypal.me/CoolPlugins/50USD/
 Tags: shortcode, the events calendar, event, calendar, coolplugins
 Requires at least: 5.0
-Tested up to: 6.8.2
+Tested up to: 6.9.1
 Requires PHP: 7.2
-Stable tag: 2.4.8
+Stable tag: 2.5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Easily add The Events Calendar shortcode or Gutenberg event block on any page and show upcoming events list.

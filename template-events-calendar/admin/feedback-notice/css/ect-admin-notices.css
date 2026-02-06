@@ -37,13 +37,12 @@
     margin: 0px 10px 0 0;
 }
 
-.ect-feedback-notice-wrapper ul li.already_rated a:after {
+.ect-feedback-notice-wrapper ul li.already_rated a:before {
     color: #f12945;
     content: "\f153";
     font: normal 18px/21px dashicons;
     display: inline-block;
-    vertical-align: middle;
-    margin-left: 3px;
+    vertical-align: sub;
 }
 
 

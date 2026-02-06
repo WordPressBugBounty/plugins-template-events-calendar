@@ -35,7 +35,8 @@ if (!class_exists('ECT_TEC_Notice')) {
             }
             if (class_exists('EventsCalendarTemplates') && self::is_theme_activate('Divi') &&
                 !in_array('events-calendar-modules-for-divi/events-calendar-modules-for-divi.php', $active_plugins, true) &&
-                !in_array('events-calendar-modules-for-divi-pro/events-calendar-modules-for-divi-pro.php', $active_plugins, true)) {
+                !in_array('events-calendar-modules-for-divi-pro/events-calendar-modules-for-divi-pro.php', $active_plugins, true) &&
+                !in_array('cp-events-calendar-modules-for-divi-pro/cp-events-calendar-modules-for-divi-pro.php', $active_plugins, true)) {
                 add_action('admin_notices', [$this, 'show_divi_notice']);
             }
             add_action('wp_ajax_ect_install_plugin', [$this, 'ect_install_plugin']);
@@ -183,11 +184,43 @@ if (!class_exists('ECT_TEC_Notice')) {
         public function ect_install_plugin()
         {
             if (!current_user_can('install_plugins')) {
+                // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
+				$status['errorMessage'] = __( 'Sorry, you are not allowed to install plugins on this site.', 'ect' );
                 wp_send_json_error(['message' => 'Permission denied']);
             }
         
             check_ajax_referer('ect_install_nonce');
+
+            if ( empty( $_POST['slug'] ) ) {
+				wp_send_json_error( array(
+					'slug'         => '',
+					'errorCode'    => 'no_plugin_specified',
+					// phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
+					'errorMessage' => __( 'No plugin specified.', 'ect' ),
+				));
+			}
         
+            $plugin_slug = sanitize_key( wp_unslash( $_POST['slug'] ) );
+
+			// Only allow installation of known marketing plugins (ignore client-manipulated slugs).
+			$allowed_slugs = array(
+				'events-calendar-modules-for-divi'
+			);
+			if ( ! in_array( $plugin_slug, $allowed_slugs, true ) ) {
+				wp_send_json_error( array(
+					'slug'         => $plugin_slug,
+					'errorCode'    => 'plugin_not_allowed',
+					// phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
+					'errorMessage' => __( 'This plugin cannot be installed from here.', 'ect' ),
+				));
+			}
+
+
+			$status = array(
+				'install' => 'plugin',
+				'slug'    => sanitize_key( wp_unslash( $_POST['slug'] ) ),
+			);
+
             require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
             require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
             require_once ABSPATH . 'wp-admin/includes/plugin.php';

@@ -49,7 +49,6 @@ if (!class_exists('ect_admin_notices')):
             $review = (bool)(isset($notice['review'] ) && !empty( $notice['review'] ) ) ? sanitize_text_field( $notice['review'] ) : false;
             $slug = (isset($notice['slug']) && !empty($notice['slug'])) ? sanitize_text_field( $notice['slug'] ): '' ;
             $plugin_name = (isset($notice['plugin_name']) && !empty($notice['plugin_name'])) ? sanitize_text_field( $notice['plugin_name'] ) : '' ;
-            $logo = (isset($notice['logo']) && !empty($notice['logo'])) ? esc_url( $notice['logo'] ) : null ;
             $review_url = (isset($notice['review_url']) && !empty($notice['review_url'])) ? esc_url( $notice['review_url'] ) : '' ;
             $review_interval = (isset($notice['review_interval']) && !empty($notice['review_interval'])) ? sanitize_text_field( $notice['review_interval'] ) : '3' ;
             if( $review == true && ( empty( $slug ) || empty( $plugin_name ) || empty( $review_url ) )){
@@ -61,7 +60,6 @@ if (!class_exists('ect_admin_notices')):
                                             'type' => $type,
                                             'class' => $class,
                                             'review' => $review,
-                                            'logo'=>$logo,
                                             'slug' => $slug,
                                             'plugin_name' => $plugin_name,
                                             'review_url' => $review_url,
@@ -70,7 +68,6 @@ if (!class_exists('ect_admin_notices')):
 
             add_action('admin_notices', array($this, 'ect_show_notice'));
             add_action( 'admin_print_scripts', array($this, 'ect_load_script' ) );
-            add_action('wp_ajax_cool_plugins_admin_notice', array($this, 'ect_admin_notice_dismiss'));
             add_action('wp_ajax_cool_plugins_admin_review_notice_dismiss', array($this, 'ect_admin_review_notice_dismiss'));
         }
 
@@ -95,47 +92,9 @@ if (!class_exists('ect_admin_notices')):
                 foreach ($this->messages as $id => $message) {
                     if( true == (bool) $message['review'] ){
                         $this->ect_admin_notice_for_review( $id, $message);
-                    }else{
-                        $this->ect_simple_notice($id, $message );
                     }
                 }
             }
-        }
-
-        /**
-         * Due to the nature of private function. This must not be called directly
-         * Create simple text/html admin notice and initialize required JS
-         * @param array $message This is an array of message object
-         */
-        private function ect_simple_notice($id, $message ){
-            if( get_option($id . '_remove_notice') ) return;
-            $classes = 'notice ' . trim( $message['type'] ) . ' is-dismissible ' . trim( $message['class'] );
-            $script = '<script>
-            jQuery(document).ready(function ($) {
-                $(".'.$id.'_admin_notice .notice-dismiss").css("border","2px solid red");
-                $(document).on("click",".'.$id.'_admin_notice button.notice-dismiss", function (event) {
-                    var $this = $(this);
-                    var wrapper=$this.parents(".'.$id.'_admin_notice");
-                    var ajaxURL=wrapper.data("ajax-url");
-                    var id = wrapper.data("plugin-slug");
-                    var wp_nonce = wrapper.data("wp-nonce");
-                    $.post(ajaxURL, { "action":"cool_plugins_admin_notice","id":id,"_nonce":wp_nonce }, function( data ) {
-                        wrapper.slideUp("fast");
-                      }, "json");
-                });
-            });
-            </script>';
-            $nonce = wp_create_nonce( $id . '_notice_nonce' );
-            $img_path= ( isset( $message['logo'] ) && !empty($message['logo'] ) ) ? esc_url($message['logo']) : null;
-            $url = esc_url('https://wordpress.org/plugins/events-widgets-for-elementor-and-the-events-calendar/');
-            if( $img_path != null ){
-                $image_html ='<div class="logo_container"><a href="'.esc_url($url).'"><img src="'.esc_url($img_path).'" style="max-width:70px;"></a></div>';
-            }
-            else{
-                $image_html ='';
-            }
-            $class_name = "_admin_notice $classes ect-simple-notice";
-            echo "<div class='".esc_attr($id)."".esc_attr($class_name)."' data-ajax-url='".esc_url(admin_url('admin-ajax.php'))."' data-wp-nonce='". esc_attr($nonce) . "' data-plugin-slug=".esc_attr($id).">".wp_kses_post($image_html)."<div class='message_container'><p>" . wp_kses_post($message['message']) . "</p></div></div>" . $script;
         }
 
         /**
@@ -157,7 +116,6 @@ if (!class_exists('ect_admin_notices')):
                 return;
             }
                        
-               
                 $alreadyRated =get_option( 'ect-ratingDiv' )!=false?get_option( 'ect-ratingDiv'):"no";
 
                 // check user already rated 
@@ -179,66 +137,78 @@ if (!class_exists('ect_admin_notices')):
         }
 
         /**
-         * Generate review notice HTMl with all required css & js
-         *
-         * @param array $messageObj array of a message object 
-         **/ 
-       function ect_create_notice_content( $id, $messageObj ){
+         * Generate review notice HTML with CSS & JS
+         */
+        function ect_create_notice_content( $id, $messageObj ) {
 
-        $ajax_url=admin_url( 'admin-ajax.php' );
-        $ajax_callback = 'cool_plugins_admin_review_notice_dismiss';
-        $wrap_cls="notice notice-info is-dismissible";
-        $img_path= ( isset( $messageObj['logo'] ) && !empty($messageObj['logo'] ) ) ? esc_url($messageObj['logo']) : null;
-        $slug = $messageObj['slug'];
-        $plugin_name= $messageObj['plugin_name'];
-        $like_it_text='Rate Now! ★★★★★';
-        $already_rated_text=esc_html__( 'I already rated it', 'atlt2' );
-        $not_like_it_text=esc_html__( 'Not Interested', 'atlt2' );
-        $plugin_link=  $messageObj['review_url'] ;
-        $review_nonce = wp_create_nonce( $id . '_review_nonce' ); 
-        $web_url = esc_url('https://coolplugins.net/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=coolplugins&utm_content=review_notice');
-        $message="Thanks for using <b>$plugin_name</b> - WordPress plugin.
-        We hope you liked it ! <br/>Please give us a quick rating, it works as a boost for us to keep working on more <a href=".esc_url($web_url)." target='_blank'><strong>Cool Plugins</strong></a>!<br/>";
-        $html = '<div class="ect-main-notice-wrp" id="'.esc_attr($id).'" data-slug="'.esc_attr($slug).'">';
-        $html.='<div data-ajax-url="%8$s" data-plugin-slug="%11$s" data-wp-nonce="%12$s" id="%13$s" data-ajax-callback="%9$s" class="%11$s-feedback-notice-wrapper %1$s">';
-        
-        if( $img_path != null ){
-            $html .='<div class="logo_container"><a href="%5$s"><img src="%2$s" alt="%3$s" style="max-width:80px;"></a></div>';
+            $ajax_url       = admin_url( 'admin-ajax.php' );
+            $ajax_callback  = 'cool_plugins_admin_review_notice_dismiss';
+            $wrap_cls       = 'notice notice-info is-dismissible';
+
+            $slug           = sanitize_text_field( $messageObj['slug'] ?? '' );
+            $plugin_name    = sanitize_text_field( $messageObj['plugin_name'] ?? '' );
+            $plugin_link    = esc_url( $messageObj['review_url'] ?? '' );
+
+            $like_it_text        = esc_html__( 'Rate Now! ★★★★★', 'ect2' );
+            $already_rated_text  = esc_html__( 'Already Reviewed', 'ect2' );
+            $not_like_it_text    = esc_html__( 'Not Interested', 'ect2' );
+
+            $review_nonce = wp_create_nonce( $id . '_review_nonce' );
+
+            $web_url = esc_url( 'https://coolplugins.net/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=coolplugins&utm_content=review_notice' );
+
+            $message = "Thanks for using <b>" . esc_html( $plugin_name ) . "</b> - WordPress plugin.
+            We hope you liked it! <br/>Please give us a quick rating, it motivates us to keep working on more 
+            <a href='" . esc_url( $web_url ) . "' target='_blank'><strong>Cool Plugins</strong></a>!<br/>";
+
+            // Clean HTML + correct numbering (12 placeholders)
+            $html = '
+            <div class="ect-main-notice-wrp" id="%12$s" data-slug="%10$s">
+                <div class="%1$s %10$s-feedback-notice-wrapper"
+                    data-ajax-url="%6$s"
+                    data-ajax-callback="%7$s"
+                    data-plugin-slug="%10$s"
+                    data-wp-nonce="%11$s"
+                    id="%12$s">
+
+                    <div class="message_container">
+                        %3$s
+                        <div class="callto_action">
+                            <ul>
+                                <li class="love_it">
+                                    <a href="%4$s" class="like_it_btn button button-primary" target="_new">%5$s</a>
+                                </li>
+                                <li class="already_rated">
+                                    <a href="#" class="already_rated_btn button %10$s_dismiss_notice">%8$s</a>
+                                </li>
+                                <li class="already_rated">
+                                    <a href="#" class="already_rated_btn button %10$s_dismiss_notice">%9$s</a>
+                                </li>
+                            </ul>
+                            <div class="clrfix"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>';
+
+            return sprintf(
+                $html,
+                $wrap_cls,            // 1
+                $plugin_name,         // 2 
+                $message,             // 3
+                $plugin_link,         // 4
+                $like_it_text,        // 5
+                $ajax_url,            // 6
+                $ajax_callback,       // 7
+                $already_rated_text,  // 8
+                $not_like_it_text,    // 9
+                $slug,                // 10
+                $review_nonce,        // 11
+                $id                   // 12
+            );
         }
 
-        $html .='<div class="message_container">%4$s
-        <div class="callto_action">
-        <ul>
-            <li class="love_it"><a href="%5$s" class="like_it_btn button button-primary" target="_new" title="%6$s">%6$s</a></li>
-            <li class="already_rated"><a href="#" class="already_rated_btn button %11$s_dismiss_notice" title="%7$s">%7$s</a></li>  
-            <li class="already_rated"><a href="#" class="already_rated_btn button %11$s_dismiss_notice" title="%10$s">%10$s</a></li>    
-                   
-        </ul>
-        <div class="clrfix"></div>
-        </div>
-        </div>
-        </div></div>';
-
-
-      
-
-        return sprintf($html,
-                $wrap_cls, //1
-                $img_path, //2  
-                $plugin_name, //3
-                $message, //4
-                $plugin_link, //5
-                $like_it_text, //6
-                $already_rated_text, //7
-                $ajax_url,// 8
-                $ajax_callback,//9
-                $not_like_it_text,//10
-                $slug, //11
-                $review_nonce, //12
-                $id //13
-        );
-        
-       }
 
        /**
         * This function will dismiss the review notice.
@@ -257,24 +227,6 @@ if (!class_exists('ect_admin_notices')):
                 die();
             }
            
-        }
-
-        /************************************************************
-         * This function will dismiss the text/html admin notice    *
-         * This is called by a wordpress ajax hook                  *
-         ************************************************************/
-        public function ect_admin_notice_dismiss()
-        {
-            $id = isset($_REQUEST['id'])?sanitize_text_field($_REQUEST['id']):'';
-            $wp_nonce = $id . '_notice_nonce';
-            if ( ! check_ajax_referer($wp_nonce,'_nonce', false ) ) {
-                die( 'nonce verification failed!' );
-            }else{
-                $us=update_option( $id . '_remove_notice','yes' );
-                die( 'Admin message removed!' );
-            }
-            
-
         }
 
         /**************************************************************
