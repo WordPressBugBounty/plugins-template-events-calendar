@@ -1,299 +1,425 @@
 === Events Shortcodes For The Events Calendar ===
-Contributors: narinder-singh, satindersingh, coolplugins
-Donate link: https://paypal.me/CoolPlugins/50USD/
-Tags: shortcode, the events calendar, event, calendar, coolplugins
+Contributors: satindersingh, narinder-singh, coolplugins
+Donate link: https://donate.stripe.com/5kQdR92iBevO75WbPm6c00i
+Tags: the events calendar, shortcode, event, calendar, event calendar
 Requires at least: 5.0
 Tested up to: 6.9.1
 Requires PHP: 7.2
 Stable tag: 2.5.3
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Easily add The Events Calendar shortcode or Gutenberg event block on any page and show upcoming events list.
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
+The Events Calendar shortcodes to display upcoming events list or event calendar on any page using shortcode or Gutenberg block.
 
 == Description ==
 
-[Events Shortcodes](https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=top_description) is an addon for The Events Calendar plugin that adds the missing shortcode functionality to The Events Calendar plugin. With this plugin, you can easily display your events on any page or post.
+**[Events Shortcodes](https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=top_description)** adds shortcode and Gutenberg block support to **[The Events Calendar](https://stellarwp.pxf.io/tec)** plugin. This [events calendar extension](https://eventscalendaraddons.com/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=homepage&utm_content=top_description) helps you display upcoming events on any page using a shortcode or Gutenberg block with modern events calendar designs.
 
-https://www.youtube.com/watch?v=uL3ToWGncbM
+If you are looking for **[The Events Calendar shortcode](https://eventscalendaraddons.com/doc/add-the-events-calendar-shortcode/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=docs&utm_content=top_description)**, this addon is the best choice. It lets you show events from The Events Calendar plugin in list, timeline, or minimal list layouts. The Pro version also gives you advanced layouts like grid, carousel, slider, and more.
 
-Whether you want to display your events in a list, grid, timeline, or minimal list layout, this plugin makes it simple by adding a shortcode. It’s a time-saving tool that allows you to highlight key events in a visually appealing way without needing advanced coding skills.
+https://youtu.be/uL3ToWGncbM
 
-[Check Plugin Demos](https://eventscalendaraddons.com/demos/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo&utm_content=check_demos) | [Get Pro](https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=get_pro#pricing)
+👉 **View Plugin Demos: (*FREE*)**
+ 
+[Events List](https://eventscalendaraddons.com/shortcode/events-list/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_list&utm_content=below_video) | [Events Timeline](https://eventscalendaraddons.com/shortcode/events-timeline/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_timeline&utm_content=below_video) | [Events Minimal List](https://eventscalendaraddons.com/shortcode/events-minimal-list/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_minimal_list&utm_content=below_video)
 
-### Free Version Demos
-[Events List](https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-list/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo&utm_content=events_list)|[Events Timeline](https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-timeline/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo&utm_content=events_timeline)|[Events Minimal List](https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-minimal-list/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo&utm_content=minimal_list)
-#Pro Version Demos
-[Events Grid](https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-grid/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo&utm_content=events_grid)|[Events Carousel](https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-carousel/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo&utm_content=events_carousel)|[Events Slider](https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-slider/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo&utm_content=events_slider)
+👉 **View Plugin Demos: (*PRO*)**
 
-### Key Features
-* **Shortcode Friendly:** Easily generate and customize shortcodes with different parameters. Just copy, paste, and display events anywhere on your site.
-    * **Shortcode:**[events-calendar-templates category="all" template="default" style="style-1" date_format="default" start_date="" end_date="" limit="10" order="ASC" hide-venue="no" time="future" socialshare="no"]
-* **Multiple Layouts:** The events shortcode plugin offers a variety of layouts, such as List, Minimal, or Timeline layouts. You can select one according to your website’s design.
-* **Pre-defined Styles:** You can choose a predefined style for the selected layout according to your preferences.
-* **Date Formats:** Easily customize how dates are displayed by choosing from various formats. Whatever format you prefer, it will automatically be applied to the shortcode.
-* **Event Type:** Choose how you want your events to be displayed. Show upcoming events to highlight future opportunities, past events to showcase your achievements, or both for a complete overview.
-* **Order & Sorting:** You can sort events in ascending or descending order based on their dates to display the oldest or newest events.
-* **Number of Events:** Set a limit for how many events you want to display.
-* **Filter Events:** Use filters to display particular events by category.
-* **Date-Based Event:** Easily show events between specific dates. This means you can choose to showcase events between any dates, whether a particular week, month, or custom time period.
-* **Compatibility with Elementor:** Events Shortcode easily integrates with Elementor, allowing you to display your events effortlessly. You can add and customize events on your pages without any complex coding.
-* **Fully Responsive:** This plugin is fully responsive, ensuring that your events display perfectly on all screen sizes.
+[Events Grid](https://eventscalendaraddons.com/shortcode/events-grid/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_grid&utm_content=below_video) | [Events Accordion](https://eventscalendaraddons.com/shortcode/events-accordion/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_accordion&utm_content=below_video) | [Events Masonry](https://eventscalendaraddons.com/shortcode/events-masonry/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_masonry&utm_content=below_video) | [Highlighted Layout](https://eventscalendaraddons.com/shortcode/events-highlighted-layout/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_highlighted&utm_content=below_video)
 
-### Upgrade to Pro Features
-* **Filter events:** Easily filter events by category, venue, or organizer.
-* **Search & filter bar:** Add a search and filter bar for improved navigation.
-* **Advanced layouts:** Access layouts such as Grid, Timeline, Carousel, Masonry, Accordion, and Calendar.
+[Events Carousel](https://eventscalendaraddons.com/shortcode/events-carousel/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_carousel&utm_content=below_video) | [Events Slider](https://eventscalendaraddons.com/shortcode/events-slider/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_slider&utm_content=below_video) | [Events Filter Bar](https://eventscalendaraddons.com/shortcode/filter-bar/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_filterbar&utm_content=below_video) | **[View All Demos](https://eventscalendaraddons.com/demos/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_all&utm_content=below_video)**
 
-[Upgrade to Pro](https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=events_shortcode_pro#pricing)
+### Events Shortcodes Plugin Features
 
-### More Addons For The Events Calendar
-In addition to the Events Shortcodes plugin, there are more addons available to extend the features of The Events Calendar plugin:
+* **The Events Calendar Shortcode & Block**  
+Display events anywhere using a dedicated Gutenberg events block or a simple [shortcode for The Events Calendar](https://eventscalendaraddons.com/doc/the-events-calendar-shortcode-attributes/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=docs&utm_content=features) plugin.  
+  * `[events-calendar-templates category="all" template="default" style="style-1" date_format="default" start_date="" end_date="" limit="10" order="ASC" hide-venue="no" time="future" socialshare="no"]`
 
-* **[Events Single Page Builder Pro](https://eventscalendaraddons.com/plugin/event-single-page-builder-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=epta_more_addons)**- Design stunning single event pages with Elementor using pre-built templates and 20+ customizable widgets.
-* **[Events Widgets Pro](https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=ectbe_more_addons)**- Show events list, grid, carousel, and more in Elementor pages using The Events Calendar Elementor Widgets.
-* **[Events Calendar Modules for Divi](https://wordpress.org/plugins/events-calendar-modules-for-divi/)**- Display The Events Calendar Events directly inside Divi with Customizable List or Grid Layouts.
+* **Multiple Event Layouts & Styles**  
+Show events in list, timeline, or minimal list layouts. Upgrade to Pro for grid, carousel, slider, accordion, masonry, and more.
 
-**DISCLAIMER:** Events Shortcode For The Events Calendar plugin is developed by the Cool Plugins team and is not affiliated with or developed by the official team of The Events Calendar plugin, which is a part of StellarWP, the software arm of Liquid Web. Some of the links in this content may be affiliate links, which means we may earn a commission at no extra cost to you if you purchase through these links.
+* **Date Filters in Shortcode**  
+Using the shortcode, you can filter events by date range or event type (upcoming, past, or all events). You can also [choose any date format](https://eventscalendaraddons.com/doc/events-shortcodes-date-format/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=docs&utm_content=features).
+
+* **Event Category, Sorting & Limit**  
+Select event categories inside the shortcode, sort events by date (ASC or DESC), and control the number of events to display.
+
+### Upgrade to [Pro Features](https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=pro_features)
+
+* **[Events Search Filter Bar](https://eventscalendaraddons.com/doc/the-events-calendar-filter-bar-shortcode/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=docs&utm_content=pro_features)**  
+Add an advanced filter bar to let users search events by category, venue, or organizer on the frontend.
+
+* **[Advanced Event Layouts](https://eventscalendaraddons.com/doc/events-list-grid-carousel-shortcodes/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=docs&utm_content=pro_features)**  
+Access premium event layouts and styles such as Grid, Carousel, Masonry, Accordion, and Calendar.
+
+* **Display Events by Venue, Organizer, or Tag**  
+While using the events shortcode, you can apply advanced filters to display specific events list:
+  * [List of Events by Venue](https://eventscalendaraddons.com/doc/shortcode-display-events-by-organizer-venue/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=docs&utm_content=pro_features)
+  * [List of Events by Organizer](https://eventscalendaraddons.com/doc/shortcode-display-events-by-organizer-venue/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=docs&utm_content=pro_features)
+  * [List of Events by Tag](https://eventscalendaraddons.com/shortcode/events-by-tag/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_tag&utm_content=pro_features)
+  * [Show Only Featured Events](https://eventscalendaraddons.com/doc/display-featured-events-list-shortcode/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=docs&utm_content=pro_features)
+
+### Why Use Events Shortcodes with The Events Calendar?
+
+* Show events list on your site using a shortcode with this events calendar extension.
+* Perfect for event websites to display upcoming events on the homepage.
+* Insert an event calendar inside any blog post using a simple shortcode.
+* Upgrade The Events Calendar from a simple display to a modern events calendar.
+* Improves your site’s event management and event display in an easy way.
+
+### More Addons For [The Events Calendar](https://stellarwp.pxf.io/tec)
+
+If you are using The Events Calendar plugin, you may also find these addons helpful:
+
+* **[Event Single Page Builder](https://eventscalendaraddons.com/plugin/event-single-page-builder-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=more_addons)**  
+Create custom single event pages for The Events Calendar according to your website colors, fonts, and layout design.
+
+* **[Event Speakers & Sponsors](https://eventscalendaraddons.com/plugin/events-speakers-and-sponsors/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=more_addons)**  
+Add speaker and sponsor sections to The Events Calendar single event pages or events list layouts with clean styling.
+
+* **[Events Widgets for Elementor](https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=more_addons)**  
+Use The Events Calendar Elementor widgets to display events in list, grid, and carousel layouts inside Elementor pages.
+
+* **[Events Calendar Modules for Divi](https://eventscalendaraddons.com/plugin/the-events-calendar-modules-for-divi/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=more_addons)**  
+Display The Events Calendar events using dedicated Divi events calendar modules built for Divi builder pages and layouts.
+
+### Other Plugins by [Cool Plugins](https://cooltimeline.com/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=homepage&utm_content=other_plugins)
+
+Cool Plugins also offers other popular WordPress plugins trusted by many users:
+
+* **[Cool Timeline](https://cooltimeline.com/plugin/cool-timeline-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=other_plugins)**  
+Create beautiful vertical or horizontal timelines to show company history, milestones, stories, or events on WordPress websites.
+
+* **[Cool FormKit](https://coolformkit.com/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=other_plugins)**  
+Advanced Elementor form addon to add extra form fields, conditional logic, calculations, and more without coding.
+
+* **[AutoPoly](https://coolplugins.net/product/autopoly-ai-translation-for-polylang/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=other_plugins)**  
+AI-powered Polylang addon to automatically translate WordPress content into multiple languages quickly.
+
+* **[LocoAI](https://locoaddon.com/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=other_plugins)**  
+Smart Loco Translate addon to translate WordPress themes and plugins strings faster using AI-based translations.
+
+**Disclaimer:** Events Shortcodes For The Events Calendar plugin is developed and maintained by the Cool Plugins team and is not affiliated with, endorsed by, or officially connected to The Events Calendar plugin or its parent company, StellarWP. Some links in this plugin and readme file may be affiliate links, which means we may earn a commission at no additional cost to you.
 
 ### ✍ Special Thanks!
-Special thanks to the famous **[The Events Calendar ⇗](https://theeventscalendar.pxf.io/plugin)** plugin authors for creating an awesome plugin for events management.
+Special thanks to the famous **[The Events Calendar ⇗](https://theeventscalendar.pxf.io/plugin)** plugin authors for creating an awesome event plugin for events management.
 
 == Installation ==
-* Install the **Events Shortcode** For The Events Calendar plugin by searching for "events shortcodes" in your website's WP-admin dashboard under **Plugins > Add New**. You can also upload the plugin-zip unzipped folder to the **/wp-content/plugins** directory. Note that you must first install the free plugin The Events Calendar to use this plugin's features.
-* Activate the plugin by going to **Plugins > Installed Plugins** menu inside your wp-admin dashboard.
-* Now, you can easily add the shortcode anywhere on your site and customize the display of your events
 
+Follow the steps below to install and use **Events Shortcodes** plugin.
 
-Note that you must create/post events using the **The Events Calendar** plugin before displaying your events list through this addon shortcode.
+### 1. Install Required Plugin
+
+This plugin works only with **[The Events Calendar](https://stellarwp.pxf.io/tec)** plugin.
+
+* Go to **Plugins → Add New** in your WordPress admin.
+* Search for **The Events Calendar**.
+* Install and activate it first.
+
+### 2. Install Events Shortcodes Plugin
+
+* Go to **Plugins → Add New**.
+* Search for **Events Shortcodes for The Events Calendar**.
+* Click **Install Now** and then **Activate**.
+
+### 3. Access Plugin Settings
+
+* To manage plugin options and settings, go to:
+  **WP Admin → Events Addons → Shortcode Settings**
+
+### 4. [Customize Colors & Fonts](https://eventscalendaraddons.com/doc/events-shortcodes-settings-colors-fonts/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=docs&utm_content=installation)
+
+To change how events look on the frontend:
+
+* Go to **WP Admin → Events Addons → Shortcode Settings → General Settings**
+* Adjust colors, fonts, and styling options.
+* These settings apply to events shown using shortcode.
+
+https://youtu.be/RonG0_p2Gok
+
+### 5. Add Custom CSS (Optional)
+
+If you want to add your own styling:
+
+* Go to **WP Admin → Events Addons → Shortcode Settings → Extra Settings**
+* Add your custom CSS and save changes.
+
+### 6. Use Shortcode in Any Page or Post
+
+* You can find the shortcode and all available attributes here:
+  **WP Admin → Events Addons → Shortcode Settings → Shortcode Attributes**
+
+* **[Default Shortcode Example](https://eventscalendaraddons.com/doc/the-events-calendar-shortcode-attributes/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=docs&utm_content=installation):**
+  `[events-calendar-templates category="all" template="default" style="style-1" date_format="default" start_date="" end_date="" limit="10" order="ASC" hide-venue="no" socialshare="no" time="future"]`
+
+### 7. Use Events Block (Gutenberg Editor)
+
+You can also display events using the Gutenberg block:
+
+* Create or edit a page.
+* Click **Add Block (+)** and search for **Events Block**.
+* Insert the block into the page.
+* Adjust settings from the block panel.
+* Publish or update the page and preview it.
+ 
+https://youtu.be/sLGIOmlNPtY
+
+For detailed guides, check the [full documentation of Events Shortcodes](https://eventscalendaraddons.com/docs/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=docs&utm_content=installation) plugin.
 
 == Frequently Asked Questions ==
 
-= Can I customize the appearance of the events displayed? =
+= What is Events Shortcodes for The Events Calendar plugin? =
+Events Shortcodes is an addon for [The Events Calendar](https://stellarwp.pxf.io/tec) plugin that lets you display events anywhere on your website using a shortcode or Gutenberg block. You can show events in list, timeline, or minimal list layouts created using The Events Calendar plugin.
+
+= How do I display events using a shortcode? =
+You can display events by adding the shortcode to any page, post, or widget area.
+
+Example shortcode:
+`[events-calendar-templates category="all" template="default" style="style-1" limit="10" order="ASC" time="future"]`
+
+You can customize layout, category, date range, sorting, and more using shortcode attributes.
+
+= Can I use Events Shortcodes with the Gutenberg block editor? =
+Yes. The plugin includes a dedicated Events Block for Gutenberg.  
+Just search for “Events Block” while editing a page and configure event display settings from the block panel.
+
+= What event layouts are available in the free version? =
+The free version includes:
+
+* [Events List layout](https://eventscalendaraddons.com/shortcode/events-list/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_list&utm_content=faq)
+* [Events Timeline layout](https://eventscalendaraddons.com/shortcode/events-timeline/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_timeline&utm_content=faq)
+* [Events Minimal List layout](https://eventscalendaraddons.com/shortcode/events-minimal-list/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_minimal_list&utm_content=faq)
+
+= What extra layouts are available in the Pro version? =
+The Pro version adds advanced event layouts such as:
+
+* Grid
+* Carousel
+* Slider
+* Masonry
+* Accordion
+* Calendar
+* Highlighted layouts
+
+👉 **[View All Demos](https://eventscalendaraddons.com/demos/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_all&utm_content=faq)**
+
+= Can I filter events by category, date, or event type? =
+Yes. You can filter events using shortcode options like:
+
+* Event category
+* Date range
+* Upcoming, past, or all events
+
+The Pro version also includes a frontend [Events Filter Bar](https://eventscalendaraddons.com/shortcode/filter-bar/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_filterbar&utm_content=faq) for advanced event searching.
+
+= Can I control event order and number of events displayed? =
 Yes. You can:
-* Choose from multiple layouts (List, Timeline, Minimal)
-* Select predefined styles
-* Adjust date formats, event order, and number of events
-* Filter by categories or date range
 
-= What kind of layouts are available in the free version? =
-You can display events in:
-* List layout
-* Minimal layout
-* Timeline layout
-These layouts are mobile-friendly and designed to match your website's style.
+* Sort events by date (ASC or DESC)
+* Limit the number of events shown
+* Choose custom date formats
 
-= Can I filter and sort the events? =
-Yes. You can:
-* Filter events by category or date range
-* Display past, upcoming, or all events
-* Sort by date using ASC (oldest first) or DESC (newest first)
+All these options are available inside the shortcode attributes and settings panel.
 
-= What is a plugin shortcode? =
-You can display events using this shortcode:[events-calendar-templates category="all" template="default" style="style-1" date_format="default" start_date="" end_date="" limit="10" order="ASC" hide-venue="no" time="future" socialshare="no"]
-This shortcode supports multiple parameters to control layout, styling, filtering, and sorting.
+= Is Events Shortcodes compatible with Elementor and Divi? =
+We suggest using dedicated addons for Elementor and Divi builders:
 
-= What is the Events Shortcodes plugin? =
-Events Shortcodes is an addon for The Events Calendar plugin. It adds shortcode support so you can display events in different layouts on any WordPress page or post.
+* For Elementor, you can use [Events Widgets for Elementor](https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=faq) addon.
 
-= Can I use this inside Gutenberg editor? =
-Yes, this addon is fully compatible with Gutenberg editors. Simply search for the “Events Calendar Shortcode” block and insert it into your content.
-
-= Will this plugin comply with GDPR? =
-Yes, this plugin is GDPR compliant. It doesn’t store or track any visitor data without consent. On plugin deactivation, a feedback form is shown, but it’s optional and does not collect personal data unless the user shares it.
-
-= Is this plugin mobile-friendly? =
-Absolutely. The plugin is fully responsive and optimized for all screen sizes, including tablets and smartphones.
+* For Divi, you can use [Events Calendar Modules for Divi](https://eventscalendaraddons.com/plugin/the-events-calendar-modules-for-divi/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=faq).
 
 = How can I report security bugs? =
-You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities [Report a security vulnerability](https://patchstack.com/database/vdp/template-events-calendar).
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities.
+[Report a security vulnerability](https://patchstack.com/database/vdp/template-events-calendar).
 
 == Screenshots ==
-1. Events List Template Style 1
-2. Events Minimal List Styles
-3. Events List Template Style 2
-4. Events List Template Style 3
+1. Events List Template - Style 1
+2. Events List Template - Style 2
+3. Events List Template - Style 3
+4. Events Minimal List Styles
 5. Events Shortcodes Settings Panel
-6. The Events Calendar Shortcode Generator
-7. The Events Calendar Gutenberg Block
-8. Elementor Page Builder Widget Preview
+6. The Events Calendar Shortcode Block
+7. The Events Calendar Shortcode Generator
+8. The Events Calendar Gutenberg Block
 
 == Changelog ==
 
-= Version 2.5.3 | February 05, 2026 =
-* Improved: Code quality and overall performance.
+= 2.5.3 | FEB 05, 2026 =
+* Improved: Overall code quality and performance.
 
-= Version 2.5.2 | November 18, 2025 =
+= 2.5.2 | NOV 18, 2025 =
 * Improved: Rating div styling.
-* Tested upto: The Events Calendar version 6.15.11
+* Tested up to: The Events Calendar version 6.15.11.
 
-= Version 2.5.1 | September 18, 2025 =
-* Fixed: Issue with load google fonts on events block.
-* Improved: Other plugins recommendations.
-* Tested upto: The Events Calendar version 6.15.4
+= 2.5.1 | SEP 18, 2025 =
+* Fixed: Google Fonts loading issue in Events Gutenberg block.
+* Improved: Other [Events Calendar addons](https://eventscalendaraddons.com/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=homepage&utm_content=changelog) recommendations.
+* Tested up to: The Events Calendar version 6.15.4.
 
+= 2.5.0 | SEP 05, 2025 =
+* Added: Arial font family support in Events block.
+* Added: Month header option for Events Gutenberg block.
+* Added: Background color customization in Minimal List layout.
+* Added: Month translation support in Events block.
+* Fixed: Security vulnerabilities.
+* Fixed: Minor CSS issues.
+* Fixed: Editor-side loading issue when displaying 50+ events.
+* Improved: Overall code structure and performance.
 
-= Version 2.5.0 | September 05, 2025 =
-* Added: Support for Arial font family in the Events block.
-* Added: Month header option for the Events block.
-* Added: background color customization in the minimal list layout for the Events block..
-* Added: month translation in the Events block.
-* Fixed: Addressed security vulnerabilities.
-* Fixed: Minor CSS fixes.
-* Fixed: 50 + Events loading issue on the editor side for the Events block.
-* Improved: Code Improved
+= 2.4.10 | SEP 02, 2025 =
+* Updated: Internal plugin links.
 
-= Version 2.4.10 | September 02, 2025 =
-* Updated: Internal Links.
-
-= Version 2.4.9 | August 18, 2025 =
+= 2.4.9 | AUG 18, 2025 =
 * Fixed: Security issues.
 * Improved: Minor code improvements.
-* Tested upto: WordPress version 6.8.2
-* Tested upto: The Events Calendar version 6.14.2
+* Tested up to: WordPress version 6.8.2.
+* Tested up to: The Events Calendar version 6.14.2.
 
-= Version 2.4.8 | June 24, 2025 =
-* Updated: UTM Link.
-* Updated: Readme.
+= 2.4.8 | JUN 24, 2025 =
+* Updated: UTM links.
+* Updated: Readme file.
 
-= Version 2.4.7 | June 10, 2025 =
-* Added: User opt-in option in plugin.
+= 2.4.7 | JUN 10, 2025 =
+* Added: User opt-in option in plugin settings.
 * Improved: Minor code improvements.
-* Tested The Events Calendar V6.13.2.1.
+* Tested up to: The Events Calendar version 6.13.2.1.
 
-= Version 2.4.6 | April 18, 2025 =
-* Fixed: Settings Issue.
-= Version 2.4.5 | April 17, 2025 =
-* Tested Upto: Tested upto with WordPress V6.8 and The Events Calendar V6.11.2.
+= 2.4.6 | APR 18, 2025 =
+* Fixed: Plugin settings issue.
 
-= Version 2.4.4 | November 22, 2024 =
-* Added: Events Shortcode Gutenberg Block.
-* Fixed: Resolved an issue with the load_plugin_textdomain() function, ensuring correct localization.
-* Tested Upto: Tested upto with WordPress V6.7 and The Events Calendar V6.8.2.
+= 2.4.5 | APR 17, 2025 =
+* Tested up to: WordPress version 6.8.
+* Tested up to: The Events Calendar version 6.11.2.
 
-= Version 2.4.3 | September 18, 2024 =
-* Tested Upto: Tested upto with WordPress V6.6.2 and The Events Calendar V6.6.4.2
-* Fixed: Minor Security Issues.
+= 2.4.4 | NOV 22, 2024 =
+* Added: Events Shortcodes Gutenberg block.
+* Fixed: load_plugin_textdomain() issue for proper translations.
+* Tested up to: WordPress version 6.7.
+* Tested up to: The Events Calendar version 6.8.2.
 
-= Version 2.4.2 | July 23, 2024 =
-* Tested Upto: Tested upto with WordPress V6.6 and The Events Calendar V6.6.0
+= 2.4.3 | SEP 18, 2024 =
+* Tested up to: WordPress version 6.6.2.
+* Tested up to: The Events Calendar version 6.6.4.2.
+* Fixed: Minor security issues.
 
-= Version 2.4.1 | May 07, 2024 =
-* Added: Get started page to know how to use our plugin.
-* Fixed: Image link in list style 2 and 3.
-* Fixed: Category slug issue while showing events for particular category in WPBakery Page Builder.
-* Updated: Shortcode attributes under plugin settings.
+= 2.4.2 | JUL 23, 2024 =
+* Tested up to: WordPress version 6.6.
+* Tested up to: The Events Calendar version 6.6.0.
 
-= Version 2.4.0 | January 31, 2024 = 
-* Improvements: Designs HTML and CSS
-* Improvements: New Default value for style settings
+= 2.4.1 | MAY 07, 2024 =
+* Added: Get Started page to help users learn Events Shortcodes.
+* Fixed: Image link issues in Events List styles 2 and 3.
+* Fixed: Category slug issue while filtering events in WPBakery Page Builder.
+* Updated: Shortcode attributes in plugin settings.
 
-= Version 2.3.3 | Nov 07, 2023 =
-* Fixed: Wrong string output on frontend.
+= 2.4.0 | JAN 31, 2024 =
+* Improved: Events layouts HTML and CSS.
+* Improved: New default values for style settings.
 
-= Version 2.3.2 | Nov 06, 2023 =
-* Fixed: Minor Vulnerability Fix.
-* Fixed: Fatal error issue with serch element in Avada Theme.
-* Depreciated: Shortcode Generator.
+= 2.3.3 | NOV 07, 2023 =
+* Fixed: Incorrect string output on frontend.
 
-= Version 2.3.1 | Mar 29, 2023 =
-* Improved: Minor textual changes.
-* Improved: Updated links.
-* Improved: Dashboard Code.
-* Improved: Feedback Form.
+= 2.3.2 | NOV 06, 2023 =
+* Fixed: Minor security vulnerability.
+* Fixed: Fatal error with search element in Avada theme.
+* Deprecated: Old shortcode generator.
 
-= Version 2.2.6 | Mar 02, 2023 =
-* Improved: Minor textual changes.
-* Improved: Updated links.
+= 2.3.1 | MAR 29, 2023 =
+* Improved: Minor text updates.
+* Improved: Updated internal links.
+* Improved: Admin dashboard code.
+* Improved: Feedback form.
 
-= Version 2.2.5 | Dec 05, 2022 =
-* Added: Update Find Out More Settings.
+= 2.2.6 | MAR 02, 2023 =
+* Improved: Minor text updates.
+* Improved: Updated internal links.
+
+= 2.2.5 | DEC 05, 2022 =
+* Added: “Find Out More” settings option.
 * Fixed: Time function parameter issue.
 
-= Version 2.2.4 | Oct 20, 2022 =
-* Added: Google Fonts enable/disable settings.
+= 2.2.4 | OCT 20, 2022 =
+* Added: Google Fonts enable/disable option.
 
-= Version 2.2.3 | Sep 23, 2022 =
-* Fixed: Title issue with Divi theme.
-* Fixed: Event status issue after event calendar update.
-* Fixed: Google font issue.
+= 2.2.3 | SEP 23, 2022 =
+* Fixed: Event title issue with Divi theme.
+* Fixed: Event status issue after Events Calendar update.
+* Fixed: Google Fonts loading issue.
 
-= Version 2.2.2 | Sep 23, 2022 =
-* Fixed: Translation issue.
-* Fixed: Google font issue.
-= Version 2.2.1 | Apr 14, 2022 =
-* Fixed: Minor issue.
+= 2.2.2 | SEP 23, 2022 =
+* Fixed: Translation issues.
+* Fixed: Google Fonts loading issue.
 
-= Version 2.2 | Apr 08, 2022 =
+= 2.2.1 | APR 14, 2022 =
+* Fixed: Minor issues.
+
+= 2.2.0 | APR 08, 2022 =
 * Fixed: Security issues.
-* Improvements: Improved overall code.
+* Improved: Overall code quality.
 
-= Version 2.1 | Apr 07, 2022 =
+= 2.1.0 | APR 07, 2022 =
 * Fixed: Security issues.
 * Updated: Codestar Framework.
-* Improved: Overall code improvements.
+* Improved: Overall plugin code.
 
-= Version 2.0 | Apr 05, 2022 =
+= 2.0.0 | APR 05, 2022 =
 * Fixed: Major security issues.
-* Improved: Overall code improvements.
+* Improved: Overall plugin performance.
 
-= Version 1.9.2 | Oct 21, 2021 =
-* Compatibility: Compatibility with PHP version 8.
-* Improvements: Code improved.
-* Fixed: Missing shortcode generator fields.
+= 1.9.2 | OCT 21, 2021 =
+* Compatibility: PHP 8 support.
+* Improved: Code structure.
+* Fixed: Missing fields in shortcode generator.
 
-= Version 1.9.1 | Sep 29, 2021 =
-* Fixed: Minor bug fixes.
+= 1.9.1 | SEP 29, 2021 =
+* Fixed: Minor bugs.
 * Improved: Renamed settings framework.
 
-= Version 1.9 | Sep 27, 2021 =
-* Added: Integrated new Events Shortcode generator.
+= 1.9.0 | SEP 27, 2021 =
+* Added: New Events Shortcode Generator.
 * Improved: Minor code improvements.
-* Removed: Tinymce shortcode generator.
+* Removed: TinyMCE shortcode generator.
 
-= Version 1.8.2 | Sep 16, 2021 =
-* Fixed: Tiny color issue with php 5.6 version.
-* Compatible: Compatible plugin with 5.6 version of PHP.
-* Improvements: Improved folder structure.
+= 1.8.2 | SEP 16, 2021 =
+* Fixed: Tiny color issue with PHP 5.6.
+* Compatibility: PHP 5.6 support.
+* Improved: Plugin folder structure.
 
-= Version 1.8.1 | Sep 13, 2021 =
-* Fixed: Minor typography migration bug.
+= 1.8.1 | SEP 13, 2021 =
+* Fixed: Typography migration issue.
 
-= Version 1.8 | Sep 03, 2021 =
-* Added: Integrated new settings panel (Codestar).
+= 1.8.0 | SEP 03, 2021 =
+* Added: New Codestar settings panel.
 * Removed: Titan Framework settings panel.
 * Fixed: Major security issues.
-* Added: Optimized all layouts styles and created different filters.
-* Removed: All unused CSS and add layout based loading checks.
-* Improved: Improved overall code.
-* Improved: Managed shortcode and styles in different filters.
-* Improved: Review box and admin notices.
-* Improved: Folder structure.
-* Improved: Minified CSS and JS.
-* Improved: Overall code.
+* Added: Optimized layouts and filters.
+* Removed: Unused CSS files.
+* Improved: Code structure, CSS, JS, admin notices, and performance.
 
-= Version 1.7.2 | Aug 25, 2021 =
-* Fixed: Major security issue with settings panel (Titan Framework).
-* Removed: Removed typography preview settings.
-* Improved: Code improvements.
+= 1.7.2 | AUG 25, 2021 =
+* Fixed: Major security issue in Titan Framework.
+* Removed: Typography preview settings.
+* Improved: Code quality.
 
-= Version 1.7.1 | March 9, 2021 =
-* Added: New Events addon for Elementor notice.
-* Fixed: Minor localize script issue.
+= 1.7.1 | MAR 09, 2021 =
+* Added: Elementor Events addon notice.
+* Fixed: Script localization issue.
 
-= Version 1.7 | JAN 6, 2021 =
-* Added: Integrated minimal layouts.
-* Added: Added 3 styles in minimal layouts.
-* Tweak: Shortcode generator and Gutenberg shortcode block.
+= 1.7.0 | JAN 06, 2021 =
+* Added: Minimal event layouts.
+* Added: Three styles for minimal layouts.
+* Improved: Shortcode generator and Gutenberg block.
 
-= Version 1.6.1 | OCT 30, 2020 =
-* Added: Implemented some checks.
-* Fixed: Conflict with Gravity form.
+= 1.6.1 | OCT 30, 2020 =
+* Added: Validation checks.
+* Fixed: Conflict with Gravity Forms.
 
-= Version 1.6 | OCT 23, 2020 =
-* Added: Events Addons Dashboard.
-* Updated: Moved plugin settings menu under - Events Addons >> Shortcodes & Template >> Common Settings.
-**More:- check changelog.txt file inside plugin folder.**
+= 1.6.0 | OCT 23, 2020 =
+* Added: Events Addons dashboard.
+* Updated: Plugin menu location under Events Addons settings.
+* More details available in changelog.txt file inside the plugin folder.
 
 == Upgrade Notice ==
-= 2.2.1 =
-Minor Issue
+
+= 2.0.0 =
+Major improvements to overall plugin code, security, and performance.
