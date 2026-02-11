@@ -3,11 +3,8 @@
 Plugin Name:Events Shortcodes For The Events Calendar
 Plugin URI:https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
 Description:<a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Shortcodes to show The Events Calendar plugin events list on any page or post in different layouts.
-Version:2.5.3
-Requires at least: 5.0
-Tested up to:6.8.3
+Version:2.5.4
 Requires PHP:7.2
-Stable tag:trunk
 Author:Cool Plugins
 Author URI:https://coolplugins.net/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
 License URI:https://www.gnu.org/licenses/gpl-2.0.html
@@ -22,7 +19,7 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 if (! defined('ECT_VERSION')) {
-	define('ECT_VERSION', '2.5.3');
+	define('ECT_VERSION', '2.5.4');
 }
 
 /*** Defined constent for later use */
