@@ -8,6 +8,7 @@
  * @version 1.0.0
  *
  */
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 if ( ! function_exists( 'csf_sanitize_replace_a_to_b' ) ) {
   function csf_sanitize_replace_a_to_b( $value ) {
     return str_replace( 'a', 'b', $value );

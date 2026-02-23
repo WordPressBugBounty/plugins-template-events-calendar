@@ -15,7 +15,9 @@ jQuery(document).ready(function ($) {
         var wp_nonce = $(mainwrp).data("wp-nonce");
       
         $.post(ajaxURL, { "action":'cool_plugins_admin_review_notice_dismiss',"slug":slug,"id":id,"_nonce":wp_nonce }, function( data ) {
-            $(mainwrp).slideUp("fast");
+            $(mainwrp).slideUp('fast', function () {
+              $(this).remove(); // completely remove from DOM
+          });
           })
     });
 });

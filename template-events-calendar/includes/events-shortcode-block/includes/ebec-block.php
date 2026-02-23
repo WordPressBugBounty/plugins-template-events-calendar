@@ -30,14 +30,14 @@ class EBEC_Register_Block {
 	public function ebec_editor_assets() {
 			$id = get_the_ID();
 		if ( has_block( 'ebec/event-list', $id ) ) {
-			wp_enqueue_style( 'ebec-block-style-front', ECT_PLUGIN_URL . 'includes/events-shortcode-block/assets/css/ebec-style.css', array(), null, null, 'all' );
+			wp_enqueue_style( 'ebec-block-style-front', ECT_PLUGIN_URL . 'includes/events-shortcode-block/assets/css/ebec-style.css', array(), ECT_VERSION, 'all' );
 		}
 	}
 
 
 	public function ebec_block_editor_assets() {
-			wp_enqueue_script( 'ebec-block-editor', ECT_PLUGIN_URL . 'includes/events-shortcode-block/dist/index.js', array( 'wp-blocks', 'wp-i18n', 'wp-editor', 'wp-components', 'wp-element' ) );
-			wp_enqueue_style( 'ebec-block-style-editor', ECT_PLUGIN_URL . 'includes/events-shortcode-block/dist/style-index.css', array( 'wp-edit-blocks' ), null, null, 'all' );
+			wp_enqueue_script( 'ebec-block-editor', ECT_PLUGIN_URL . 'includes/events-shortcode-block/dist/index.js', array( 'wp-blocks', 'wp-i18n', 'wp-editor', 'wp-components', 'wp-element' ),ECT_VERSION, 'true' );
+			wp_enqueue_style( 'ebec-block-style-editor', ECT_PLUGIN_URL . 'includes/events-shortcode-block/dist/style-index.css', array( 'wp-edit-blocks' ), ECT_VERSION, 'all' );
 			
 			// Localize script to pass Google Fonts setting to JavaScript
 			$options = get_option( 'ects_options' );
@@ -403,9 +403,9 @@ class EBEC_Register_Block {
 					'order'          => $attributes['ebec_order'],
 					'orderby'        => 'event_date',
 					'posts_per_page' => $attributes['ebec_max_events'],
-					'meta_key'       => $attributes['key'],
-					'meta_query'     => $attributes['meta_date'],
-					'tax_query'      => $tax_query,
+					'meta_key'       => $attributes['key'],//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+					'meta_query'     => $attributes['meta_date'],//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+					'tax_query'      => $tax_query,//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 				)
 			);
 		if ( ! empty( $all_events ) ) {
@@ -422,7 +422,7 @@ class EBEC_Register_Block {
 				if ( $load_google_fonts == 'yes' ) {
 					$build_url     = 'https://fonts.googleapis.com/css?family=';
 					$build_url    .= implode( '|', array_filter( $font_family_array ) );
-					wp_enqueue_style( 'ebec-google-font-' . $block_id, "$build_url", array(), null, 'all' );
+					wp_enqueue_style( 'ebec-google-font-' . $block_id, "$build_url", array(), ECT_VERSION, 'all' );
 				}
 				$events         = '';
 				$html           = '';
@@ -435,7 +435,7 @@ class EBEC_Register_Block {
 				$desc_type      = isset( $attributes['event_desc_type'] ) ? $attributes['event_desc_type'] : 'short';
 				include ECT_PLUGIN_DIR . '/includes/events-shortcode-block/includes/ebec-style-setting.php';
 				include ECT_PLUGIN_DIR . '/includes/events-shortcode-block/Layouts/list/ebec-list-style.php';
-				wp_enqueue_style( 'ebec-block-style-front', ECT_PLUGIN_URL . 'includes/events-shortcode-block/assets/css/ebec-style.css', array(), null, null, 'all' );
+				wp_enqueue_style( 'ebec-block-style-front', ECT_PLUGIN_URL . 'includes/events-shortcode-block/assets/css/ebec-style.css', array(), ECT_VERSION, 'all' );
 			if ( isset( $selectors ) ) {
 				wp_add_inline_style( 'ebec-block-style-front', $selectors );
 			}
@@ -486,11 +486,11 @@ class EBEC_Register_Block {
 		return $event_value_filter;
 	}
 }
-
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 function ebec_register_block_call() {
 	return EBEC_Register_Block::get_instance();
 }
-	$GLOBALS['ebec_block'] = ebec_register_block_call();
+	$GLOBALS['ebec_block'] = ebec_register_block_call();//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
 
 

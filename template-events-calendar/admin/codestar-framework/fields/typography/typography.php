@@ -7,6 +7,8 @@
  * @version 1.0.0
  *
  */
+//phpcs:disable WordPress.WP.I18n.TextDomainMismatch, WordPress.Security.EscapeOutput.OutputNotEscaped, WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+//phpcs:disable PluginCheck.CodeAnalysis.EnqueuedResourceOffloading.OffloadedContent, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 if ( ! class_exists( 'CSF_Field_typography' ) ) {
   class CSF_Field_typography extends CSF_Fields {
 
@@ -351,7 +353,7 @@ if ( ! class_exists( 'CSF_Field_typography' ) ) {
 
         CSF::include_plugin_file( 'fields/typography/google-fonts.php' );
 
-        wp_enqueue_script( 'csf-webfontloader', 'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js', array( 'csf' ), '1.6.28', true );
+        wp_enqueue_script( 'csf-webfontloader', CSF::include_plugin_url( 'assets/js/ect-webfontloader.min.js' ), array( 'csf' ), ECT_VERSION, true );
 
         $webfonts = array();
 

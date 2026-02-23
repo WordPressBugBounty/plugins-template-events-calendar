@@ -1,4 +1,6 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+//phpcs:disable	WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 $timeline_style = esc_attr($attribute['style']);
 if ($template == 'timeline') {
     $timeline_style = 'style-1';

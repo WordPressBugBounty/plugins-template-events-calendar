@@ -1,6 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 if (!class_exists('EctVCAddon')) {
-
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
     class EctVCAddon
     {
         /**
@@ -19,7 +20,7 @@ if (!class_exists('EctVCAddon')) {
                     'hide_empty' => false,
                 ));
                 $ect_categories=array();
-                $ect_categories['all'] = esc_html(__('all','ect2'));
+                $ect_categories['all'] = esc_html(__('all','template-events-calendar'));
         
                 if (!empty($terms) || !is_wp_error($terms)) {
                     foreach ($terms as $term) {
@@ -28,50 +29,50 @@ if (!class_exists('EctVCAddon')) {
                 }
                $date_formats= array(
                    
-                esc_html(__( 'Default (01 January 2019)', 'ect2' ))=>'default',
-                esc_html(__( 'Md,Y (Jan 01, 2019)', 'ect2' ))=>'MD,Y',
-                esc_html(__( 'Fd,Y (January 01, 2019)', 'ect2' ))=>'FD,Y',
-                esc_html(__( 'dM (01 Jan))', 'ect2' ))=> 'DM',
-                esc_html(__( 'dMl (01 Jan Monday)', 'ect2' ))=>'DML',
-                esc_html(__( 'dF (01 January)', 'ect2' ))=>'DF',
-                esc_html(__( 'Md (Jan 01)', 'ect2' ))=>'MD',
-                esc_html(__( 'Md,YT (Jan 01, 2019 8:00am-5:00pm)', 'ect2') )=> 'MD,YT',
-                esc_html(__( 'Full (01 January 2019 8:00am-5:00pm)', 'ect2') )=>'full',
-                esc_html(__( 'jMl', 'ect2' ))=> 'jMl',
-                esc_html(__( 'd.FY (01. January 2019)', 'ect2' ))=>'d.FY',
-                esc_html(__( 'd.F (01. January)', 'ect2') )=>'d.F',
-                esc_html(__( 'ldF (Monday 01 January)', 'ect2') )=>'ldF',
-                esc_html(__( 'Mdl (Jan 01 Monday)', 'ect2' ))=>'Mdl',
-                esc_html(__( 'd.Ml (01. Jan Monday)', 'ect2' ))=>'d.Ml',
-                esc_html(__( 'dFT (01 January 8:00am-5:00pm)', 'ect2' ))=>  'dFT',
+                esc_html(__( 'Default (01 January 2019)', 'template-events-calendar' ))=>'default',
+                esc_html(__( 'Md,Y (Jan 01, 2019)', 'template-events-calendar' ))=>'MD,Y',
+                esc_html(__( 'Fd,Y (January 01, 2019)', 'template-events-calendar' ))=>'FD,Y',
+                esc_html(__( 'dM (01 Jan))', 'template-events-calendar' ))=> 'DM',
+                esc_html(__( 'dMl (01 Jan Monday)', 'template-events-calendar' ))=>'DML',
+                esc_html(__( 'dF (01 January)', 'template-events-calendar' ))=>'DF',
+                esc_html(__( 'Md (Jan 01)', 'template-events-calendar' ))=>'MD',
+                esc_html(__( 'Md,YT (Jan 01, 2019 8:00am-5:00pm)', 'template-events-calendar') )=> 'MD,YT',
+                esc_html(__( 'Full (01 January 2019 8:00am-5:00pm)', 'template-events-calendar') )=>'full',
+                esc_html(__( 'jMl', 'template-events-calendar' ))=> 'jMl',
+                esc_html(__( 'd.FY (01. January 2019)', 'template-events-calendar' ))=>'d.FY',
+                esc_html(__( 'd.F (01. January)', 'template-events-calendar') )=>'d.F',
+                esc_html(__( 'ldF (Monday 01 January)', 'template-events-calendar') )=>'ldF',
+                esc_html(__( 'Mdl (Jan 01 Monday)', 'template-events-calendar' ))=>'Mdl',
+                esc_html(__( 'd.Ml (01. Jan Monday)', 'template-events-calendar' ))=>'d.Ml',
+                esc_html(__( 'dFT (01 January 8:00am-5:00pm)', 'template-events-calendar' ))=>  'dFT',
                  
                     );
                     $templates=  array(
-                      esc_html(__( "Default List Layout",'ect2' )) => "default",
-                      esc_html( __( "Timeline Layout",'ect2')) => "timeline-view",
-                      esc_html( __(  'Minimal List','ect2')) => 'minimal-list',
+                      esc_html(__( "Default List Layout",'template-events-calendar' )) => "default",
+                      esc_html( __( "Timeline Layout",'template-events-calendar')) => "timeline-view",
+                      esc_html( __(  'Minimal List','template-events-calendar')) => 'minimal-list',
                                
                             );
                             $styles=  array(
-                              esc_html(__( "Style 1",'ect2' )) => "style-1",
-                              esc_html(__( "Style 2",'ect2')) => "style-2",
-                              esc_html(__( "Style 3",'ect2')) => "style-3",
+                              esc_html(__( "Style 1",'template-events-calendar' )) => "style-1",
+                              esc_html(__( "Style 2",'template-events-calendar')) => "style-2",
+                              esc_html(__( "Style 3",'template-events-calendar')) => "style-3",
                                
                             );
 
              
                 vc_map(array(
-                    "name" => esc_html(__("The Events Calendar Shortcode", 'ect2')),
+                    "name" => esc_html(__("The Events Calendar Shortcode", 'template-events-calendar')),
                     "base" => "events-calendar-templates",
                     "class" => "",
                     "controls" => "full",
                      "icon" => plugins_url('../../assets/images/ect-icons.svg', __FILE__), // or css class name which you can reffer in your css file later. Example: "cool-timeline_my_class"
-                    "category" => __('The Events Calendar Shortcode', 'ect2'),
+                    "category" => __('The Events Calendar Shortcode', 'template-events-calendar'),
                    "params" => array(
                         array(
                             "type" => "dropdown",
                             "class" => "",
-                            "heading" => esc_html(__( "Select Events Category",'ect2')),
+                            "heading" => esc_html(__( "Select Events Category",'template-events-calendar')),
                             "param_name" => "category",
                             "value" =>$ect_categories,
                            
@@ -81,7 +82,7 @@ if (!class_exists('EctVCAddon')) {
                     array(
                             "type" => "dropdown",
                          "class" => "",
-                           "heading" => __( "Select Templates",'ect2'),
+                           "heading" => __( "Select Templates",'template-events-calendar'),
                              "param_name" => "template",
                             "value" => $templates,
                            
@@ -92,7 +93,7 @@ if (!class_exists('EctVCAddon')) {
                          array(
                             "type" => "dropdown",
                          "class" => "",
-                           "heading" => esc_html(__( "Select Styles",'ect2')),
+                           "heading" => esc_html(__( "Select Styles",'template-events-calendar')),
                              "param_name" => "style",
                             "value" => $styles,
                            
@@ -102,7 +103,7 @@ if (!class_exists('EctVCAddon')) {
                          array(
                             "type" => "dropdown",
                             "class" => "",
-                            "heading" => esc_html(__( "Date Format",'ect2')),
+                            "heading" => esc_html(__( "Date Format",'template-events-calendar')),
                           
                             "param_name" => "date_format",
                             "value" =>$date_formats,
@@ -113,11 +114,11 @@ if (!class_exists('EctVCAddon')) {
                          array(
                             "type" => "dropdown",
                          "class" => "",
-                           "heading" => __( "Events Order",'ect2'),
+                           "heading" => __( "Events Order",'template-events-calendar'),
                              "param_name" => "order",
                              "value" => array(
-                              esc_html(__( "ASC",'ect2' )) => "ASC",
-                              esc_html(__( "DESC",'ect2')) => "DESC",
+                              esc_html(__( "ASC",'template-events-calendar' )) => "ASC",
+                              esc_html(__( "DESC",'template-events-calendar')) => "DESC",
                                             
                                            ),
                             
@@ -126,11 +127,11 @@ if (!class_exists('EctVCAddon')) {
                          array(
                             "type" => "dropdown",
                          "class" => "",
-                           "heading" => esc_html(__( "Hide Venue",'ect2')),
+                           "heading" => esc_html(__( "Hide Venue",'template-events-calendar')),
                              "param_name" => "hide-venue",
                              "value" => array(
-                              esc_html(__( "no",'ect2' )) => "no",
-                              esc_html( __( "Yes",'ect2')) => "yes",
+                              esc_html(__( "no",'template-events-calendar' )) => "no",
+                              esc_html( __( "Yes",'template-events-calendar')) => "yes",
                                             
                                            ),
                            
@@ -139,11 +140,11 @@ if (!class_exists('EctVCAddon')) {
                          array(
                             "type" => "dropdown",
                          "class" => "",
-                           "heading" => __( "Enable Social Share Buttons",'ect2'),
+                           "heading" => __( "Enable Social Share Buttons",'template-events-calendar'),
                              "param_name" => "socialshare",
                              "value" => array(
-                              esc_html(__( "no",'ect2' )) => "no",
-                              esc_html(__( "Yes",'ect2')) => "yes",
+                              esc_html(__( "no",'template-events-calendar' )) => "no",
+                              esc_html(__( "Yes",'template-events-calendar')) => "yes",
                                             
                                            ),
                            
@@ -152,12 +153,12 @@ if (!class_exists('EctVCAddon')) {
                          array(
                             "type" => "dropdown",
                          "class" => "",
-                           "heading" => __( "Show Events",'ect2'),
+                           "heading" => __( "Show Events",'template-events-calendar'),
                              "param_name" => "time",
                              "value" => array(
-                              esc_html(__( "Upcoming Events",'ect2' )) => "future",
-                              esc_html(__( "Past Events",'ect2')) => "past",
-                              esc_html(__( "All (Upcoming + Past)",'ect2')) => "all",
+                              esc_html(__( "Upcoming Events",'template-events-calendar' )) => "future",
+                              esc_html(__( "Past Events",'template-events-calendar')) => "past",
+                              esc_html(__( "All (Upcoming + Past)",'template-events-calendar')) => "all",
                                             
                                            ),
                             
@@ -168,7 +169,7 @@ if (!class_exists('EctVCAddon')) {
                          array(
                             "type" => "textfield",
                          "class" => "",
-                           "heading" => esc_html(__( "Limit the events",'ect2')),
+                           "heading" => esc_html(__( "Limit the events",'template-events-calendar')),
                              "param_name" => "limit",
                              "value" => '10',
                            
@@ -177,7 +178,7 @@ if (!class_exists('EctVCAddon')) {
                          array(
                             "type" => "textfield",
                          "class" => "",
-                           "heading" => esc_html(__( "Start Date | format(YY-MM-DD)",'ect2')),
+                           "heading" => esc_html(__( "Start Date | format(YY-MM-DD)",'template-events-calendar')),
                              "param_name" => "start_date",
                              "value" => '',
                            
@@ -186,7 +187,7 @@ if (!class_exists('EctVCAddon')) {
                          array(
                             "type" => "textfield",
                          "class" => "",
-                           "heading" => esc_html(__( "End Date | format(YY-MM-DD)",'ect2')),
+                           "heading" => esc_html(__( "End Date | format(YY-MM-DD)",'template-events-calendar')),
                              "param_name" => "end_date",
                              "value" => '',
                            

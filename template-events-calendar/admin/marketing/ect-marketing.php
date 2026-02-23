@@ -2,7 +2,7 @@
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
-
+//phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 if (!class_exists('ECT_TEC_Notice')) {
 
     class ECT_TEC_Notice
@@ -95,7 +95,7 @@ if (!class_exists('ECT_TEC_Notice')) {
             }
             $this->ect_enqueue_marketing_scripts();
                 ?>
-                <div class="notice notice-info is-dismissible ect-tec-notice-elementor"
+                <div class="notice notice-info is-dismissible ect-tec-notice-elementor ect-required-plugin-notice"
                     data-notice="tec_notice_elementor"
                     data-nonce="<?php echo esc_attr(wp_create_nonce('ect_dismiss_nonce_tec_elementor')); ?>">
                     <p class="ect-notice-widget">
@@ -140,7 +140,7 @@ if (!class_exists('ECT_TEC_Notice')) {
             }
                 $this->ect_enqueue_marketing_scripts();
                 ?>
-                <div class="notice notice-info is-dismissible ect-tec-notice-divi"
+                <div class="notice notice-info is-dismissible ect-tec-notice-divi ect-required-plugin-notice"
                     data-notice="tec_notice_divi"
                     data-nonce="<?php echo esc_attr(wp_create_nonce('ect_dismiss_nonce_tec_divi')); ?>">
                     <p class="ect-notice-widget">
@@ -164,8 +164,8 @@ if (!class_exists('ECT_TEC_Notice')) {
                 wp_send_json_error(['message' => 'Permission denied']);
             }
 
-            $notice_type = isset($_POST['notice']) ? sanitize_text_field($_POST['notice']) : '';
-            $nonce       = isset($_POST['nonce']) ? $_POST['nonce'] : '';
+            $notice_type = isset($_POST['notice']) ? sanitize_text_field(wp_unslash($_POST['notice'])) : '';
+            $nonce       = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
 
             if ($notice_type === 'tec_notice_elementor' && wp_verify_nonce($nonce, 'ect_dismiss_nonce_tec_elementor')) {
                 update_option('ect_elementor_notice_dismissed', true);
@@ -225,7 +225,7 @@ if (!class_exists('ECT_TEC_Notice')) {
             require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
             require_once ABSPATH . 'wp-admin/includes/plugin.php';
         
-            $plugin_slug = sanitize_text_field($_POST['slug']); 
+            $plugin_slug = sanitize_text_field(wp_unslash($_POST['slug'])); 
 
             // API call correct slug se
             $api = plugins_api('plugin_information', [

@@ -34,9 +34,9 @@ class TinyColor
     public static function random()
     {
         return self::fromRatio([
-            'r' => mt_rand() / mt_getrandmax(),
-            'g' => mt_rand() / mt_getrandmax(),
-            'b' => mt_rand() / mt_getrandmax(),
+            'r' => wp_rand() / mt_getrandmax(),
+            'g' => wp_rand() / mt_getrandmax(),
+            'b' => wp_rand() / mt_getrandmax(),
         ]);
     }
 

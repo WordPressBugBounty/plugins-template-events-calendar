@@ -2,6 +2,7 @@
 if (!defined('ABSPATH')) {
     exit;
 } 
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 function ect_gutenberg_scripts() {
 	$blockPath = '/dist/block.js';
 	$stylePath = '/dist/block.css';
@@ -11,7 +12,8 @@ function ect_gutenberg_scripts() {
 		'ect-block-js',
 		plugins_url( $blockPath, __FILE__ ),
 		[ 'wp-i18n', 'wp-blocks', 'wp-edit-post', 'wp-element', 'wp-editor', 'wp-components', 'wp-data', 'wp-plugins', 'wp-edit-post', 'wp-api' ],
-		filemtime( plugin_dir_path(__FILE__) . $blockPath )
+		filemtime( plugin_dir_path(__FILE__) . $blockPath ),
+		'true'
 	);
 	wp_localize_script( 'ect-block-js', 'ectUrl',array(ECT_PLUGIN_URL));
 
@@ -92,6 +94,7 @@ add_action( 'plugins_loaded', function () {
 /**
  * Block Output
  * */
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 function ect_block_callback( $attr ) {
     $category    = isset( $attr['category'] )    ? sanitize_text_field( $attr['category'] )    : 'all';
     $template    = isset( $attr['template'] )    ? sanitize_text_field( $attr['template'] )    : 'default';

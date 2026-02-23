@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
 /**
  * This file is used only for dynamic styles in timeline layouts.
  */
-
+//phpcs:disable	WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
  switch ( sanitize_text_field( $style ) ) {
     case 'style-1':
         $ect_output_css .= ' #event-timeline-wrapper .ect-timeline-post.style-1.ect-featured-event .ect-lslist-event-detail a:hover{

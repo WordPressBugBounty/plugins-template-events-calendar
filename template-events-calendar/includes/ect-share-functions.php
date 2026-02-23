@@ -1,10 +1,11 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * This file is used to share events.
  * 
  * @package the-events-calendar-templates-and-shortcode/includes
  */
-
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 function ect_share_button($event_id){
   $ect_sharecontent = '';
   $ect_geturl = esc_url(get_permalink($event_id));

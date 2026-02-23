@@ -7,6 +7,7 @@
  * @version 1.0.0
  *
  */
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 if ( ! class_exists( 'CSF_Walker_Nav_Menu_Edit' ) && class_exists( 'Walker_Nav_Menu_Edit' ) ) {
   class CSF_Walker_Nav_Menu_Edit extends Walker_Nav_Menu_Edit {
 

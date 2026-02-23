@@ -3,9 +3,9 @@ Contributors: satindersingh, narinder-singh, coolplugins
 Donate link: https://donate.stripe.com/5kQdR92iBevO75WbPm6c00i
 Tags: the events calendar, shortcode, event, calendar, event calendar
 Requires at least: 5.0
-Tested up to: 6.9.1
+Tested up to: 6.9
 Requires PHP: 7.2
-Stable tag: 2.5.4
+Stable tag: 2.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -98,6 +98,8 @@ AI-powered Polylang addon to automatically translate WordPress content into mult
 
 * **[LocoAI](https://locoaddon.com/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=other_plugins)**  
 Smart Loco Translate addon to translate WordPress themes and plugins strings faster using AI-based translations.
+
+**Third-Party Services:** To improve user experience this plugin offers optional usage tracking and optional feedback submission on deactivation. Data is sent only after explicit user consent. No hidden tracking is performed, and no frontend visitor or site user data is collected. For more details, please review our [Data Usage Policy](https://my.coolplugins.net/terms/usage-tracking/), [TOS](https://my.coolplugins.net/terms/), and [Privacy Policy](https://my.coolplugins.net/terms/privacy-policy/).This plugin also utilizes the Codestar Framework (licensed under) [GPL]((https://codestarframework.com/license/)) and [Google Fonts](https://developers.google.com/fonts/docs/getting_started) to provide integrated typography options.
 
 **Disclaimer:** Events Shortcodes For The Events Calendar plugin is developed and maintained by the Cool Plugins team and is not affiliated with, endorsed by, or officially connected to The Events Calendar plugin or its parent company, StellarWP. Some links in this plugin and readme file may be affiliate links, which means we may earn a commission at no additional cost to you.
 
@@ -243,6 +245,13 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 8. The Events Calendar Gutenberg Block
 
 == Changelog ==
+
+= 2.6.0 | FEB 23, 2026 =
+* Improvements: Improved dashboard design and usability.
+* Improvements: Code optimizations and refinements.
+* Fixed: Issues reported by “Plugin Check” plugin.
+* Updated: readme file.
+* Tested up to: The Events Calendar version 6.15.16.
 
 = 2.5.4 | FEB 11, 2026 =
 * Improved: Minor code improvements.

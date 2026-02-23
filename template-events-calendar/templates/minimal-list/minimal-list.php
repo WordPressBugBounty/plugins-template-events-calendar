@@ -1,4 +1,6 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+//phpcs:disable	WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 $ev_day = tribe_get_start_date($event_id, false, 'd');
 $ev_month = tribe_get_start_date($event_id, false, 'M');
 $ev_full_month = tribe_get_start_date($event_id, false, 'F');

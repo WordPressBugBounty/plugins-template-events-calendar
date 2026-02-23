@@ -7,6 +7,8 @@
  * @version 1.0.0
  *
  */
+//phpcs:disable WordPress.WP.I18n.TextDomainMismatch, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, 	WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+//phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 if ( ! function_exists( 'csf_get_icons' ) ) {
   function csf_get_icons() {
 

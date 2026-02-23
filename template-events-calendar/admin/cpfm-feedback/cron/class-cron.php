@@ -2,7 +2,7 @@
 if (!defined('ABSPATH')) {
     exit();
 }
-
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 if (!class_exists('ECT_cronjob')) {
     class ECT_cronjob
     {
@@ -101,7 +101,7 @@ if (!class_exists('ECT_cronjob')) {
 
                 $schedules['every_30_days'] = array(
                     'interval' => 30 * 24 * 60 * 60, // 2,592,000 seconds
-                    'display'  => __('Once every 30 days'),
+                    'display'  => __('Once every 30 days', 'template-events-calendar'),
                 );
             }
 

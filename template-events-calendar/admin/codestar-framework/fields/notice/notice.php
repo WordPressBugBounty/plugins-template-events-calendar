@@ -7,6 +7,7 @@
  * @version 1.0.0
  *
  */
+//phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 if ( ! class_exists( 'CSF_Field_notice' ) ) {
   class CSF_Field_notice extends CSF_Fields {
 

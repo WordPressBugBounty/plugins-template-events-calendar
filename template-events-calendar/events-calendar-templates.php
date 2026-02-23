@@ -3,13 +3,14 @@
 Plugin Name:Events Shortcodes For The Events Calendar
 Plugin URI:https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
 Description:<a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Shortcodes to show The Events Calendar plugin events list on any page or post in different layouts.
-Version:2.5.4
+Version:2.6.0
 Requires PHP:7.2
 Author:Cool Plugins
-Author URI:https://coolplugins.net/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
-License URI:https://www.gnu.org/licenses/gpl-2.0.html
+Author URI: https://coolplugins.net/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Domain Path: /languages
-Text Domain:ect
+Text Domain: template-events-calendar
 Requires Plugins: the-events-calendar
 */
 
@@ -19,15 +20,16 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 if (! defined('ECT_VERSION')) {
-	define('ECT_VERSION', '2.5.4');
+	define('ECT_VERSION', '2.6.0');//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 }
 
 /*** Defined constent for later use */
-define('ECT_PLUGIN_URL', plugin_dir_url(__FILE__));
-define('ECT_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('ECT_FEEDBACK_URL','https://feedback.coolplugins.net/');
+define('ECT_PLUGIN_URL', plugin_dir_url(__FILE__));//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+define('ECT_PLUGIN_DIR', plugin_dir_path(__FILE__));//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+define('ECT_FEEDBACK_URL','https://feedback.coolplugins.net/');//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 
 /*** EventsCalendarTemplates main class by CoolPlugins.net */
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 if (! class_exists('EventsCalendarTemplates')) {
 	final class EventsCalendarTemplates
 	{
@@ -97,14 +99,15 @@ if (! class_exists('EventsCalendarTemplates')) {
 		}
 
 		/*** Load Text domain */
+		//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 		public function ect_load_textdomain()
 		{
-			load_plugin_textdomain('ect', false, basename(dirname(__FILE__)) . '/languages/');
+			load_plugin_textdomain('ect', false, basename(dirname(__FILE__)) . '/languages/');//phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound
 			if (!get_option('ect-initial-save-version')) {
 				add_option('ect-initial-save-version', ECT_VERSION);
 			}
 			if (!get_option('ect-install-date')) {
-				add_option('ect-install-date', date('Y-m-d h:i:s'));
+				add_option('ect-install-date', gmdate('Y-m-d h:i:s'));
 			}
 		}
 
@@ -146,8 +149,8 @@ if (! class_exists('EventsCalendarTemplates')) {
 					}
 					$notice = [
 
-						'title' => __('Events Addons By Cool Plugins', 'ect'),
-						'message' => __('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'cool-plugins-feedback'),
+						'title' => __('Events Addons By Cool Plugins', 'template-events-calendar'),
+						'message' => __('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'template-events-calendar'),
 						'pages' => ['cool-plugins-events-addon', 'tribe_events-events-template-settings', 'cool-plugins-events-addon'],
 						'always_show_on' => ['cool-plugins-events-addon', 'tribe_events-events-template-settings', 'cool-plugins-events-addon'], // This enables auto-show
 						'plugin_name' => 'ect',
@@ -192,13 +195,14 @@ if (! class_exists('EventsCalendarTemplates')) {
 			EventsShortcode::registers();
 			require_once ECT_PLUGIN_DIR . 'admin/ect-event-shortcode.php';
 		}
+		//phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralText
 		public static function onInit()
 		{
 			if (version_compare(get_option('ect-v'), '2.4.0', '<')) {
 				ect_create_admin_notice(
 					array(
 						'id'              => 'ect-pro-setting-change',
-						'message'         => wp_kses_post(__('<strong>Major design update</strong> for <strong>Events Shortcodes</strong> plugin in version 2.4.0! Update or reset <a href=' . admin_url('admin.php?page=tribe_events-events-template-settings') . '>style settings</a> if you face any design issues.', 'ect')),
+						'message'         => wp_kses_post(__('<strong>Major design update</strong> for <strong>Events Shortcodes</strong> plugin in version 2.4.0! Update or reset <a href=' . admin_url('admin.php?page=tribe_events-events-template-settings') . '>style settings</a> if you face any design issues.', 'template-events-calendar')),
 						'review_interval' => 0,
 					)
 				);
@@ -208,7 +212,7 @@ if (! class_exists('EventsCalendarTemplates')) {
 				ect_create_admin_notice(
 					array(
 						'id'              => 'ect-free-setting-migration',
-						'message'         => wp_kses_post(__('<strong>Important Update</strong>:- <strong>Events Shortcodes & Templates</strong> plugin has integrated new settings panel. Please save your settings and check events views.', 'ect')),
+						'message'         => wp_kses_post(__('<strong>Important Update</strong>:- <strong>Events Shortcodes & Templates</strong> plugin has integrated new settings panel. Please save your settings and check events views.', 'template-events-calendar')),
 						'review_interval' => 0,
 					)
 				);
@@ -219,10 +223,10 @@ if (! class_exists('EventsCalendarTemplates')) {
 					'id'              => 'ect_review_box',  // required and must be unique
 					'slug'            => 'ect',      // required in case of review box
 					'review'          => true,     // required and set to be true for review box
-					'review_url'      => esc_url('https://wordpress.org/support/plugin/template-events-calendar/reviews/#new-post'), // required
+					'review_url'      => esc_url('https://wordpress.org/support/plugin/template-events-calendar/reviews/'), // required
 					'plugin_name'     => 'Events Shortcodes  Addon',    // required
 					'review_interval' => 3,                    // optional: this will display review notice
-					// after 5 days from the installation_time
+					// after 5 days from the installation_time	
 					// default is 3
 				)
 			);
@@ -247,31 +251,117 @@ if (! class_exists('EventsCalendarTemplates')) {
 
 				printf(
 					'<div class="error CTEC_Msz"><p>' .
-						esc_html(__('%1$s %2$s', 'ebec')),
-					esc_html(__('In order to use this addon, Please first install the latest version of', 'ebec')),
+					/* translators: %s: Event start date. */
+						esc_html(__('%1$s %2$s', 'template-events-calendar')),
+					esc_html(__('In order to use this addon, Please first install the latest version of', 'template-events-calendar')),
 					sprintf(
 						'<a href="%s">%s</a>',
 						esc_url('plugin-install.php?tab=plugin-information&plugin=the-events-calendar&TB_iframe=true'),
-						esc_html(__('The Events Calendar', 'ebec'))
+						esc_html(__('The Events Calendar', 'template-events-calendar'))
 					) . '</p></div>'
 				);
 			}
 		}
 
+		public static function ect_header_display() {
+			// Required plugins list (path + minimum version)
+			$required_plugins = [
+				'countdown-for-the-events-calendar/countdown-for-events-calendar.php' => '1.4.16',
+				'cp-events-calendar-modules-for-divi-pro/cp-events-calendar-modules-for-divi-pro.php' => '2.0.2',
+				'event-page-templates-addon-for-the-events-calendar/the-events-calendar-event-details-page-templates.php' => '1.7.15',
+				'events-block-for-the-events-calendar/events-block-for-the-event-calender.php' => '1.3.12',
+				'event-single-page-builder-pro/event-single-page-builder-pro.php' => '2.0.1',
+				'events-search-addon-for-the-events-calendar/events-calendar-search-addon.php' => '1.2.18',
+				'events-speakers-and-sponsors/events-speakers-and-sponsors.php' => '1.1.1',
+				'events-widgets-for-elementor-and-the-events-calendar/events-widgets-for-elementor-and-the-events-calendar.php' => '1.6.28',
+				'events-widgets-pro/events-widgets-pro.php' => '3.0.1',
+				'template-events-calendar/events-calendar-templates.php' => '2.5.4',
+				'the-events-calendar-templates-and-shortcode/the-events-calendar-templates-and-shortcode.php' => '4.0.1',
+			];
+
+			$show_header = true;
+
+			// Loop through all plugins
+			foreach ($required_plugins as $plugin_path => $min_version) {
+
+				// Plugin active hai?
+				if (is_plugin_active($plugin_path)) {
+
+					// Plugin data get karo
+					$plugin_data = get_plugin_data(WP_PLUGIN_DIR . '/' . $plugin_path);
+					$current_version = $plugin_data['Version'];
+
+					// Version check
+					if (version_compare($current_version, $min_version, '<=')) {
+						$show_header = false;
+						break;
+					}
+				}
+			}
+			return $show_header;
+		}
+			
 		/*** Admin side shortcode generator style CSS */
 		public function ect_tc_css()
 		{
+			$screen = get_current_screen();
+			$screen_id = $screen ? $screen->id : '';
+			$parent_file = ['events-addons_page_tribe-events-shortcode-template-settings',
+						'events-addons_page_tribe_events-events-template-settings',
+						'toplevel_page_cool-plugins-events-addon',
+						'events-addons_page_cool-events-registration',
+						'events-addons_page_countdown_for_the_events_calendar',
+						'edit-epta',
+						'edit-esas_speaker',
+						'edit-esas_sponsor',
+						'events-addons_page_esas-speaker-sponsor-settings',
+						'edit-ewpe'];
+			if (in_array($screen_id, $parent_file)){
+				wp_enqueue_style( 'cool-plugins-events-addon', ECT_PLUGIN_URL . 'admin/events-addon-page/assets/css/styles.min.css', array(), ECT_VERSION, 'all' );
+			}
+			// Common admin notice filter script (runs only on our target pages)
+			if (self::ect_header_display() && in_array($screen_id, $parent_file)) {
+				wp_enqueue_script(
+					'ect-admin-notice-filter',
+					ECT_PLUGIN_URL . 'assets/js/ect-admin-notice-filter.js',
+					array( 'jquery' ),
+					ECT_VERSION,
+					true
+				);
+
+				wp_localize_script(
+					'ect-admin-notice-filter',
+					'ect_notice_filter',
+					array(
+						'nonce'             => wp_create_nonce( 'ect_notice_filter' ),
+						'allowedBodyClasses' => array(
+							'events-addons_page_tribe-events-shortcode-template-settings',
+							'events-addons_page_tribe_events-events-template-settings',
+							'toplevel_page_cool-plugins-events-addon',
+							'events-addons_page_cool-events-registration',
+							'events-addons_page_countdown_for_the_events_calendar',
+							'post-type-epta',
+							'post-type-esas_speaker',
+							'post-type-esas_sponsor',
+							'events-addons_page_esas-speaker-sponsor-settings',
+							'post-type-ewpe',
+						),
+					)
+				);
+			}
 			$current_screen = get_current_screen();
 			$screen_name    = isset($current_screen->base) ? esc_html($current_screen->base) : '';
 			if ($screen_name == 'events-addons_page_tribe_events-events-template-settings') {
-				wp_enqueue_script('ectcsf-codemirror', ECT_PLUGIN_URL . 'assets/ect-codemirror/js/codemirror.min.js', array('csf'), ECT_VERSION, true);
-				wp_enqueue_script('ectcsf-codemirror-loadmode', ECT_PLUGIN_URL . 'assets/ect-codemirror/js/loadmode.min.js', array('ectcsf-codemirror'), ECT_VERSION, true);
-				wp_enqueue_script('ectcsf-html-mixed', ECT_PLUGIN_URL . 'assets/ect-codemirror/js/ect-html-mixed-min.js', array('ectcsf-codemirror'), ECT_VERSION, true);
-				wp_enqueue_style('ectcsf-codemirror', ECT_PLUGIN_URL . 'assets/ect-codemirror/css/codemirror.min.css', array(), ECT_VERSION, 'all');
+				// Use WordPress core code editor (CodeMirror) instead of bundled library.
+				wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
+				$csf_script = wp_scripts()->query( 'csf' );
+				if ( $csf_script && ! in_array( 'code-editor', $csf_script->deps, true ) ) {
+					$csf_script->deps[] = 'code-editor';
+				}
 				wp_enqueue_script('ect-show-pro-setting', ECT_PLUGIN_URL . 'assets/js/ect-show-pro-setting.js', array(), ECT_VERSION, 'all');
 				wp_enqueue_script('cpfm-settings-data-share', ECT_PLUGIN_URL . 'admin/cpfm-feedback/js/cpfm-admin-share-data.js', array('jquery'), ECT_VERSION, true);
 			}
-			wp_enqueue_style('sg-btn-css', plugins_url('assets/css/shortcode-generator.css', __FILE__));
+			wp_enqueue_style('sg-btn-css', plugins_url('assets/css/shortcode-generator.css', __FILE__), array(), ECT_VERSION,);
 		}
 		/*** Add links in plugin install list */
 		public function ect_template_settings_page($links)
@@ -279,7 +369,7 @@ if (! class_exists('EventsCalendarTemplates')) {
 			$links[] = '<a style="font-weight:bold" href="' . esc_url(get_admin_url(null, 'admin.php?page=tribe_events-events-template-settings')) . '">Shortcodes Settings</a>';
 			// $links[] = '<a  style="font-weight:bold" href="https://eventscalendartemplates.com/" target="_blank">View Demos</a>';
 			$plugin_visit_website = 'https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugins_list';
-			$links[]              = '<a  style="font-weight:bold" href="' . esc_url($plugin_visit_website) . '" target="_blank">' . __('Get Pro', 'ect') . '</a>';
+			$links[]              = '<a  style="font-weight:bold" href="' . esc_url($plugin_visit_website) . '" target="_blank">' . __('Get Pro', 'template-events-calendar') . '</a>';
 			return $links;
 		}
 		/**
@@ -293,7 +383,7 @@ if (! class_exists('EventsCalendarTemplates')) {
 		public function ect_addMeta_Links($links, $file)
 		{
 			if (strpos($file, basename(__FILE__))) {
-				$ectanchor   = esc_html__('Video Tutorials', 'ect');
+				$ectanchor   = esc_html__('Video Tutorials', 'template-events-calendar');
 				$ectvideourl = 'https://eventscalendaraddons.com/go/ect-video-tutorial/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=video_tutorial&utm_content=plugins_list';
 				$links[]     = '<a href="' . esc_url($ectvideourl) . '" target="_blank">' . $ectanchor . '</a>';
 			}
@@ -306,13 +396,13 @@ if (! class_exists('EventsCalendarTemplates')) {
 		{
 			update_option('ect-v', ECT_VERSION);
 			update_option('ect-type', 'FREE');
-			update_option('ect-free-installDate', date('Y-m-d h:i:s'));
+			update_option('ect-free-installDate', gmdate('Y-m-d h:i:s'));
 			update_option('ect-ratingDiv', 'no');			
 			if (!get_option('ect-initial-save-version')) {
 				add_option('ect-initial-save-version', ECT_VERSION);
 			}
 			if (!get_option('ect-install-date')) {
-				add_option('ect-install-date', date('Y-m-d h:i:s'));
+				add_option('ect-install-date', gmdate('Y-m-d h:i:s'));
 			}
 			$ects_options = get_option('ects_options');
 			$val = !empty($ects_options['ect_cpfm_feedback_data'])?$ects_options['ect_cpfm_feedback_data']:'';
@@ -466,7 +556,7 @@ if (! class_exists('EventsCalendarTemplates')) {
 		public function ect_plugin_redirection($plugin)
 		{
 			if (plugin_basename(__FILE__) === $plugin) {
-				exit(wp_redirect(admin_url('admin.php?page=tribe_events-events-template-settings#tab=get-started')));
+				exit(wp_redirect(admin_url('admin.php?page=tribe_events-events-template-settings#tab=get-started')));//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
 			}
 		}
 	}

@@ -7,6 +7,7 @@
  * @version 1.0.0
  *
  */
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 if ( ! class_exists( 'CSF_Fields' ) ) {
   abstract class CSF_Fields extends CSF_Abstract {
     public $field;

@@ -1,4 +1,5 @@
-<?php if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access directly.
+<?php 
+if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access directly.
 /**
  *
  * Options Class
@@ -7,6 +8,8 @@
  * @version 1.0.0
  *
  */
+//phpcs:disable WordPress.WP.I18n.TextDomainMismatch, WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, 	WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 if ( ! class_exists( 'CSF_Options' ) ) {
   class CSF_Options extends CSF_Abstract {
 

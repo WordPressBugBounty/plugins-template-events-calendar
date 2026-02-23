@@ -1,5 +1,5 @@
 <?php
-
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class EctStyles {
 
 
@@ -237,7 +237,7 @@ class EctStyles {
 			}
 			if ( ! empty( $ff_names ) ) {
 				$build_url .= implode( '|', array_filter( $ff_names ) );
-				wp_enqueue_style( 'ect-google-font', "$build_url", array(), null, null, 'all' );
+				wp_enqueue_style( 'ect-google-font', "$build_url", array(), ECT_VERSION, 'all' );
 			}
 		}
 

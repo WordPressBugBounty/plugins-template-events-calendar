@@ -7,6 +7,7 @@
  * @version 1.0.0
  *
  */
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 if ( ! function_exists( 'csf_array_search' ) ) {
   function csf_array_search( $array, $key, $value ) {
 

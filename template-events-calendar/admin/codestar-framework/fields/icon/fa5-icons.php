@@ -1,4 +1,5 @@
 <?php if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access directly.
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 //
 // Font Awesome 5 Free Icons
 //

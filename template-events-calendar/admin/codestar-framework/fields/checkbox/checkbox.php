@@ -7,6 +7,7 @@
  * @version 1.0.0
  *
  */
+//phpcs:disable WordPress.WP.I18n.TextDomainMismatch, WordPress.WP.I18n.MissingArgDomain, WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 if ( ! class_exists( 'CSF_Field_checkbox' ) ) {
   class CSF_Field_checkbox extends CSF_Fields {
 

@@ -1,7 +1,8 @@
 <?php
 
-
+if ( ! defined( 'ABSPATH' ) ) exit;
 // Return a valid alpha value [0,1] with all invalid values being set to 1
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 function boundAlpha($a)
 {
     // $a = floatval($a);

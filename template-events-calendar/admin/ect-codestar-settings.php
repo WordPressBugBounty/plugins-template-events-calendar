@@ -4,6 +4,7 @@
  *
  * This file is responsible for creating all admin settings in Timeline Builder (post)
  */
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 if (! defined('ABSPATH')) {
 	exit('Can not load script outside of WordPress Enviornment!');
 }
@@ -37,7 +38,7 @@ if (! class_exists('ECTSettings')) {
 		{
 			// register actions
 			$this->create_settings_panel();
-			// add_action('init', array($this,'create_settings_panel'));
+			add_action('csf_options_before', array($this, 'inject_events_addon_header'));
 			add_action('csf_ects_options_save_after', array($this,'ect_plugin_settings_saved'));
 
 		}
@@ -65,6 +66,25 @@ if (! class_exists('ECTSettings')) {
 			return isset($cpfm_opt_in_choice_cool_events);
 		}
 
+		/**
+		 * Inject Events Addon Header before CodeStar Framework HTML
+		 */
+		public function inject_events_addon_header() {
+			$screen = get_current_screen();
+			
+			// Check if we're on the shortcode settings page
+			if (isset($screen->id) && strpos($screen->id, 'tribe_events-events-template-settings') !== false) {
+				if (EventsCalendarTemplates::ect_header_display()) {
+					$header_file = ECT_PLUGIN_DIR . '/admin/events-addon-page/includes/dashboard-header.php';
+					
+					if(file_exists($header_file)){
+						$page_title = 'Shortcode Settings';
+						$show_wrapper = false; // No wrapper needed
+						include($header_file);
+					}
+			    }
+			}
+		}
 
 		public function create_settings_panel()
 		{

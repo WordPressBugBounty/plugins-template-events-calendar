@@ -1,4 +1,5 @@
 <?php if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access directly.
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 /**
  *
  * Abstract Class

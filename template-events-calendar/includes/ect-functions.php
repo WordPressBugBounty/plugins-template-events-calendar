@@ -3,6 +3,7 @@ if (!defined('ABSPATH')) {
     exit;
 } 
 // events custom date format creator function 
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 function ect_custom_date_formats($date_format,$template,$event_id,$ev_time){
         /*Date Format START*/
         $ev_day=tribe_get_start_date($event_id, false, 'd' );

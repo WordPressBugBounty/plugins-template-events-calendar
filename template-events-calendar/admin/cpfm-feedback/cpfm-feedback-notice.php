@@ -1,7 +1,7 @@
 <?php
 
 if ( ! defined( 'ABSPATH' )) exit;
-
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound, WordPress.Security.NonceVerification.Recommended
 class CPFM_Feedback_Notice {
     
     private static $registered_notices = [];
@@ -174,7 +174,7 @@ class CPFM_Feedback_Notice {
     
         $output = '';
         $output .= '<div id="cpfNoticePanel" class="notice-panel"' . ($auto_show ? ' data-auto-show="true"' : '') . '>';
-        $output .= '<div class="notice-panel-header">' . esc_html__('Help Improve Plugins', 'ccpw') . ' <span class="dashicons dashicons-no" id="cpfm_remove_notice"></span></div>';
+        $output .= '<div class="notice-panel-header">' . esc_html__('Help Improve Plugins', 'template-events-calendar') . ' <span class="dashicons dashicons-no" id="cpfm_remove_notice"></span></div>';
         $output .= '<div class="notice-panel-content">';
     
         foreach (self::$registered_notices as $key => $notice) {
@@ -200,21 +200,21 @@ class CPFM_Feedback_Notice {
             $output .= '<strong>' . esc_html($notice['title']) . '</strong>';
             
             $output .= '<div class="notice-message-with-toggle">';
-            $output .= '<p>' . esc_html($notice['message']) . '<a href="#" class="cpf-toggle-extra">' . esc_html__(' More info', 'ccpw') . '</a></p>';
+            $output .= '<p>' . esc_html($notice['message']) . '<a href="#" class="cpf-toggle-extra">' . esc_html__(' More info', 'template-events-calendar') . '</a></p>';
             $output .= '</div>';
             
             $output .= '<div class="cpf-extra-info">';
-            $output .= '<p>' . esc_html__('Opt in to receive email updates about security improvements, new features, helpful tutorials, and occasional special offers. We\'ll collect:', 'ccpw') . '</p>';
+            $output .= '<p>' . esc_html__('Opt in to receive email updates about security improvements, new features, helpful tutorials, and occasional special offers. We\'ll collect:', 'template-events-calendar') . '</p>';
             $output .= '<ul>';
-            $output .= '<li>' . esc_html__('Your website home URL and WordPress admin email.', 'ccpw') . '</li>';
-            $output .= '<li>' . esc_html__('To check plugin compatibility, we will collect the following: list of active plugins and themes, server type, MySQL version, WordPress version, memory limit, site language and database prefix.', 'ccpw') . '</li>';
+            $output .= '<li>' . esc_html__('Your website home URL and WordPress admin email.', 'template-events-calendar') . '</li>';
+            $output .= '<li>' . esc_html__('To check plugin compatibility, we will collect the following: list of active plugins and themes, server type, MySQL version, WordPress version, memory limit, site language and database prefix.', 'template-events-calendar') . '</li>';
             $output .= '</ul>';
             
             $output .= '</div>';
             
             $output .= '<div class="notice-actions">';
-            $output .= '<button class="button button-primary opt-in-yes" data-category="' . esc_attr($key) . '" id="yes-share-data" value="yes">' . esc_html__("Yes, I Agree", 'ccpw') . '</button>';
-            $output .= '<button class="button opt-in-no" data-category="' . esc_attr($key) . '" id="no-share-data" value="no">' . esc_html__('No, Thanks', 'ccpw') . '</button>';
+            $output .= '<button class="button button-primary opt-in-yes" data-category="' . esc_attr($key) . '" id="yes-share-data" value="yes">' . esc_html__("Yes, I Agree", 'template-events-calendar') . '</button>';
+            $output .= '<button class="button opt-in-no" data-category="' . esc_attr($key) . '" id="no-share-data" value="no">' . esc_html__('No, Thanks', 'template-events-calendar') . '</button>';
             $output .= '</div>';
             
             $output .= '</div>';

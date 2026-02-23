@@ -7,6 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  *  Filter Start Time And End Time
  */
+//phpcs:disable WordPress.WP.I18n.MissingTranslatorsComment, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 function ebec_fetch_start_end_time( $setting ) {
 	$start_range_date = new DateTime( $setting['ebec_date_range_start'] );
 	$end_range_date   = new DateTime( $setting['ebec_date_range_end'] );
@@ -157,15 +158,15 @@ function ebec_tribe_event_time( $display, $event ) {
 		$start_date = tribe_get_start_date($event, false, 'F j, Y');
 		$end_date   = tribe_get_end_date($event, false, 'F j, Y');
 		if ( $display ) {
-			printf( esc_html__( '%1$s - %2$s', 'ebec' ), esc_html( $start_date ), esc_html( $end_date ) );
+			printf( esc_html__( '%1$s - %2$s', 'template-events-calendar' ), esc_html( $start_date ), esc_html( $end_date ) );
 		} else {
-			return sprintf( esc_html__( '%1$s - %2$s', 'ebec' ), esc_html( $start_date ), esc_html( $end_date ) );
+			return sprintf( esc_html__( '%1$s - %2$s', 'template-events-calendar' ), esc_html( $start_date ), esc_html( $end_date ) );
 		}
 	} elseif ( tribe_event_is_all_day( $event ) ) { // all day event
 		if ( $display ) {
-			esc_html_e( 'All day', 'ebec' );
+			esc_html_e( 'All day', 'template-events-calendar' );
 		} else {
-			return esc_html__( 'All day', 'ebec' );
+			return esc_html__( 'All day', 'template-events-calendar' );
 		}
 	} else {
 		$time_format = get_option( 'time_format' );
@@ -173,15 +174,15 @@ function ebec_tribe_event_time( $display, $event ) {
 		$end_date    = tribe_get_end_date( $event, false, $time_format );
 		if ( $start_date !== $end_date ) {
 			if ( $display ) {
-				printf( esc_html__( '%1$s - %2$s', 'ebec' ), esc_html( $start_date ), esc_html( $end_date ) );
+				printf( esc_html__( '%1$s - %2$s', 'template-events-calendar' ), esc_html( $start_date ), esc_html( $end_date ) );
 			} else {
-				return sprintf( esc_html__( '%1$s - %2$s', 'ebec' ), esc_html( $start_date ), esc_html( $end_date ) );
+				return sprintf( esc_html__( '%1$s - %2$s', 'template-events-calendar' ), esc_html( $start_date ), esc_html( $end_date ) );
 			}
 		} else {
 			if ( $display ) {
-				printf( esc_html__( '%s', 'ebec' ), esc_html( $start_date ) );
+				printf( esc_html__( '%s', 'template-events-calendar' ), esc_html( $start_date ) );//phpcs:ignore WordPress.WP.I18n.NoEmptyStrings
 			} else {
-				return sprintf( esc_html__( '%s', 'ebec' ), esc_html( $start_date ) );
+				return sprintf( esc_html__( '%s', 'template-events-calendar' ), esc_html( $start_date ) );//phpcs:ignore WordPress.WP.I18n.NoEmptyStrings
 			}
 		}
 	}

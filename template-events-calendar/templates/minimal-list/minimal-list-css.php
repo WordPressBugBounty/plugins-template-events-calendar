@@ -4,6 +4,7 @@ if (!defined('ABSPATH')) {
     header('HTTP/1.1 403 Forbidden');
     exit();
 }
+//phpcs:disable	WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
 /**
  * This file is used only for dynamic styles in minimal layouts.

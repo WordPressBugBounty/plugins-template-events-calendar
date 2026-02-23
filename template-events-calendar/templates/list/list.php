@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+//phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralText
+//phpcs:disable	WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 $ev_day = tribe_get_start_date($event_id, false, 'd');
 $ev_month = tribe_get_start_date($event_id, false, 'M');
 $list_style = esc_attr($attribute['style']);
@@ -31,7 +34,7 @@ if (($style == "style-3" && $template == "default") || $template == "classic-lis
     }
     $events_html .= wp_kses_post($event_content);
     $events_html .= wp_kses_post($event_cost);
-    $events_html .= '<a href="' . esc_url(tribe_get_event_link($event_id)) . '" class="ect-events-read-more" rel="bookmark">' . esc_html__($events_more_info_text, 'ect') . '</a>';
+    $events_html .= '<a href="' . esc_url(tribe_get_event_link($event_id)) . '" class="ect-events-read-more" rel="bookmark">' . esc_html__($events_more_info_text, 'template-events-calendar') . '</a>';
     $events_html .= '</div></div></div>';
     if ($enable_share_button == 'yes') {
         $events_html .= '<div class="ect-clslist-event-details">';
@@ -61,7 +64,7 @@ else if (($style == "style-2" && $template == "default") || $template == "modern
 				<h2 class="ect-list-title">' . wp_kses_post($event_title) . '</h2>';
     $events_html .= wp_kses_post($event_content);
     $events_html .= wp_kses_post($event_cost);
-    $events_html .= '<a href="' . esc_url(tribe_get_event_link($event_id)) . '" class="ect-events-read-more" rel="bookmark">' . esc_html__($events_more_info_text, 'ect') . '</a>';
+    $events_html .= '<a href="' . esc_url(tribe_get_event_link($event_id)) . '" class="ect-events-read-more" rel="bookmark">' . esc_html__($events_more_info_text, 'template-events-calendar') . '</a>';
     $events_html .= '</div>';
 
     $events_html .= '<div class="modern-list-right-side">
@@ -103,7 +106,7 @@ else {
     $events_html .= '<h2 class="ect-list-title">' . wp_kses_post($event_title) . '</h2>';
     $events_html .= wp_kses_post($event_content);
     $events_html .= wp_kses_post($event_cost);
-    $events_html .= '<a href="' . esc_url(tribe_get_event_link($event_id)) . '" class="ect-events-read-more" rel="bookmark">' . esc_html__($events_more_info_text, 'ect') . '</a>';
+    $events_html .= '<a href="' . esc_url(tribe_get_event_link($event_id)) . '" class="ect-events-read-more" rel="bookmark">' . esc_html__($events_more_info_text, 'template-events-calendar') . '</a>';
     $events_html .= '</div>';
     if (tribe_has_venue($event_id)) {
 

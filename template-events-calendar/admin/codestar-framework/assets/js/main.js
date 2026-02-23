@@ -569,57 +569,73 @@
   };
 
   //
-  // Field: code_editor
+  // Field: code_editor (uses WordPress core code editor when available)
   //
   $.fn.csf_field_code_editor = function() {
     return this.each( function() {
 
-      if ( typeof CodeMirror !== 'function' ) { return; }
-
       var $this       = $(this),
           $textarea   = $this.find('textarea'),
           $inited     = $this.find('.CodeMirror'),
-          data_editor = $textarea.data('editor');
+          data_editor = $textarea.data('editor'),
+          editor_id   = $textarea.attr('id');
+
+      if ( ! data_editor ) { return; }
 
       if ( $inited.length ) {
         $inited.remove();
       }
 
       var interval = setInterval(function () {
-        if ( $this.is(':visible') ) {
+        if ( ! $this.is(':visible') ) { return; }
 
-          var code_editor = CodeMirror.fromTextArea( $textarea[0], data_editor );
-
-          // load code-mirror theme css.
-          if ( data_editor.theme !== 'default' && CSF.vars.code_themes.indexOf(data_editor.theme) === -1 ) {
-
-            var $cssLink = $('<link>');
-
-            $('#csf-codemirror-css').after( $cssLink );
-
-            $cssLink.attr({
-              rel: 'stylesheet',
-              id: 'csf-codemirror-'+ data_editor.theme +'-css',
-              href: data_editor.cdnURL +'/theme/'+ data_editor.theme +'.min.css',
-              type: 'text/css',
-              media: 'all'
+        // Prefer WordPress core code editor (avoids bundled CodeMirror for plugin guidelines).
+        if ( window.wp && wp.codeEditor && wp.codeEditor.initialize && editor_id ) {
+          var cmSettings = {
+            lineNumbers: data_editor.lineNumbers !== false,
+            mode: data_editor.mode || 'htmlmixed',
+            tabSize: data_editor.tabSize || 2,
+            theme: data_editor.theme || 'default'
+          };
+          var editor = wp.codeEditor.initialize( editor_id, { codemirror: cmSettings } );
+          if ( editor && editor.codemirror ) {
+            editor.codemirror.on( 'change', function() {
+              $textarea.val( editor.codemirror.getValue() ).trigger('change');
             });
-
-            CSF.vars.code_themes.push(data_editor.theme);
-
           }
+          clearInterval( interval );
+          return;
+        }
 
+        if ( typeof CodeMirror !== 'function' ) { clearInterval( interval ); return; }
+
+        var code_editor = CodeMirror.fromTextArea( $textarea[0], data_editor );
+
+        if ( data_editor.cdnURL && data_editor.theme !== 'default' && CSF.vars.code_themes.indexOf(data_editor.theme) === -1 ) {
+          var $cssLink = $('<link>');
+          $('#csf-codemirror-css').after( $cssLink );
+          $cssLink.attr({
+            rel: 'stylesheet',
+            id: 'csf-codemirror-'+ data_editor.theme +'-css',
+            href: data_editor.cdnURL +'/theme/'+ data_editor.theme +'.min.css',
+            type: 'text/css',
+            media: 'all'
+          });
+          CSF.vars.code_themes.push(data_editor.theme);
+        }
+
+        if ( data_editor.cdnURL ) {
           CodeMirror.modeURL = data_editor.cdnURL +'/mode/%N/%N.min.js';
           CodeMirror.autoLoadMode(code_editor, data_editor.mode);
-
-          code_editor.on( 'change', function( editor, event ) {
-            $textarea.val( code_editor.getValue() ).trigger('change');
-          });
-
-          clearInterval(interval);
-
         }
-      });
+
+        code_editor.on( 'change', function( editor, event ) {
+          $textarea.val( code_editor.getValue() ).trigger('change');
+        });
+
+        clearInterval( interval );
+
+      }, 10);
 
     });
   };

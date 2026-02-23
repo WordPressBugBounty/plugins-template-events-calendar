@@ -1,5 +1,5 @@
 <?php
-
+//phpcs:disable WordPress.WP.I18n.MissingTranslatorsComment, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class EventsShortcode {
 
 	/**
@@ -136,11 +136,11 @@ class EventsShortcode {
 				'post_status'    => 'publish',
 				'hide_upcoming'  => true,
 				'posts_per_page' => $attribute['limit'],
-				'tax_query'      => $attribute['event_tax'],
-				'meta_key'       => $attribute['key'],
+				'tax_query'      => $attribute['event_tax'],//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+				'meta_key'       => $attribute['key'],//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 				'orderby'        => 'event_date',
 				'order'          => $attribute['order'],
-				'meta_query'     => $attribute['meta_date'],
+				'meta_query'     => $attribute['meta_date'],//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			),
 			$attribute,
 			$meta_date_date,
@@ -157,7 +157,7 @@ class EventsShortcode {
 		 $i           = 0;
 		if ( $all_events ) {
 			$tect_settings         = get_option( 'ects_options' );
-			$events_more_info_btn  = ! empty( $tect_settings['events_more_info'] ) ? sanitize_text_field( $tect_settings['events_more_info'] ) : esc_html__( 'Find out more', 'ect' );
+			$events_more_info_btn  = ! empty( $tect_settings['events_more_info'] ) ? sanitize_text_field( $tect_settings['events_more_info'] ) : esc_html__( 'Find out more', 'template-events-calendar' );
 			$events_more_info_text = sanitize_text_field( $events_more_info_btn );
 			foreach ( $all_events as $post ) :
 				setup_postdata( $post );
@@ -282,7 +282,7 @@ class EventsShortcode {
 			if ( ! empty( $no_event_found_text ) ) {
 				$not_found_msz = sanitize_text_field( $no_event_found_text );
 			} else {
-				$not_found_msz = '<div class="ect-no-events"><p>' . esc_html__( 'There are no upcoming events at this time.', 'ect' ) . '</p></div>';
+				$not_found_msz = '<div class="ect-no-events"><p>' . esc_html__( 'There are no upcoming events at this time.', 'template-events-calendar' ) . '</p></div>';
 			}
 			$no_events = '<span class="ect-icon"><i class="ect-icon-bell"></i></span>' . $not_found_msz;
 		}
@@ -349,18 +349,18 @@ class EventsShortcode {
 			$start_date = tribe_get_start_date( $event, false );
 			$end_date   = tribe_get_end_date( $event, false );
 			if ( $display ) {
-				printf( esc_html__( '%1$s - %2$s', 'ect' ), esc_html( $start_date ), esc_html( $end_date ) );
+				printf( esc_html__( '%1$s - %2$s', 'template-events-calendar' ), esc_html( $start_date ), esc_html( $end_date ) );
 
 			} else {
-				return sprintf( esc_html__( '%1$s - %2$s', 'ect' ), esc_html( $start_date ), esc_html( $end_date ) );
+				return sprintf( esc_html__( '%1$s - %2$s', 'template-events-calendar' ), esc_html( $start_date ), esc_html( $end_date ) );
 
 			}
 		} elseif ( tribe_event_is_all_day( $event ) ) { // all day event
 			if ( $display ) {
-				printf( esc_html__( 'All day', 'the-events-calendar' ) );
+				printf( esc_html__( 'All day', 'template-events-calendar' ) );
 
 			} else {
-				return sprintf( esc_html__( 'All day', 'the-events-calendar' ) );
+				return sprintf( esc_html__( 'All day', 'template-events-calendar' ) );
 
 			}
 		} else {
@@ -369,16 +369,16 @@ class EventsShortcode {
 			$end_date    = tribe_get_end_date( $event, false, $time_format );
 			if ( $start_date !== $end_date ) {
 				if ( $display ) {
-					printf( esc_html__( '%1$s - %2$s', 'ect' ), esc_html( $start_date ), esc_html( $end_date ) );
+					printf( esc_html__( '%1$s - %2$s', 'template-events-calendar' ), esc_html( $start_date ), esc_html( $end_date ) );
 
 				} else {
-					return sprintf( esc_html__( '%1$s - %2$s', 'ecct' ), esc_html( $start_date ), esc_html( $end_date ) );
+					return sprintf( esc_html__( '%1$s - %2$s', 'template-events-calendar' ), esc_html( $start_date ), esc_html( $end_date ) );
 				}
 			} else {
 				if ( $display ) {
-					printf( esc_html__( '%s', 'ect' ), esc_html( $start_date ) );
+					printf( esc_html__( '%s', 'template-events-calendar' ), esc_html( $start_date ) );//phpcs:ignore WordPress.WP.I18n.NoEmptyStrings
 				} else {
-					return sprintf( esc_html__( '%s', 'ect' ), esc_html( $start_date ) );
+					return sprintf( esc_html__( '%s', 'template-events-calendar' ), esc_html( $start_date ) );//phpcs:ignore WordPress.WP.I18n.NoEmptyStrings
 				}
 			}
 		}

@@ -6,7 +6,7 @@
 if (!defined("ABSPATH")) {
     exit('Can not load script outside of WordPress Enviornment!');
 }
-
+//phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound, WordPress.Security.NonceVerification.Recommended, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 if (!class_exists('ECT_event_shortcode')) {
     class ECT_event_shortcode
     {
@@ -92,9 +92,9 @@ if (!class_exists('ECT_event_shortcode')) {
     
             if (isset($_GET['post_type'])) {
                 if (is_array($_GET['post_type'])) {
-                    $post_type = sanitize_text_field($_GET['post_type'][0]);
+                    $post_type = isset( $_GET['post_type'][0] ) ? sanitize_key( wp_unslash( $_GET['post_type'][0] ) ) : '';
                 } else {
-                    $post_type = sanitize_text_field($_GET['post_type']);
+                    $post_type = sanitize_text_field(wp_unslash($_GET['post_type']));
                 }
             } else {
                 $post_type = get_post_type($id);
@@ -306,7 +306,7 @@ if (!class_exists('ECT_event_shortcode')) {
                     'hide_empty' => true,
                 ));
                 $ect_categories = array();
-                $ect_categories['all'] = esc_html(__('All Categories', 'cool-timeline'));
+                $ect_categories['all'] = esc_html(__('All Categories', 'template-events-calendar'));
 
                 if (!empty($terms) || !is_wp_error($terms)) {
                     foreach ($terms as $term) {

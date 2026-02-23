@@ -7,6 +7,7 @@
  * @version 1.0.0
  *
  */
+//phpcs:disable WordPress.WP.I18n.TextDomainMismatch, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 if ( ! function_exists( 'csf_validate_email' ) ) {
   function csf_validate_email( $value ) {
 

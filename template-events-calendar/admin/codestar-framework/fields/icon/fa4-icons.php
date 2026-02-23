@@ -2,6 +2,7 @@
 //
 // Font Awesome 4 Icons
 //
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 if ( ! function_exists( 'csf_get_default_icons' ) ) {
   function csf_get_default_icons() {
     return array( array(

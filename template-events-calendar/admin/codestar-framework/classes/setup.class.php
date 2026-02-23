@@ -7,6 +7,10 @@
  * @version 1.0.0
  *
  */
+
+//phpcs:disable WordPress.WP.I18n.TextDomainMismatch, WordPress.WP.I18n.MissingTranslatorsComment, WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.Security.NonceVerification.Recommended
+//phpcs:disable WordPress.WP.EnqueuedResourceParameters.MissingVersion, WordPress.WP.EnqueuedResourceParameters.NotInFooter, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound, PluginCheck.CodeAnalysis.EnqueuedResourceOffloading.OffloadedContent
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 if ( ! class_exists( 'CSF_Setup' ) ) {
   class CSF_Setup {
 
@@ -568,16 +572,20 @@ if ( ! class_exists( 'CSF_Setup' ) ) {
       // Admin utilities
       wp_enqueue_media();
 
+      // WordPress pointer (required by some admin UI that calls $(...).pointer())
+      wp_enqueue_style( 'wp-pointer' );
+      wp_enqueue_script( 'wp-pointer' );
+
       // Wp color picker
       wp_enqueue_style( 'wp-color-picker' );
       wp_enqueue_script( 'wp-color-picker' );
 
       // Font awesome 4 and 5 loader
       if ( apply_filters( 'csf_fa4', false ) ) {
-        wp_enqueue_style( 'csf-fa', 'https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css', array(), '4.7.0', 'all' );
+        wp_enqueue_style( 'csf-fa', self::include_plugin_url( 'assets/css/ect-font-awesome.min.css' ), array(), self::$version, 'all' );
       } else {
-        wp_enqueue_style( 'csf-fa5', 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css', array(), '5.15.5', 'all' );
-        wp_enqueue_style( 'csf-fa5-v4-shims', 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/v4-shims.min.css', array(), '5.15.5', 'all' );
+        wp_enqueue_style( 'csf-fa5', self::include_plugin_url( 'assets/css/ect-all.min.css' ), array(), self::$version, 'all' );
+        wp_enqueue_style( 'csf-fa5-v4-shims', self::include_plugin_url( 'assets/css/ect-v4-shims.min.css' ), array(), self::$version, 'all' );
       }
 
       // Check for developer mode

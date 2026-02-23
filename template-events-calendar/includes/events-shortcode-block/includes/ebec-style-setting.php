@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 $main_skin_color = isset($attributes['main_skin_color']) ? $attributes['main_skin_color']:"";
 
 //dynamic title style

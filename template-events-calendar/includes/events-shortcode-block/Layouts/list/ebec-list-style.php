@@ -2,6 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 if ( ! function_exists( 'darkenColor' ) ) {
     function darkenColor($color, $percent) {
         $num = hexdec(ltrim($color, '#'));

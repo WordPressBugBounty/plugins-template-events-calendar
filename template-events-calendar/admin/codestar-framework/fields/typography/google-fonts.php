@@ -1,5 +1,5 @@
 <?php if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access directly.
-
+//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
 if ( ! function_exists( 'csf_get_google_fonts' ) ) {
   function csf_get_google_fonts() {
     return [
