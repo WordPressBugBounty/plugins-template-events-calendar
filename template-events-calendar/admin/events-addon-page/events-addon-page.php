@@ -604,7 +604,7 @@ if ( !class_exists('cool_plugins_events_addons')) {
                 $plugin_slug = isset($plugin['slug']) ? sanitize_key($plugin['slug']) : '';
                 
                 // Use logo from plugin data if available, otherwise fallback
-                $$plugin_logo = '';
+                $plugin_logo = '';
                 if ( ! empty( $plugin['logo'] ) ) {
                     // Check if logo is already a full external URL
                     if ( strpos( $plugin['logo'], 'http' ) !== false ) {

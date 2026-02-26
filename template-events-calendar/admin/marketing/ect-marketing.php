@@ -30,14 +30,14 @@ if (!class_exists('ECT_TEC_Notice')) {
                 ) {
                 if (did_action('elementor/loaded') && class_exists('\Elementor\Plugin') 
                     && !array_key_exists('events-widgets-pro/events-widgets-pro.php', $all_plugins)) {
-                    add_action('admin_notices', [$this, 'show_elementor_notice']);
+                    add_action('ect_display_admin_notices', [$this, 'show_elementor_notice']);
                 }
             }
             if (class_exists('EventsCalendarTemplates') && self::is_theme_activate('Divi') &&
                 !in_array('events-calendar-modules-for-divi/events-calendar-modules-for-divi.php', $active_plugins, true) &&
                 !in_array('events-calendar-modules-for-divi-pro/events-calendar-modules-for-divi-pro.php', $active_plugins, true) &&
                 !in_array('cp-events-calendar-modules-for-divi-pro/cp-events-calendar-modules-for-divi-pro.php', $active_plugins, true)) {
-                add_action('admin_notices', [$this, 'show_divi_notice']);
+                add_action('ect_display_admin_notices', [$this, 'show_divi_notice']);
             }
             add_action('wp_ajax_ect_install_plugin', [$this, 'ect_install_plugin']);
             add_action('wp_ajax_ect_dismiss_notice', [$this, 'ect_dismiss_notice']);

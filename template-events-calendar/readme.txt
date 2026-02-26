@@ -1,11 +1,11 @@
 === Events Shortcodes For The Events Calendar ===
-Contributors: satindersingh, narinder-singh, coolplugins
+Contributors: satindersingh, narinder-singh, coolplugins, eventscalendaraddons
 Donate link: https://donate.stripe.com/5kQdR92iBevO75WbPm6c00i
 Tags: the events calendar, shortcode, event, calendar, event calendar
 Requires at least: 5.0
 Tested up to: 6.9
 Requires PHP: 7.2
-Stable tag: 2.6.0
+Stable tag: 2.6.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -245,6 +245,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 8. The Events Calendar Gutenberg Block
 
 == Changelog ==
+
+= 2.6.1 | FEB 26, 2026 =
+* Fixed: Minor styling issues for better UI consistency.
+* Improved: Code structure and performance optimization.
 
 = 2.6.0 | FEB 23, 2026 =
 * Improvements: Improved dashboard design and usability.

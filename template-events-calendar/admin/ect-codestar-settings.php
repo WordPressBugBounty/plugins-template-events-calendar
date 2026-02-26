@@ -74,7 +74,7 @@ if (! class_exists('ECTSettings')) {
 			
 			// Check if we're on the shortcode settings page
 			if (isset($screen->id) && strpos($screen->id, 'tribe_events-events-template-settings') !== false) {
-				if (EventsCalendarTemplates::ect_header_display()) {
+				//if (EventsCalendarTemplates::ect_header_display()) {
 					$header_file = ECT_PLUGIN_DIR . '/admin/events-addon-page/includes/dashboard-header.php';
 					
 					if(file_exists($header_file)){
@@ -82,7 +82,7 @@ if (! class_exists('ECTSettings')) {
 						$show_wrapper = false; // No wrapper needed
 						include($header_file);
 					}
-			    }
+			   // }
 			}
 		}
 
