@@ -300,19 +300,19 @@ class EventsShortcode {
 					$style = 'style-2';
 				}
 
-				$output .= '<!=========Events Timeline Template ' . ECT_VERSION . '=========>';
+				$output .= '<!----- Events Timeline Template ' . ECT_VERSION . ' ----->';
 				$output .= '<div id="event-timeline-wrapper" class="' . esc_attr( $catCls ) . ' ' . esc_attr( $style ) . '">';
 				$output .= '<div class="cool-event-timeline">';
 				$output .= $events_html;
 				$output .= '</div></div>';
 			} elseif ( $template == 'minimal-list' ) {
-				$output .= '<!=========Events Static list Template ' . ECT_VERSION . '=========>';
+				$output .= '<!----- Events Static list Template ' . ECT_VERSION . ' ----->';
 				$output .= '<div id="ect-events-minimal-list-content">';
 				$output .= '<div id="ect-minimal-list-wrp" class="ect-minimal-list-wrapper ' . esc_attr( $catCls ) . '">';
 				$output .= $events_html;
 				$output .= '</div></div>';
 			} else {
-				$output .= '<!=========Events list Template ' . ECT_VERSION . '=========>';
+				$output .= '<!----- Events list Template ' . ECT_VERSION . ' ----->';
 				$output .= '<div id="ect-events-list-content">';
 				$output .= '<div id="list-wrp" class="ect-list-wrapper ' . esc_attr( $catCls ) . '">';
 				$output .= $events_html;
