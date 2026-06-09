@@ -62,13 +62,14 @@ if ( $display_header === true && $attributes['event_header_type'] === 'show_head
              ' . ebec_date_style( $event, $attributes ) . '
              </span>
              </div>';
-	$html .= '<a href=' . esc_url( $event_value['event_url'] ) . ' class="ebec-events-title" >' . wp_kses_post( $event_value['event_title'] ) . '</a>';
+	$html .= '<a href="' . esc_url( $event_value['event_url'] ) . '" class="ebec-events-title" >' . wp_kses_post( $event_value['event_title'] ) . '</a>';
 if ( $attributes['ebec_venue'] == 'no' && tribe_has_venue( $event_id ) && 'minimal' !== $layout ) {
 	$html .= '<div class="ebec-list-venue" >';
 	if ( $event_value['have_venue_address'] ) {
 		$html .= '<span class="ebec-icon"><i class="ebec-icon-location" aria-hidden="true"></i></span>';
 	}
-	$html .= implode( ',', $event_value['venue_details'] );
+	$venue_details = array_filter( (array) $event_value['venue_details'], 'is_string' );
+	$html .= implode( ',', array_map( 'wp_kses_post', $venue_details ) );
 	$html .= '</div>';
 }
 
@@ -83,13 +84,13 @@ if ( $attributes['ebec_display_desc'] == 'yes' && ! empty( $description ) && 'mi
 if ( ! empty( $event_value['event_cost'] ) && 'minimal' !== $layout ) {
 	$html .= '<div class="ebec-list-cost">' . esc_html( $event_value['event_cost'] ) . '</div>';
 }
-		$html .= '<div class="ebec-style-1-more" ><a href=' . esc_url( $event_value['event_url'] ) . ' class="ebec-events-read-more" rel="bookmark" >' . esc_html__( $attributes['event_link_name'], 'template-events-calendar' ) . '</a></div>';
+		$html .= '<div class="ebec-style-1-more" ><a href="' . esc_url( $event_value['event_url'] ) . '" class="ebec-events-read-more" rel="bookmark" >' . esc_html( $attributes['event_link_name']) . '</a></div>';
 	$html     .= '</div>';
 if ( 'minimal' !== $layout ) {
 	$html .= '<div class="ebec-right-wrapper">';
 	if ( $event_value['image'] != null ) {
-		$html .= '<a class="ebec-static-small-list-ev-img" href=' . esc_url( $event_value['event_url'] ) . '>
-				<img src=' . esc_url( $event_value['image'] ) . '></img><span class="ebec-image-overlay ebec-overlay-type-extern"><span class="ebec-image-overlay-inside"></span></span>
+		$html .= '<a class="ebec-static-small-list-ev-img" href="' . esc_url( $event_value['event_url'] ) . '">
+				<img src="' . esc_url( $event_value['image'] ) . '"></img><span class="ebec-image-overlay ebec-overlay-type-extern"><span class="ebec-image-overlay-inside"></span></span>
 				</a>';
 	}
 		$html .= '  </div>';

@@ -356,8 +356,8 @@ class EBEC_Register_Block {
 		 */
 	public function ebec_render_function( $attributes ) {
 
-			$tax_query         = '';
-			$ebec_block_id     = isset( $attributes['ebec_block_id'] ) ? $attributes['ebec_block_id'] : '';
+			$tax_query         = ''; 
+			$ebec_block_id     = isset( $attributes['ebec_block_id'] ) ? sanitize_key($attributes['ebec_block_id']) : '';
 			$error             = "<div class='ebec_error'>" . esc_html( $attributes['no_event_text'] ) . '</div>';
 			$category          = implode( ',', $attributes['ebec_ev_category'] );
 			$time_range        = ebec_fetch_start_end_time( $attributes );
@@ -386,23 +386,34 @@ class EBEC_Register_Block {
 			);
 		}
 		if ( ! empty( $attributes['ebec_ev_category'] ) ) {
-			if ( ! in_array( 'all', $attributes['ebec_ev_category'] ) ) {
+			$event_categories = array_map(
+				'sanitize_key',
+				(array) $attributes['ebec_ev_category']
+			);
+
+			if ( ! in_array( 'all', $event_categories, true ) ) {
 				$tax_query = array(
 					array(
 						'taxonomy' => 'tribe_events_cat',
 						'field'    => 'slug',
-						'terms'    => $attributes['ebec_ev_category'],
+						'terms'    => $event_categories,
 					),
 				);
 			}
 		}
+		$order = ( isset( $attributes['ebec_order'] ) && in_array( strtoupper( $attributes['ebec_order'] ), array( 'ASC', 'DESC' ), true ) )
+					? strtoupper( $attributes['ebec_order'] )
+					: 'ASC';
+		$max_events = isset( $attributes['ebec_max_events'] )
+					? absint( $attributes['ebec_max_events'] )
+					: 10;
 			$all_events = tribe_get_events(
 				array(
 					'start_date'     => $start_time['date'],
 					'end_date'       => $end_time['date'],
-					'order'          => $attributes['ebec_order'],
+					'order'          => $order,
 					'orderby'        => 'event_date',
-					'posts_per_page' => $attributes['ebec_max_events'],
+					'posts_per_page' => $max_events,
 					'meta_key'       => $attributes['key'],//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 					'meta_query'     => $attributes['meta_date'],//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 					'tax_query'      => $tax_query,//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
@@ -416,13 +427,26 @@ class EBEC_Register_Block {
 				$attributes['event_date_family'],
 				$attributes['event_link_family'],
 			);
-				$block_id      = isset( $attributes['ebec_block_id'] ) ? $attributes['ebec_block_id'] : '';
+				$block_id      = isset( $attributes['ebec_block_id'] ) ? sanitize_key($attributes['ebec_block_id']) : '';
 				$options = get_option( 'ects_options' );
 				$load_google_fonts = ! empty( $options['ect_load_google_font'] ) ? $options['ect_load_google_font'] : 'yes';
 				if ( $load_google_fonts == 'yes' ) {
-					$build_url     = 'https://fonts.googleapis.com/css?family=';
-					$build_url    .= implode( '|', array_filter( $font_family_array ) );
-					wp_enqueue_style( 'ebec-google-font-' . $block_id, "$build_url", array(), ECT_VERSION, 'all' );
+					$sanitized_fonts = array_map(
+						function( $font ) {
+							return rawurlencode( sanitize_text_field( $font ) );
+						},
+						array_filter( $font_family_array )
+					);
+				
+					$build_url  = 'https://fonts.googleapis.com/css?family=';
+					$build_url .= implode( '|', $sanitized_fonts );
+					wp_enqueue_style(
+						'ebec-google-font-' . $block_id,
+						esc_url( $build_url ),
+						array(),
+						ECT_VERSION,
+						'all'
+					);
 				}
 				$events         = '';
 				$html           = '';
@@ -430,7 +454,13 @@ class EBEC_Register_Block {
 				$display_year   = '';
 				$display_header = true;
 				$events         = $all_events;
-				$layout         = isset( $attributes['event_layout'] ) ? $attributes['event_layout'] : 'default';
+				$allowed_layouts = array( 'default', 'minimal' );
+
+				$layout = isset( $attributes['event_layout'] )
+					? sanitize_text_field( $attributes['event_layout'] )
+					: 'default';
+				
+				$layout = in_array( $layout, $allowed_layouts, true ) ? $layout : 'default';
 				$layout_cls     = 'ebec-' . $layout . '-list';
 				$desc_type      = isset( $attributes['event_desc_type'] ) ? $attributes['event_desc_type'] : 'short';
 				include ECT_PLUGIN_DIR . '/includes/events-shortcode-block/includes/ebec-style-setting.php';

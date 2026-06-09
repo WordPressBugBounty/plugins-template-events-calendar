@@ -62,7 +62,7 @@ class CPFM_Feedback_Notice {
         }
        
 
-       $current_page   = isset($_GET['page'])? sanitize_key($_GET['page']):'';
+       $current_page   = isset($_GET['page'])? sanitize_key(wp_unslash($_GET['page'])):'';
 
         
         $allowed_pages = [];
@@ -158,7 +158,7 @@ class CPFM_Feedback_Notice {
         }
 
         $screen         = get_current_screen();
-        $current_page   = isset($_GET['page']) ? sanitize_key($_GET['page']) : '';
+        $current_page   = isset($_GET['page']) ? sanitize_key(wp_unslash($_GET['page'])) : '';
 
        
         $unread_count   = 0;

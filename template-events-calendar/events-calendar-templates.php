@@ -3,7 +3,7 @@
 Plugin Name:Events Shortcodes For The Events Calendar
 Plugin URI:https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
 Description:<a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Shortcodes to show The Events Calendar plugin events list on any page or post in different layouts.
-Version:2.6.2.2
+Version:2.6.3
 Requires PHP:7.2
 Author:Cool Plugins
 Author URI: https://coolplugins.net/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
@@ -20,7 +20,7 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 if (! defined('ECT_VERSION')) {
-	define('ECT_VERSION', '2.6.2.2');//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+	define('ECT_VERSION', '2.6.3');//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 }
 
 /*** Defined constent for later use */
@@ -108,7 +108,7 @@ if (! class_exists('EventsCalendarTemplates')) {
             if (isset($_GET['page'])) {
 				
                 // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Checking page parameter to conditionally hide notices, no data processing
-				$page_param = isset($_GET['page']) ? sanitize_key(wp_unslash($_GET['page'])) : '';
+				$page_param = sanitize_key( wp_unslash( $_GET['page'] ) );
 
 				$allowed_pages = array(
 					'cool-plugins-events-addon',
@@ -220,7 +220,7 @@ if (! class_exists('EventsCalendarTemplates')) {
 		//phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 		public function ect_load_textdomain()
 		{
-			load_plugin_textdomain('ect', false, basename(dirname(__FILE__)) . '/languages/');//phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound
+			load_plugin_textdomain('template-events-calendar', false, basename(dirname(__FILE__)) . '/languages/');
 			if (!get_option('ect-initial-save-version')) {
 				add_option('ect-initial-save-version', ECT_VERSION);
 			}
@@ -269,8 +269,8 @@ if (! class_exists('EventsCalendarTemplates')) {
 
 						'title' => __('Events Addons By Cool Plugins', 'template-events-calendar'),
 						'message' => __('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'template-events-calendar'),
-						'pages' => ['cool-plugins-events-addon', 'tribe_events-events-template-settings', 'cool-plugins-events-addon'],
-						'always_show_on' => ['cool-plugins-events-addon', 'tribe_events-events-template-settings', 'cool-plugins-events-addon'], // This enables auto-show
+						'pages' => ['cool-plugins-events-addon', 'tribe_events-events-template-settings'],
+						'always_show_on' => ['cool-plugins-events-addon', 'tribe_events-events-template-settings'], // This enables auto-show
 						'plugin_name' => 'ect',
 
 					];
@@ -320,7 +320,22 @@ if (! class_exists('EventsCalendarTemplates')) {
 				ect_create_admin_notice(
 					array(
 						'id'              => 'ect-pro-setting-change',
-						'message'         => wp_kses_post(__('<strong>Major design update</strong> for <strong>Events Shortcodes</strong> plugin in version 2.4.0! Update or reset <a href=' . admin_url('admin.php?page=tribe_events-events-template-settings') . '>style settings</a> if you face any design issues.', 'template-events-calendar')),
+						'message' => wp_kses(
+										sprintf(
+											/* translators: %s: Settings page URL. */
+											__(
+												'<strong>Major design update</strong> for <strong>Events Shortcodes</strong> plugin in version 2.4.0! Update or reset <a href="%s">style settings</a> if you face any design issues.',
+												'template-events-calendar'
+											),
+											esc_url( admin_url( 'admin.php?page=tribe_events-events-template-settings' ) )
+										),
+										array(
+											'a'      => array(
+												'href' => array(),
+											),
+											'strong' => array(),
+										)
+									),
 						'review_interval' => 0,
 					)
 				);
@@ -368,15 +383,13 @@ if (! class_exists('EventsCalendarTemplates')) {
 			if (current_user_can('activate_plugins')) {
 
 				printf(
-					'<div class="error CTEC_Msz"><p>' .
-					/* translators: %s: Event start date. */
-						esc_html(__('%1$s %2$s', 'template-events-calendar')),
-					esc_html(__('In order to use this addon, Please first install the latest version of', 'template-events-calendar')),
+					'<div class="error CTEC_Msz"><p>%1$s %2$s</p></div>',
+					esc_html__( 'In order to use this addon, Please first install the latest version of', 'template-events-calendar' ),
 					sprintf(
 						'<a href="%s">%s</a>',
-						esc_url('plugin-install.php?tab=plugin-information&plugin=the-events-calendar&TB_iframe=true'),
-						esc_html(__('The Events Calendar', 'template-events-calendar'))
-					) . '</p></div>'
+						esc_url( 'plugin-install.php?tab=plugin-information&plugin=the-events-calendar&TB_iframe=true' ),
+						esc_html__( 'The Events Calendar', 'template-events-calendar' )
+					)
 				);
 			}
 		}
@@ -512,10 +525,11 @@ if (! class_exists('EventsCalendarTemplates')) {
 
 		function ect_settings_migration()
 		{
-			if (version_compare(get_option('ect-v'), '1.8', '>')) {
+			if ( 'done' === get_option( 'settings_migration_status' ) ) {
 				return;
 			}
-			if (get_option('settings_migration_status')) {
+
+			if (version_compare(get_option('ect-v'), '1.8', '>')) {
 				return;
 			}
 
@@ -588,11 +602,14 @@ if (! class_exists('EventsCalendarTemplates')) {
 				delete_option('ect_options');
 			}
 		}
-		public function ect_plugin_redirection($plugin)
-		{
-			if (plugin_basename(__FILE__) === $plugin) {
-				exit(wp_redirect(admin_url('admin.php?page=tribe_events-events-template-settings#tab=get-started')));//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
+		public function ect_plugin_redirection( $plugin ) {
+			if ( plugin_basename( __FILE__ ) !== $plugin ) {
+				return;
 			}
+			wp_safe_redirect(
+				admin_url( 'admin.php?page=tribe_events-events-template-settings#tab=get-started' )
+			);
+			exit;
 		}
 	}
 }

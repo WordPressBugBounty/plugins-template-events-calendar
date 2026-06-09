@@ -78,9 +78,6 @@ if (!class_exists('ECT_cronjob')) {
             if (is_wp_error($response)) {
                 return;
             }
-            
-            $response_body  = wp_remote_retrieve_body($response);
-            $decoded        = json_decode($response_body, true);
           
             if (!wp_next_scheduled('ect_extra_data_update')) {
 

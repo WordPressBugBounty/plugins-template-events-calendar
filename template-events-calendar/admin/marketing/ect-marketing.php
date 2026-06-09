@@ -183,20 +183,20 @@ if (!class_exists('ECT_TEC_Notice')) {
          */
         public function ect_install_plugin()
         {
-            if (!current_user_can('install_plugins')) {
-                // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
-				$status['errorMessage'] = __( 'Sorry, you are not allowed to install plugins on this site.', 'ect' );
-                wp_send_json_error(['message' => 'Permission denied']);
-            }
-        
             check_ajax_referer('ect_install_nonce');
 
+            if (!current_user_can('install_plugins')) {
+                // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
+				$status['errorMessage'] = __( 'Sorry, you are not allowed to install plugins on this site.', 'template-events-calendar' );
+                wp_send_json_error(['message' => 'Permission denied']);
+            }
+    
             if ( empty( $_POST['slug'] ) ) {
 				wp_send_json_error( array(
 					'slug'         => '',
 					'errorCode'    => 'no_plugin_specified',
 					// phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
-					'errorMessage' => __( 'No plugin specified.', 'ect' ),
+					'errorMessage' => __( 'No plugin specified.', 'template-events-calendar' ),
 				));
 			}
         
@@ -211,15 +211,15 @@ if (!class_exists('ECT_TEC_Notice')) {
 					'slug'         => $plugin_slug,
 					'errorCode'    => 'plugin_not_allowed',
 					// phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
-					'errorMessage' => __( 'This plugin cannot be installed from here.', 'ect' ),
+					'errorMessage' => __( 'This plugin cannot be installed from here.', 'template-events-calendar' ),
 				));
 			}
 
 
 			$status = array(
-				'install' => 'plugin',
-				'slug'    => sanitize_key( wp_unslash( $_POST['slug'] ) ),
-			);
+                'install' => 'plugin',
+                'slug'    => $plugin_slug,
+            );
 
             require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
             require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
@@ -234,7 +234,7 @@ if (!class_exists('ECT_TEC_Notice')) {
             ]);
         
             if (is_wp_error($api)) {
-                wp_send_json_error(['message' => $api->get_error_message()]);
+                wp_send_json_error(['message' => sanitize_text_field($api->get_error_message())]);
             }
         
             $skin     = new WP_Ajax_Upgrader_Skin();
@@ -242,14 +242,19 @@ if (!class_exists('ECT_TEC_Notice')) {
             $result   = $upgrader->install($api->download_link);
         
             if (is_wp_error($result)) {
-                wp_send_json_error(['message' => $result->get_error_message()]);
+                wp_send_json_error(['message' => sanitize_text_field($result->get_error_message())]);
             }
         
             $install_status = install_plugin_install_status($api);
             if (current_user_can('activate_plugin', $install_status['file'])) {
-                $activation_result = activate_plugin($install_status['file']);
+                $network_wide = is_multisite() && current_user_can( 'manage_network_plugins' );
+                $activation_result = activate_plugin(
+                    $install_status['file'],
+                    '',
+                    $network_wide
+                );
                 if (is_wp_error($activation_result)) {
-                    wp_send_json_error(['message' => $activation_result->get_error_message()]);
+                    wp_send_json_error(['message' => sanitize_text_field($activation_result->get_error_message())]);
                 }
             }
         

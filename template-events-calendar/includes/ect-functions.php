@@ -45,7 +45,7 @@ function ect_custom_date_formats($date_format,$template,$event_id,$ev_time){
 					$event_schedule='<span class="ev-mo">'.esc_html($ev_month).'</span>
 									<span class="ev-day">'.esc_html($ev_day).'<i class="date-comma">, </i></span>
 									<span class="ev-yr">'.esc_html($ev_year).'</span>
-									<span class="ev-time"><span class="ect-icon"><i class="ect-icon-clock"></i></span> '.$ev_time.'</span>
+									<span class="ev-time"><span class="ect-icon"><i class="ect-icon-clock"></i></span> '.esc_html($ev_time).'</span>
 									';
 				}
 				else if($date_format=="DML") {

@@ -1,4 +1,6 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 //phpcs:disable WordPress.WP.I18n.MissingTranslatorsComment, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class EventsShortcode {
 
@@ -213,10 +215,10 @@ class EventsShortcode {
 							if ( isset( $venue_details['linked_name'] ) ) {
 								$venue_details_html1 .= '<span class="ect-icon"><i class="ect-icon-location" aria-hidden="true"></i></span>';
 								$venue_details_html1 .= '<span class="ect-venue-name">
-                                ' . $venue_details['linked_name'] . '</span>
+                                ' . wp_kses_post( $venue_details['linked_name'] ) . '</span>
                                 ';
 								if ( tribe_get_map_link() ) {
-									$venue_details_html1 .= '<span class="ect-google">' . tribe_get_map_link_html() . '</span>';
+									$venue_details_html1 .= '<span class="ect-google">' . wp_kses_post( tribe_get_map_link_html() ) . '</span>';
 								}
 							}
 							$venue_details_html1 .= '</div>';
@@ -227,7 +229,11 @@ class EventsShortcode {
 							$venue_details_html .= '<!-- Event Venue Info -->
 							<span class="ect-venue-details ect-address">
 							<div>';
-							$venue_details_html .= implode( ',', $venue_details );
+							$safe_values = array_map(
+								'wp_kses_post',
+								array_filter( $venue_details, 'is_string' )
+							);
+							$venue_details_html .= implode( ',', $safe_values );
 							$venue_details_html .= '</div>';
 							if ( tribe_get_map_link() ) {
 								$venue_details_html .= '<span class="ect-google">' . wp_kses_post( tribe_get_map_link_html() ) . '</span>';
@@ -280,18 +286,18 @@ class EventsShortcode {
 
 			$not_found_msz = '';
 			if ( ! empty( $no_event_found_text ) ) {
-				$not_found_msz = sanitize_text_field( $no_event_found_text );
+				$not_found_msz = wp_kses_post( $no_event_found_text );
 			} else {
 				$not_found_msz = '<div class="ect-no-events"><p>' . esc_html__( 'There are no upcoming events at this time.', 'template-events-calendar' ) . '</p></div>';
 			}
-			$no_events = '<span class="ect-icon"><i class="ect-icon-bell"></i></span>' . $not_found_msz;
+			$no_events = '<span class="ect-icon"><i class="ect-icon-bell"></i></span>' . wp_kses_post( $not_found_msz );
 		}
 
 		 $catCls = ( is_array( $attribute['category'] ) ) ? implode( ' ', $attribute['category'] ) : $attribute['category'];
 
 		 /*** Generate output based on template */
 		if ( $no_events ) {
-			$output .= '<div id="ect-no-events"><p>' . sanitize_text_field( $no_events ) . '</p></div>';
+			$output .= '<div id="ect-no-events"><p>' . wp_kses_post( $no_events ) . '</p></div>';
 		} else {
 			if ( in_array( $template, array( 'timeline', 'classic-timeline', 'timeline-view' ) ) ) {
 				if ( $template == 'timeline' ) {
@@ -329,13 +335,31 @@ class EventsShortcode {
 		 * Function to remove sql injection spacing to prevent sql statement to execute.
 		 */
 	public function events_attr_filter( $attr ) {
-		$pattern = '#[*\(\)\[\]{}"\'\\\\/;$]#';
+
 		$attributes = array();
-		foreach ( (array) $attr as $key => $values ) {
-			$value = preg_replace( $pattern, '', $values );
-			$value = preg_replace( '/\s+/', '', $value );
-			$attributes[ sanitize_key( $key ) ] = esc_html( $value );
+
+		foreach ( (array) $attr as $key => $value ) {
+
+			$key = sanitize_key( $key );
+
+			switch ( $key ) {
+
+				case 'category':
+				case 'tags':
+					$attributes[ $key ] = sanitize_text_field( wp_unslash( $value ) );
+					break;
+
+				case 'limit':
+				case 'posts_per_page':
+					$attributes[ $key ] = absint( $value );
+					break;
+
+				default:
+					$attributes[ $key ] = sanitize_text_field( wp_unslash( $value ) );
+					break;
+			}
 		}
+
 		return $attributes;
 	}
 

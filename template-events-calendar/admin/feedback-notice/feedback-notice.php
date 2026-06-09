@@ -128,10 +128,14 @@ if (!class_exists('ect_admin_notices')):
                 
                 // grab plugin installation date and compare it with current date
                 $display_date = gmdate( 'Y-m-d h:i:s' );
-                $install_date= new DateTime( $installation_date );
-                $current_date = new DateTime( $display_date );
-                $difference = $install_date->diff($current_date);
-                $diff_days= $difference->days;
+                $diff_days    = 0;  
+                try {
+                    $install_date = new DateTime( $installation_date );
+                    $current_date = new DateTime( $display_date );
+                    $diff_days    = $install_date->diff( $current_date )->days;
+                } catch ( Exception $e ) {
+                    return;
+                }
               
                 // check if installation days is greator then week
                 if (isset($diff_days) && $diff_days>= $days ) {
@@ -144,27 +148,46 @@ if (!class_exists('ect_admin_notices')):
          */
         function ect_create_notice_content( $id, $messageObj ) {
 
-            $ajax_url       = admin_url( 'admin-ajax.php' );
-            $ajax_callback  = 'cool_plugins_admin_review_notice_dismiss';
-            $wrap_cls       = 'notice notice-info is-dismissible ect-required-plugin-notice';
-
-            $slug           = sanitize_text_field( $messageObj['slug'] ?? '' );
-            $plugin_name    = sanitize_text_field( $messageObj['plugin_name'] ?? '' );
-            $plugin_link    = esc_url( $messageObj['review_url'] ?? '' );
-
-            $like_it_text        = esc_html__( 'Rate Now! ★★★★★', 'template-events-calendar' );
-            $already_rated_text  = esc_html__( 'Already Reviewed', 'template-events-calendar' );
-            $not_like_it_text    = esc_html__( 'Not Interested', 'template-events-calendar' );
-
+            $ajax_url      = esc_url( admin_url( 'admin-ajax.php' ) );
+            $ajax_callback = 'cool_plugins_admin_review_notice_dismiss';
+            $wrap_cls      = 'notice notice-info is-dismissible ect-required-plugin-notice';
+        
+            $id            = sanitize_key( $id );
+            $slug          = sanitize_key( $messageObj['slug'] ?? '' );
+            $plugin_name   = sanitize_text_field( $messageObj['plugin_name'] ?? '' );
+            $plugin_link   = esc_url( $messageObj['review_url'] ?? '#' );
+        
+            $like_it_text       = esc_html__( 'Rate Now! ★★★★★', 'template-events-calendar' );
+            $already_rated_text = esc_html__( 'Already Reviewed', 'template-events-calendar' );
+            $not_like_it_text   = esc_html__( 'Not Interested', 'template-events-calendar' );
+        
             $review_nonce = wp_create_nonce( $id . '_review_nonce' );
-
-            $web_url = esc_url( 'https://coolplugins.net/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=coolplugins&utm_content=review_notice' );
-
-            $message = "Thanks for using <b>" . esc_html( $plugin_name ) . "</b> - WordPress plugin.
-            We hope you liked it! <br/>Please give us a quick rating, it motivates us to keep working on more 
-            <a href='" . esc_url( $web_url ) . "' target='_blank'><strong>Cool Plugins</strong></a>!<br/>";
-
-            // Clean HTML + correct numbering (12 placeholders)
+        
+            $web_url = 'https://coolplugins.net/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=coolplugins&utm_content=review_notice';
+        
+            $message = sprintf(
+                /* translators: 1: Plugin name, 2: Cool Plugins URL */
+                __(
+                    'Thanks for using <b>%1$s</b> - WordPress plugin. We hope you liked it!<br>Please give us a quick rating, it motivates us to keep working on more <a href="%2$s" target="_blank"><strong>Cool Plugins</strong></a>!<br>',
+                    'template-events-calendar'
+                ),
+                esc_html( $plugin_name ),
+                esc_url( $web_url )
+            );
+        
+            $message = wp_kses(
+                $message,
+                array(
+                    'b'      => array(),
+                    'br'     => array(),
+                    'strong' => array(),
+                    'a'      => array(
+                        'href'   => array(),
+                        'target' => array(),
+                    ),
+                )
+            );
+        
             $html = '
             <div class="ect-main-notice-wrp" id="%12$s" data-slug="%10$s">
                 <div class="%1$s %10$s-feedback-notice-wrapper"
@@ -173,13 +196,13 @@ if (!class_exists('ect_admin_notices')):
                     data-plugin-slug="%10$s"
                     data-wp-nonce="%11$s"
                     id="%12$s">
-
+        
                     <div class="message_container">
                         %3$s
                         <div class="callto_action">
                             <ul>
                                 <li class="love_it">
-                                    <a href="%4$s" class="like_it_btn button button-primary" target="_new">%5$s</a>
+                                    <a href="%4$s" class="like_it_btn button button-primary" target="_blank">%5$s</a>
                                 </li>
                                 <li class="already_rated">
                                     <a href="#" class="already_rated_btn button %10$s_dismiss_notice">%8$s</a>
@@ -191,24 +214,26 @@ if (!class_exists('ect_admin_notices')):
                             <div class="clrfix"></div>
                         </div>
                     </div>
-
+        
                 </div>
             </div>';
-
-            return sprintf(
-                $html,
-                $wrap_cls,            // 1
-                $plugin_name,         // 2 
-                $message,             // 3
-                $plugin_link,         // 4
-                $like_it_text,        // 5
-                $ajax_url,            // 6
-                $ajax_callback,       // 7
-                $already_rated_text,  // 8
-                $not_like_it_text,    // 9
-                $slug,                // 10
-                $review_nonce,        // 11
-                $id                   // 12
+        
+            return wp_kses_post(
+                sprintf(
+                    $html,
+                    esc_attr( $wrap_cls ),        // 1
+                    esc_html( $plugin_name ),     // 2
+                    $message,                     // 3
+                    esc_url( $plugin_link ),      // 4
+                    esc_html( $like_it_text ),    // 5
+                    esc_url( $ajax_url ),         // 6
+                    esc_attr( $ajax_callback ),   // 7
+                    esc_html( $already_rated_text ), // 8
+                    esc_html( $not_like_it_text ),   // 9
+                    esc_attr( $slug ),            // 10
+                    esc_attr( $review_nonce ),    // 11
+                    esc_attr( $id )               // 12
+                )
             );
         }
 
@@ -218,17 +243,29 @@ if (!class_exists('ect_admin_notices')):
         * This is called by a wordpress ajax hook
         */
         public function ect_admin_review_notice_dismiss(){
-            $id = isset($_REQUEST['id'])?sanitize_text_field(wp_unslash($_REQUEST['id'])):'';
-            $nonce_key = $id . '_review_nonce' ;
-            if ( ! check_ajax_referer($nonce_key,'_nonce', false ) ) {
-                echo wp_json_encode( array("error"=>"nonce verification failed!"));
-                die();
-               
-            }else{
-                update_option( 'ect-ratingDiv','yes' );
-                echo wp_json_encode( array("success"=>"true"));
-                die();
+             // Capability check
+             if ( ! current_user_can( 'manage_options' ) ) {
+                wp_send_json_error(
+                    array(
+                        'error' => 'insufficient permissions!',
+                    )
+                );
             }
+            $id = isset( $_REQUEST['id'] )
+                ? sanitize_text_field( wp_unslash( $_REQUEST['id'] ) )
+                : '';
+
+            $nonce_key = $id . '_review_nonce' ;
+
+            check_ajax_referer( $nonce_key, '_nonce' );
+
+            update_option( 'ect-ratingDiv', 'yes' );
+                
+            wp_send_json_success(
+                array(
+                    'success' => true,
+                )
+            );
            
         }
 

@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 //phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class EctStyles {
 
@@ -80,14 +81,16 @@ class EctStyles {
 		}
 	}
 	public static function get_typeo_output( $settings ) {
-		$output        = '';
-		$important     = '';
-		$font_family   = ( ! empty( $settings['font-family'] ) ) ? $settings['font-family'] : '';
-		$backup_family = ( ! empty( $settings['backup-font-family'] ) ) ? ', ' . $settings['backup-font-family'] : '';
+
+		$output    = '';
+		$important = '';
+		// Font family sanitize.
+		$font_family = ! empty( $settings['font-family'] ) ? preg_replace( '/[^a-zA-Z0-9,\s"-]/', '', sanitize_text_field( $settings['font-family'] ) ) : '';
+		$backup_family = ! empty( $settings['backup-font-family'] ) ? ', ' . preg_replace( '/[^a-zA-Z0-9,\s"-]/', '', sanitize_text_field( $settings['backup-font-family'] ) ) : '';
 		if ( $font_family ) {
 			$output .= 'font-family:"' . $font_family . '"' . $backup_family . $important . ';';
 		}
-		// Common font properties
+		// Allowed CSS properties.
 		$properties = array(
 			'color',
 			'font-weight',
@@ -99,9 +102,21 @@ class EctStyles {
 		);
 
 		foreach ( $properties as $property ) {
-			if ( isset( $settings[ $property ] ) && $settings[ $property ] !== '' ) {
-				$output .= $property . ':' . $settings[ $property ] . $important . ';';
+			if ( ! isset( $settings[ $property ] ) || '' === $settings[ $property ] ) {
+				continue;
 			}
+			$value = sanitize_text_field( $settings[ $property ] );
+			// Color validation.
+			if ( 'color' === $property ) {
+				$value = sanitize_hex_color( $value );
+	
+				if ( empty( $value ) ) {
+					continue;
+				}
+			} else {
+				$value = preg_replace( '/[;{}]/', '', $value );
+			}
+			$output .= $property . ':' . $value . $important . ';';
 		}
 		$properties = array(
 			'font-size',
@@ -109,17 +124,20 @@ class EctStyles {
 			'letter-spacing',
 			'word-spacing',
 		);
-
-		$unit = ( ! empty( $settings['unit'] ) ) ? $settings['unit'] : 'px';
-
-		$line_height_unit = ( ! empty( $settings['line_height_unit'] ) ) ? $settings['line_height_unit'] : 'em';
+		$allowed_units = array( 'px', 'em', 'rem', '%', 'vw', 'vh' );
+		$unit = ! empty( $settings['unit'] ) && in_array( $settings['unit'], $allowed_units, true ) ? $settings['unit'] : 'px';
+		$line_height_unit = ! empty( $settings['line_height_unit'] ) && in_array( $settings['line_height_unit'], $allowed_units, true ) ? $settings['line_height_unit'] : 'em';
 		foreach ( $properties as $property ) {
-			if ( isset( $settings[ $property ] ) && $settings[ $property ] !== '' ) {
-				$unit    = ( $property === 'line-height' ) ? $line_height_unit : $unit;
-				$output .= $property . ':' . $settings[ $property ] . $unit . $important . ';';
+			if ( ! isset( $settings[ $property ] ) || '' === $settings[ $property ] ) {
+				continue;
 			}
+			$value = floatval( $settings[ $property ] );
+			$current_unit = ( 'line-height' === $property )
+				? $line_height_unit
+				: $unit;
+			$output .= $property . ':' . $value . $current_unit . $important . ';';
 		}
-			return $output;
+		return $output;
 	}
 	public static function ect_hex2rgba( $color, $opacity = false ) {
 
@@ -186,7 +204,6 @@ class EctStyles {
 		$ect_desc_styles           = $thisPlugin::get_typeo_output( ! empty( $options['ect_desc_styles'] ) ? $options['ect_desc_styles'] : '' );
 		$ect_venue_styles          = $thisPlugin::get_typeo_output( ! empty( $options['ect_desc_venue'] ) ? $options['ect_desc_venue'] : '' );
 		$ect_date_style            = $thisPlugin::get_typeo_output( ! empty( $options['ect_dates_styles'] ) ? $options['ect_dates_styles'] : '' );
-		$ect_date_style            = $thisPlugin::get_typeo_output( $options['ect_dates_styles'] );
 		// Fetch Description Typograpy
 		$ect_desc_style        = ! empty( $options['ect_desc_styles'] ) ? $options['ect_desc_styles'] : '';
 		$ect_desc_color        = ! empty( $ect_desc_style['color'] ) ? $ect_desc_style['color'] : '#a5a5a5';
@@ -205,11 +222,10 @@ class EctStyles {
 		$ect_date_font_style  = ! empty( $ect_date_styles['font-style'] ) ? $ect_date_styles['font-style'] : '';
 		$ect_date_line_height = ! empty( $ect_date_styles['line-height'] ) ? $ect_date_styles['line-height'] : '1';
 
-		$all_saved_ff['date_family'] = str_replace( ' ', '+', $ect_date_font_family );
-
-		$all_saved_ff['venue_family'] = str_replace( ' ', '+', $ect_venue_font_famiily );
-		$all_saved_ff['title_family'] = str_replace( ' ', '+', $ect_title_font_famiily );
-		$all_saved_ff['desc_family']  = str_replace( ' ', '+', $ect_desc_font_famiily );
+		$all_saved_ff['date_family']  = preg_replace( '/[^A-Za-z0-9+]/', '', str_replace( ' ', '+', sanitize_text_field( $ect_date_font_family ) ) );
+        $all_saved_ff['venue_family'] = preg_replace( '/[^A-Za-z0-9+]/', '', str_replace( ' ', '+', sanitize_text_field( $ect_venue_font_famiily ) ) );
+        $all_saved_ff['title_family'] = preg_replace( '/[^A-Za-z0-9+]/', '', str_replace( ' ', '+', sanitize_text_field( $ect_title_font_famiily ) ) );
+        $all_saved_ff['desc_family']  = preg_replace( '/[^A-Za-z0-9+]/', '', str_replace( ' ', '+', sanitize_text_field( $ect_desc_font_famiily ) ) );
 		$safe_fonts                   = array(
 			'Arial',
 			'Arial+Black',

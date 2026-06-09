@@ -45,7 +45,7 @@ if (!class_exists('ECT_event_shortcode')) {
         {
             echo '<style>span.dashicon.dashicons.dashicons-ect-custom-icon:before {
         content:"";
-        background: url(' . ECT_PLUGIN_URL . 'assets/images/ect-icons.svg);
+        background: url(' . esc_url( ECT_PLUGIN_URL . 'assets/images/ect-icons.svg' ) . ');
         background-size: contain;
         background-repeat: no-repeat;
         height: 20px;
@@ -54,7 +54,7 @@ if (!class_exists('ECT_event_shortcode')) {
 
          #wp-content-wrap a[data-modal-id="ect_shortcode_generator"]:before {
         content: "";
-        background: url(' . ECT_PLUGIN_URL . 'assets/images/ect-icons.svg);
+        background: url(' . esc_url( ECT_PLUGIN_URL . 'assets/images/ect-icons.svg' ) . ');
         background-size: contain;
         background-repeat: no-repeat;
         height: 17px;
@@ -94,7 +94,7 @@ if (!class_exists('ECT_event_shortcode')) {
                 if (is_array($_GET['post_type'])) {
                     $post_type = isset( $_GET['post_type'][0] ) ? sanitize_key( wp_unslash( $_GET['post_type'][0] ) ) : '';
                 } else {
-                    $post_type = sanitize_text_field(wp_unslash($_GET['post_type']));
+                    $post_type = sanitize_key(wp_unslash($_GET['post_type']));
                 }
             } else {
                 $post_type = get_post_type($id);

@@ -16,93 +16,93 @@ if ( ! function_exists( 'darkenColor' ) ) {
 }
 // dynamic css
 $selectors = '
-.ebec-block-' . $ebec_block_id . ' .ebec-header-year 
+.ebec-block-' . esc_attr($ebec_block_id) . ' .ebec-header-year 
   {
-      color:' . $main_skin_color . '
+      color:' . esc_attr($main_skin_color) . '
    }
- .ebec-block-' . $ebec_block_id . ' .ebec-header-line  {
-     background-color:' . $main_skin_color . ' !important
+ .ebec-block-' . esc_attr($ebec_block_id) . ' .ebec-header-line  {
+     background-color:' . esc_attr($main_skin_color) . ' !important
  }
- .ebec-block-' . $ebec_block_id . ' .ebec-event-datetimes .ev-mo {
-     color:' . $main_skin_color . '
+ .ebec-block-' . esc_attr($ebec_block_id) . ' .ebec-event-datetimes .ev-mo {
+     color:' . esc_attr($main_skin_color) . '
  }
- .ebec-block-' . $ebec_block_id . ' .ebec-event-datetimes .ebec-ev-day  {
-     color:' . $main_skin_color . '
+ .ebec-block-' . esc_attr($ebec_block_id) . ' .ebec-event-datetimes .ebec-ev-day  {
+     color:' . esc_attr($main_skin_color) . '
  }
  .ebec-list-wrapper>:not(.ebec-minimal-list-wrapper) .ebec-list-posts{
-    border-left-color:' . $main_skin_color . '!important
+    border-left-color:' . esc_attr($main_skin_color) . '!important
  }
-  .ebec-block-' . $ebec_block_id . ' .ebec-event-details  {
-     border-left-color:' . $main_skin_color . '!important
+  .ebec-block-' . esc_attr($ebec_block_id) . ' .ebec-event-details  {
+     border-left-color:' . esc_attr($main_skin_color) . '!important
  }
- .ebec-block-' . $ebec_block_id . ' .ebec-events-title  {
-     color:' . $event_title_color . ';
-     font-size:' . $event_title_font . 'px;
-     font-family:' . $event_title_family . ';
-     font-weight:' . $event_title_weight . ';
-     text-transform:' . $event_title_transform . ';
-     font-style:' . $event_title_style . ';
-     text-decoration:' . $event_title_decoration . ' !important;
-     line-height:' . ( 'initial' === $event_title_line_height ? 'initial' : $event_title_line_height . 'px' ) . ';
-     letter-spacing:' . $event_title_letter_spacing . 'px
+ .ebec-block-' . esc_attr($ebec_block_id) . ' .ebec-events-title  {
+     color:' . esc_attr($event_title_color) . ';
+     font-size:' . esc_attr($event_title_font) . 'px;
+     font-family:' . esc_attr($event_title_family) . ';
+     font-weight:' . esc_attr($event_title_weight) . ';
+     text-transform:' . esc_attr($event_title_transform) . ';
+     font-style:' . esc_attr($event_title_style) . ';
+     text-decoration:' . esc_attr($event_title_decoration) . ' !important;
+     line-height:' . ( 'initial' === $event_title_line_height ? 'initial' : esc_attr($event_title_line_height) . 'px' ) . ';
+     letter-spacing:' . esc_attr($event_title_letter_spacing) . 'px
  }
- .ebec-block-' . $ebec_block_id . ' .ebec-date-area {
-     color:' . $event_date_color . ';
-     font-size:' . $event_date_font . 'px;
-     font-family:' . $event_date_family . ';
-     font-weight:' . $event_date_weight . ';
-     text-transform:' . $event_date_transform . ';
-     font-style:' . $event_date_style . ';
-     text-decoration:' . $event_date_decoration . ';
-     line-height:' . ( 'initial' === $event_date_line_height ? 'initial' : $event_date_line_height . 'px' ) . ';
-     letter-spacing:' . $event_date_letter_spacing . 'px
+ .ebec-block-' . esc_attr($ebec_block_id) . ' .ebec-date-area {
+     color:' . esc_attr($event_date_color) . ';
+     font-size:' . esc_attr($event_date_font) . 'px;
+     font-family:' . esc_attr($event_date_family) . ';
+     font-weight:' . esc_attr($event_date_weight) . ';
+     text-transform:' . esc_attr($event_date_transform) . ';
+     font-style:' . esc_attr($event_date_style) . ';
+     text-decoration:' . esc_attr($event_date_decoration) . ';
+     line-height:' . ( 'initial' === $event_date_line_height ? 'initial' : esc_attr($event_date_line_height) . 'px' ) . ';
+     letter-spacing:' . esc_attr($event_date_letter_spacing) . 'px
  }
-  .ebec-block-' . $ebec_block_id . ' .ebec-list-venue  {
-     color:' . $event_venue_color . ';
-     font-size:' . $event_venue_font . 'px;
-     font-family:' . $event_venue_family . ';
-     font-weight:' . $event_venue_weight . ';
-     text-transform:' . $event_venue_transform . ';
-     font-style:' . $event_venue_style . ';
-     text-decoration:' . $event_venue_decoration . ';
-     line-height:' . ( 'initial' === $event_venue_line_height ? 'initial' : $event_venue_line_height . 'px' ) . ';
-     letter-spacing:' . $event_venue_letter_spacing . 'px
+  .ebec-block-' . esc_attr($ebec_block_id) . ' .ebec-list-venue  {
+     color:' . esc_attr($event_venue_color) . ';
+     font-size:' . esc_attr($event_venue_font) . 'px;
+     font-family:' . esc_attr($event_venue_family) . ';
+     font-weight:' . esc_attr($event_venue_weight) . ';
+     text-transform:' . esc_attr($event_venue_transform) . ';
+     font-style:' . esc_attr($event_venue_style) . ';
+     text-decoration:' . esc_attr($event_venue_decoration) . ';
+     line-height:' . ( 'initial' === $event_venue_line_height ? 'initial' : esc_attr($event_venue_line_height) . 'px' ) . ';
+     letter-spacing:' . esc_attr($event_venue_letter_spacing) . 'px
  }
-  .ebec-block-' . $ebec_block_id . ' .ebec-event-content  {
-     color:' . $event_description_color . ';
-     font-size:' . $event_description_font . 'px;
-     font-family:' . $event_description_family . ';
-     font-weight:' . $event_description_weight . ';
-     text-transform:' . $event_description_transform . ';
-     font-style:' . $event_description_style . ';
-     text-decoration:' . $event_description_decoration . ';
-     letter-spacing:' . $event_description_letter_spacing . 'px;
-     line-height:' . ( 'initial' === $event_description_line_height ? 'initial' : $event_description_line_height . 'px' ) . ';
- }
-
-  .ebec-block-' . $ebec_block_id . ' .ebec-events-read-more  {
-     color:' . $event_link_color . ';
-     font-size:' . $event_link_font . 'px;
-     font-family:' . $event_link_family . ';
-     font-weight:' . $event_link_weight . ';
-     text-transform:' . $event_link_transform . ';
-     font-style:' . $event_link_style . ';
-     text-decoration:' . $event_link_decoration . ' !important;
-     line-height:' . ( 'initial' === $event_link_line_height ? 'initial' : $event_link_line_height . 'px' ) . ';
-     letter-spacing:' . $event_link_letter_spacing . 'px
- }
- .ebec-block-' . $ebec_block_id . ' .ebec-list-venue a{
-   color:' . $event_venue_color . ';
+  .ebec-block-' . esc_attr($ebec_block_id) . ' .ebec-event-content  {
+     color:' . esc_attr($event_description_color) . ';
+     font-size:' . esc_attr($event_description_font) . 'px;
+     font-family:' . esc_attr($event_description_family) . ';
+     font-weight:' . esc_attr($event_description_weight) . ';
+     text-transform:' . esc_attr($event_description_transform) . ';
+     font-style:' . esc_attr($event_description_style) . ';
+     text-decoration:' . esc_attr($event_description_decoration) . ';
+     letter-spacing:' . esc_attr($event_description_letter_spacing) . 'px;
+     line-height:' . ( 'initial' === $event_description_line_height ? 'initial' : esc_attr($event_description_line_height) . 'px' ) . ';
  }
 
- .ebec-block-' . $ebec_block_id . ' .ebec-list-cost {
-   color:' . $main_skin_color . ';
+  .ebec-block-' . esc_attr($ebec_block_id) . ' .ebec-events-read-more  {
+     color:' . esc_attr($event_link_color) . ';
+     font-size:' . esc_attr($event_link_font) . 'px;
+     font-family:' . esc_attr($event_link_family) . ';
+     font-weight:' . esc_attr($event_link_weight) . ';
+     text-transform:' . esc_attr($event_link_transform) . ';
+     font-style:' . esc_attr($event_link_style) . ';
+     text-decoration:' . esc_attr($event_link_decoration) . ' !important;
+     line-height:' . ( 'initial' === $event_link_line_height ? 'initial' : esc_attr($event_link_line_height) . 'px' ) . ';
+     letter-spacing:' . esc_attr($event_link_letter_spacing) . 'px
+ }
+ .ebec-block-' . esc_attr($ebec_block_id) . ' .ebec-list-venue a{
+   color:' . esc_attr($event_venue_color) . ';
+ }
+
+ .ebec-block-' . esc_attr($ebec_block_id) . ' .ebec-list-cost {
+   color:' . esc_attr($main_skin_color) . ';
  }
    .ebec-minimal-list-wrapper .ebec-list-posts.style-1.ebec-simple-event .ebec-event-date-tag{
-   background-color:' . $event_simple_color . ';
-   border-left: 4px solid ' . darkenColor($event_simple_color, 20) . ';
+   background-color:' . esc_attr($event_simple_color) . ';
+   border-left: 4px solid ' . darkenColor(esc_attr($event_simple_color), 20) . ';
  }
  .ebec-minimal-list-wrapper .ebec-list-posts.style-1.ebec-featured-event .ebec-event-date-tag{
-   background-color:' . $event_featured_color . ';
-   border-left: 4px solid ' . darkenColor($event_featured_color, 20) . ';
+   background-color:' . esc_attr($event_featured_color) . ';
+   border-left: 4px solid ' . darkenColor(esc_attr($event_featured_color), 20) . ';
  }';

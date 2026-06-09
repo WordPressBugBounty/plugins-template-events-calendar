@@ -32,7 +32,7 @@ class ect_feedback{
 	function enqueue_feedback_scripts() {
 		$screen = get_current_screen();
 		if ( isset( $screen ) && $screen->id == 'plugins' ) {
-			wp_enqueue_script( __NAMESPACE__ . 'feedback-script', $this->plugin_url . 'admin/feedback/js/admin-feedback.js', array( 'jquery' ), $this->plugin_version, 'true');
+			wp_enqueue_script( __NAMESPACE__ . 'feedback-script', $this->plugin_url . 'admin/feedback/js/admin-feedback.js', array( 'jquery' ), $this->plugin_version, true);
 			wp_enqueue_style( 'cool-plugins-feedback-css', $this->plugin_url . 'admin/feedback/css/admin-feedback.css', null, $this->plugin_version );
 		}
 	}
@@ -127,7 +127,7 @@ class ect_feedback{
 		// Server and WP environment details
 		$server_info = [
 			'server_software'        => isset($_SERVER['SERVER_SOFTWARE']) ? sanitize_text_field(wp_unslash($_SERVER['SERVER_SOFTWARE'])) : 'N/A',
-			'mysql_version'          => $wpdb ? sanitize_text_field($wpdb->get_var("SELECT VERSION()")) : 'N/A',//phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			'mysql_version'          => isset( $wpdb ) ? sanitize_text_field( $wpdb->db_version() ) : 'N/A',
 			'php_version'            => sanitize_text_field(phpversion() ?: 'N/A'),
 			'wp_version'             => sanitize_text_field(get_bloginfo('version') ?: 'N/A'),
 			'wp_debug'               => (defined('WP_DEBUG') && WP_DEBUG) ? 'Enabled' : 'Disabled',
@@ -185,9 +185,12 @@ class ect_feedback{
 
 
 	function submit_deactivation_response() {
-		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field(wp_unslash($_POST['_wpnonce'])), '_cool-plugins_deactivate_feedback_nonce' ) ) {
-			wp_send_json_error();
-		} else {
+		
+		check_ajax_referer( '_cool-plugins_deactivate_feedback_nonce', '_wpnonce' );
+		
+		if ( ! current_user_can( 'activate_plugins' ) ) {
+			wp_send_json_error( 'Unauthorized' );
+		}
 			$reason             = isset( $_POST['reason'] ) ? sanitize_text_field(wp_unslash( $_POST['reason'] )) : '';
 			$deactivate_reasons = array(
 				'didnt_work_as_expected'         => array(
@@ -212,27 +215,28 @@ class ect_feedback{
 				),
 			);
 
-			$deativation_reason = array_key_exists( $reason, $deactivate_reasons ) ? $reason : 'other';
+			$deactivation_reason = array_key_exists( $reason, $deactivate_reasons ) ? $reason : 'other';
 
 			$sanitized_message = empty($_POST['message']) || sanitize_text_field(wp_unslash( $_POST['message'] )) == '' ? 'N/A' : sanitize_text_field(wp_unslash( $_POST['message'] ));
 			$admin_email       = sanitize_email( get_option( 'admin_email' ) );
-			$site_url          = esc_url( get_site_url() );
+			$site_url          = esc_url_raw( get_site_url() );
 			$feedback_url      = ECT_FEEDBACK_URL.'wp-json/coolplugins-feedback/v1/feedback' ;
 			$plugin_initial    = get_option('ect-initial-save-version') ?: 'N/A';
 			$install_date      = get_option('ect-install-date') ?: 'N/A';
 			$unique_key        = '20';
-			$site_id        	= $site_url . '-' . $install_date . '-' . $unique_key;
+			$site_id           = $site_url . '-' . $install_date . '-' . $unique_key;
+			$user_info         = $this->cpfm_get_user_info();
 			$response          = wp_remote_post(
 				$feedback_url,
 				array(
 					'timeout' => 30,
 					'body'    => array(
-						'server_info' => serialize($this->cpfm_get_user_info()['server_info']), 
-						'extra_details' => serialize($this->cpfm_get_user_info()['extra_details']),
+						'server_info'     => wp_json_encode( $user_info['server_info'] ),
+			            'extra_details'   => wp_json_encode( $user_info['extra_details'] ),
 						'plugin_version' => $this->plugin_version,
 						'plugin_name'    => $this->plugin_name,
 						'plugin_initial' => $plugin_initial,
-						'reason'         => $deativation_reason,
+						'reason'         => $deactivation_reason,
 						'review'         => $sanitized_message,
 						'email'          => $admin_email,
 						'domain'         => $site_url,
@@ -241,9 +245,12 @@ class ect_feedback{
 				)
 			);
 
-			die( json_encode( array( 'response' => $response ) ) );
-		}
-
+			if ( is_wp_error( $response ) ) {
+				wp_send_json_error( 'Feedback submission failed' );
+			}
+			
+			wp_send_json_success( 'Feedback submitted successfully' );
+		
 	}
 }
 new ect_feedback();
