@@ -1,3 +1,40 @@
+/* ****NEW CSS **** */
+#event-timeline-wrapper .ect-timeline-post.style-1 .ect-date-area.timeline-view-schedule .ev-day,
+#event-timeline-wrapper .ect-timeline-post.style-1 .ect-date-area.timeline-view-schedule .ev-mo,
+#event-timeline-wrapper .ect-timeline-post.style-1 .ect-date-area.timeline-view-schedule .ev-yr,
+#event-timeline-wrapper .ect-timeline-post.style-1 .ect-date-area.timeline-view-schedule .ev-weekday,
+#event-timeline-wrapper .ect-timeline-post.style-2 .ect-date-area.timeline-view-schedule .ev-day,
+#event-timeline-wrapper .ect-timeline-post.style-2 .ect-date-area.timeline-view-schedule .ev-mo,
+#event-timeline-wrapper .ect-timeline-post.style-2 .ect-date-area.timeline-view-schedule .ev-yr,
+#event-timeline-wrapper .ect-timeline-post.style-2 .ect-date-area.timeline-view-schedule .ev-weekday,
+#event-timeline-wrapper .ect-timeline-post.style-3 .ect-date-area.timeline-view-schedule .ev-day,
+#event-timeline-wrapper .ect-timeline-post.style-3 .ect-date-area.timeline-view-schedule .ev-mo,
+#event-timeline-wrapper .ect-timeline-post.style-3 .ect-date-area.timeline-view-schedule .ev-yr,
+#event-timeline-wrapper .ect-timeline-post.style-3 .ect-date-area.timeline-view-schedule .ev-weekday{
+    font-size: 17px;
+}
+#event-timeline-wrapper .ect-timeline-post.style-1 .ect-date-area.timeline-view-schedule .ev-time,
+#event-timeline-wrapper .ect-timeline-post.style-2 .ect-date-area.timeline-view-schedule .ev-time,
+#event-timeline-wrapper .ect-timeline-post.style-3 .ect-date-area.timeline-view-schedule .ev-time {
+    font-size: 14px;
+}
+
+#event-timeline-wrapper .ect-timeline-post.style-1 .ect-rate-area,
+#event-timeline-wrapper .ect-timeline-post.style-2 .ect-rate-area,
+#event-timeline-wrapper .ect-timeline-post.style-3 .ect-rate-area,
+#event-timeline-wrapper .ect-timeline-post.style-1 .ect-rate-area .ect-rate,
+#event-timeline-wrapper .ect-timeline-post.style-2 .ect-rate-area .ect-rate,
+#event-timeline-wrapper .ect-timeline-post.style-3 .ect-rate-area .ect-rate{
+    font-size: 15px;
+    font-weight: 500;
+}
+#event-timeline-wrapper .ect-timeline-post.style-1 .ect-date-area span,
+#event-timeline-wrapper .ect-timeline-post.style-2 .ect-date-area span,
+#event-timeline-wrapper .ect-timeline-post.style-3 .ect-date-area span {
+    font-size: 16px;
+}
+/* ****NEW CSS END**** */
+
 /* TIMELINE TEMPLATE CSS by CoolPlugins.net
 --------------------------------------------------- */
 
@@ -112,7 +149,7 @@ a {
     display: inline-block;
     line-height: 34px;
     font-weight: 700;
-    font-size: 26px;
+    font-size: 17px;
     color: rgb(0, 68, 94);
     padding: 8px;
     word-break: break-word;

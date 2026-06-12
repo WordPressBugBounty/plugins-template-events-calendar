@@ -1,3 +1,66 @@
+/* ****NEW CSS** */
+#ect-events-list-content .ect-list-post.style-1 {
+    padding: 20px;
+}
+#ect-events-list-content .ect-list-post.style-1 .ect-list-date .ect-date-area .ev-time {
+    font-size: 13px;
+    padding-top: 0px;
+}
+#ect-events-list-content .ect-list-post.style-1 .ect-events-read-more,
+#ect-events-list-content .ect-list-post.style-2 .ect-events-read-more,
+#ect-events-list-content .ect-list-post.style-3 .ect-events-read-more {
+    margin-top: 10px;
+    font-weight: 600;
+     font-size: 15px;
+}
+#ect-events-list-content .ect-list-post.style-1 .ect-list-date .ect-date-area {
+    font-size: 31px;
+}
+#ect-events-list-content .ect-list-post.style-1 .ect-rate-area,
+#ect-events-list-content .ect-list-post.style-2 .ect-rate-area,
+#ect-events-list-content .ect-list-post.style-3 .ect-rate-area {
+    font-weight: 500;
+    font-size: 14px;
+}
+#ect-events-list-content .ect-list-post.style-2 .ect-list-date .ect-date-area .ev-day {
+    font-size: 17px;
+    line-height: 0px
+}
+#ect-events-list-content .ect-list-post.style-2 .ect-list-date .ect-date-area .ev-mo,
+#ect-events-list-content .ect-list-post.style-2 .ect-list-date .ect-date-area .ev-yr{
+   font-size: 17px;
+    line-height: 0px
+}
+
+#ect-events-list-content .ect-list-post.style-2 .ect-list-date .ect-date-area .ev-time,
+#ect-events-list-content .ect-list-post.style-2 .ect-list-date .ect-date-area .ev-weekday,
+#ect-events-list-content .ect-list-post.style-2 .ect-list-date .ect-date-area .ev-time{
+    font-size: 14px;
+}
+#ect-events-list-content .style-2 .modern-list-right-side {
+    gap: 10px;
+}
+
+#ect-events-list-content .ect-list-post.style-1 .ect-list-date .ect-date-area .ev-day,
+#ect-events-list-content .ect-list-post.style-1 .ect-list-date .ect-date-area .ev-mo,
+#ect-events-list-content .ect-list-post.style-1 .ect-list-date .ect-date-area .ev-yr,
+#ect-events-list-content .ect-list-post.style-1 .ect-list-date .ect-date-area .ev-weekday {
+    font-size: 17px;
+}
+#ect-events-list-content .ect-list-post.style-1 .ect-list-date .ect-date-area .ev-time {
+    font-size: 15px;
+}
+#ect-events-list-content .ect-list-post.style-3 .ect-list-date .ect-date-area .ev-day,
+#ect-events-list-content .ect-list-post.style-3 .ect-list-date .ect-date-area .ev-mo,
+#ect-events-list-content .ect-list-post.style-3 .ect-list-date .ect-date-area .ev-yr,
+#ect-events-list-content .ect-list-post.style-3 .ect-list-date .ect-date-area .ev-weekday {
+    font-size: 19px;
+}
+#ect-events-list-content .ect-list-post.style-3 .ect-list-date .ect-date-area .ev-time {
+    font-size: 15px;
+}
+/* ****NEW CSS END** */
+
 /*
 List Common Styles
 */
@@ -356,7 +419,7 @@ a.ect-event-read-more {
     overflow: hidden;
     margin-bottom: 20px;
     border: 1px solid #00000020;
-    padding: 10px;
+    padding: 20px;
     border-radius: 10px;
 }
 
@@ -396,7 +459,7 @@ a.ect-event-read-more {
     min-height: auto;
     overflow: hidden;
     margin-bottom: 20px;
-    padding: 10px;
+    padding: 20px;
 }
 
 .ect-list-post.style-3 .ect-list-post-left {
@@ -463,6 +526,14 @@ a.ect-event-read-more {
 /*  Media Query */
 
 @media only screen and (max-width: 790px) {
+    #ect-events-list-content .ect-list-post.style-2 .modern-list-right-side .ect-list-date, .modern-list-right-side .ect-list-date .ect-date-area {
+        align-items: center;
+    }
+    #ect-events-list-content .ect-list-post.style-2 .ect-list-date .ect-date-area .ev-mo,
+    #ect-events-list-content .ect-list-post.style-2 .ect-list-date .ect-date-area .ev-day,
+    #ect-events-list-content .ect-list-post.style-2 .ect-list-date .ect-date-area .ev-yr{
+        line-height: normal;
+    }
     .ect-list-post {
         margin-bottom: 35px;
         flex-direction: column;
@@ -584,10 +655,6 @@ a.ect-event-read-more {
         float: left;
         margin-top: 0;
     }
-    /* #ect-events-list-content .style-3 .ect-rate-area {
-        margin-top: 10px;
-        text-align: center;
-    } */
     .ect-list-post.style-3 .ect-list-post-left .ect-list-date {
         min-height: 210px;
     }
