@@ -5,7 +5,7 @@ Tags: the events calendar, shortcode, event, calendar, event calendar
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 2.6.4
+Stable tag: 2.6.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -412,6 +412,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 8. Gutenberg Block for The Events Calendar
 
 == Changelog ==
+
+= 2.6.5 | JUN 15, 2026 =
+* Improved: Cleaned up the notice registration logic for better readability.
 
 = 2.6.4 | JUN 12, 2026 =
 * Improved: Layout styling and CSS optimizations across all templates.
