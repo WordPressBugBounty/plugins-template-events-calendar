@@ -1,4 +1,8 @@
 /* ****NEW CSS** */
+.ect-list-post.style-3 .ect-share-wrapper {
+    right: 18px !important;
+    top: 18px !important;
+}
 #ect-events-list-content .ect-list-post.style-1 {
     padding: 20px;
 }
@@ -15,6 +19,7 @@
 }
 #ect-events-list-content .ect-list-post.style-1 .ect-list-date .ect-date-area {
     font-size: 31px;
+    padding-top: 0px;
 }
 #ect-events-list-content .ect-list-post.style-1 .ect-rate-area,
 #ect-events-list-content .ect-list-post.style-2 .ect-rate-area,

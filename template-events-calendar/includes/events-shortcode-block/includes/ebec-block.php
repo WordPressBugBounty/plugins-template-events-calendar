@@ -21,8 +21,8 @@ class EBEC_Register_Block {
 		 * @access private
 		 */
 	private function __construct() {
-		// add_action( 'enqueue_block_assets', array( $this, 'ebec_editor_assets' ) );
-		add_action( 'enqueue_block_editor_assets', array( $this, 'ebec_block_editor_assets' ) );
+		
+		add_action( 'enqueue_block_assets', array( $this, 'ebec_block_editor_assets' ) );
 		add_action( 'init', array( $this, 'ebec_register_block' ) );
 		add_action('init', array($this, 'ebec_modify_rest_api_limits'), 20);
 	}
@@ -36,7 +36,7 @@ class EBEC_Register_Block {
 
 
 	public function ebec_block_editor_assets() {
-			wp_enqueue_script( 'ebec-block-editor', ECT_PLUGIN_URL . 'includes/events-shortcode-block/dist/index.js', array( 'wp-blocks', 'wp-i18n', 'wp-editor', 'wp-components', 'wp-element' ),ECT_VERSION, 'true' );
+			wp_enqueue_script( 'ebec-block-editor', ECT_PLUGIN_URL . 'includes/events-shortcode-block/dist/index.js', array( 'wp-blocks', 'wp-i18n', 'wp-editor', 'wp-components', 'wp-element', 'wp-block-editor' ),ECT_VERSION, 'true' );
 			wp_enqueue_style( 'ebec-block-style-editor', ECT_PLUGIN_URL . 'includes/events-shortcode-block/dist/style-index.css', array( 'wp-edit-blocks' ), ECT_VERSION, 'all' );
 			
 			// Localize script to pass Google Fonts setting to JavaScript
@@ -344,6 +344,7 @@ class EBEC_Register_Block {
 			register_block_type(
 				'ebec/event-list',
 				array(
+					'api_version'     => 3,
 					'render_callback' => array( $this, 'ebec_render_function' ),
 					'attributes'      => $settings,
 				)

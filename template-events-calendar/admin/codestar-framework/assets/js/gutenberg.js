@@ -21,6 +21,7 @@
     var Button            = components.Button;
 
     registerBlockType(block.name, {
+      apiVersion: 3,
       title: block.gutenberg.title,
       description: block.gutenberg.description,
       icon: block.gutenberg.icon || 'screenoptions',

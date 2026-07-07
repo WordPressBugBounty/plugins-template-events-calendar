@@ -314,7 +314,7 @@ if ( ! class_exists( 'CSF_Shortcoder' ) ) {
     // Add gutenberg blocks.
     public static function add_guteberg_blocks() {
 
-      $depends = array( 'wp-blocks', 'wp-element', 'wp-components' );
+      $depends = array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-block-editor' );
 
       if ( wp_script_is( 'wp-edit-widgets' ) ) {
         $depends[] = 'wp-edit-widgets';
@@ -329,6 +329,7 @@ if ( ! class_exists( 'CSF_Shortcoder' ) ) {
       foreach ( CSF::$shortcode_instances as $block ) {
 
         register_block_type( $block['name'], array(
+          'api_version' => 3,
           'editor_script' => 'csf-gutenberg-block',
         ) );
 

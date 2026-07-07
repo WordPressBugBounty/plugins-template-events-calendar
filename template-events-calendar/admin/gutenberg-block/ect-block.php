@@ -1,33 +1,46 @@
 <?php
 if (!defined('ABSPATH')) {
     exit;
-} 
-//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
-function ect_gutenberg_scripts() {
-	$blockPath = '/dist/block.js';
-	$stylePath = '/dist/block.css';
-
-	// Enqueue the bundled block JS file
-	wp_enqueue_script(
-		'ect-block-js',
-		plugins_url( $blockPath, __FILE__ ),
-		[ 'wp-i18n', 'wp-blocks', 'wp-edit-post', 'wp-element', 'wp-editor', 'wp-components', 'wp-data', 'wp-plugins', 'wp-edit-post', 'wp-api' ],
-		filemtime( plugin_dir_path(__FILE__) . $blockPath ),
-		'true'
-	);
-	wp_localize_script( 'ect-block-js', 'ectUrl',array(ECT_PLUGIN_URL));
-
-	// Enqueue frontend and editor block styles
-	wp_enqueue_style(
-		'ect-block-css',
-		plugins_url( $stylePath, __FILE__ ),
-		'',
-		filemtime( plugin_dir_path(__FILE__) . $stylePath )
-	);
-	
 }
 
-// Hook scripts function into block editor hook
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+function ect_gutenberg_block_assets() {
+	if ( ! is_admin() ) {
+		return;
+	}
+
+	wp_enqueue_style(
+		'ect-block-css',
+		plugins_url( '/dist/block.css', __FILE__ ),
+		array( 'wp-block-editor' ),
+		filemtime( plugin_dir_path( __FILE__ ) . 'dist/block.css' )
+	);
+}
+add_action( 'enqueue_block_assets', 'ect_gutenberg_block_assets' );
+
+//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound
+function ect_gutenberg_scripts() {
+	if ( ! is_admin() ) {
+		return;
+	}
+
+	wp_enqueue_script(
+		'ect-block-js',
+		plugins_url( '/dist/block.js', __FILE__ ),
+		array(
+			'wp-i18n',
+			'wp-blocks',
+			'wp-element',
+			'wp-components',
+			'wp-block-editor',
+			'wp-data',
+			'wp-api',
+		),
+		filemtime( plugin_dir_path( __FILE__ ) . 'dist/block.js' ),
+		true
+	);
+	wp_localize_script( 'ect-block-js', 'ectUrl', array(  ECT_PLUGIN_URL )  );
+}
 add_action( 'enqueue_block_editor_assets', 'ect_gutenberg_scripts' );
 
 /**
@@ -35,56 +48,56 @@ add_action( 'enqueue_block_editor_assets', 'ect_gutenberg_scripts' );
  * */
 add_action( 'plugins_loaded', function () {
 	if ( function_exists( 'register_block_type' ) ) {
-		// Hook server side rendering into render callback
-
 		register_block_type(
-			'ect/shortcode', array(
+			'ect/shortcode',
+			array(
+				'api_version'     => 3,
 				'render_callback' => 'ect_block_callback',
-				'attributes' => array(
+				'attributes'      => array(
 					'category' => array(
-						'type' => 'string',
-						'default' =>'all'
+						'type'    => 'string',
+						'default' => 'all',
 					),
-					'template'	 => array(
-						'type' => 'string',
-						'default' =>'default'
+					'template' => array(
+						'type'    => 'string',
+						'default' => 'default',
 					),
-					'style'	 => array(
-						'type' => 'string',
-						'default' =>'style-1'
+					'style' => array(
+						'type'    => 'string',
+						'default' => 'style-1',
 					),
-					'dateformat'	=> array(
-						'type'	=> 'string',
-						'default' => 'default'
+					'dateformat' => array(
+						'type'    => 'string',
+						'default' => 'default',
 					),
-					'limit'	=> array(
-						'type'	=> 'string',
-						'default' => '10'
-					),				
-					'order'	 => array(
-						'type' => 'string',
-						'default' =>'ASC'
+					'limit' => array(
+						'type'    => 'string',
+						'default' => '10',
 					),
-					'hideVenue'	=> array(
-						'type'	=> 'string',
-						'default' =>'no'
+					'order' => array(
+						'type'    => 'string',
+						'default' => 'ASC',
 					),
-					'time'	 => array(
-						'type' => 'string',
-						'default' =>'future'
-					),					
-					'startDate'	=> array(
-						'type'	=> 'string',
-						'default' => ''
+					'hideVenue' => array(
+						'type'    => 'string',
+						'default' => 'no',
 					),
-					'endDate'	=> array(
-						'type'	=> 'string',
-						'default' => ''
+					'time' => array(
+						'type'    => 'string',
+						'default' => 'future',
 					),
-					'socialshare'=> array(
-						'type'	=> 'string',
-						'default' =>'no',
-					)		
+					'startDate' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'endDate' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'socialshare' => array(
+						'type'    => 'string',
+						'default' => 'no',
+					),
 				),
 			)
 		);
