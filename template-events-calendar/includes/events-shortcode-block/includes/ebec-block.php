@@ -36,16 +36,20 @@ class EBEC_Register_Block {
 
 
 	public function ebec_block_editor_assets() {
+
+		if(is_admin()){
+
 			wp_enqueue_script( 'ebec-block-editor', ECT_PLUGIN_URL . 'includes/events-shortcode-block/dist/index.js', array( 'wp-blocks', 'wp-i18n', 'wp-editor', 'wp-components', 'wp-element', 'wp-block-editor' ),ECT_VERSION, 'true' );
 			wp_enqueue_style( 'ebec-block-style-editor', ECT_PLUGIN_URL . 'includes/events-shortcode-block/dist/style-index.css', array( 'wp-edit-blocks' ), ECT_VERSION, 'all' );
-			
 			// Localize script to pass Google Fonts setting to JavaScript
 			$options = get_option( 'ects_options' );
 			$load_google_fonts = ! empty( $options['ect_load_google_font'] ) ? $options['ect_load_google_font'] : 'yes';
 			wp_localize_script( 'ebec-block-editor', 'ebecBlockData', array(
 				'loadGoogleFonts' => $load_google_fonts
 			) );
+		}
 	}
+	
 	public function ebec_modify_rest_api_limits() {
         add_filter('tribe_rest_event_max_per_page', function($max) {
             return 999;
