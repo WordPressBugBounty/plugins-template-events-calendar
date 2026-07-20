@@ -10,23 +10,7 @@
     /* margin: 5px; */
 }
 
-.ect-feedback-notice-wrapper .logo_container,
-.ect-simple-notice .logo_container {
-    width: 80px;
-    display: table-cell;
-    padding: 0 10px 0 0;
-    vertical-align: top;
-}
-
-.ect-feedback-notice-wrapper .logo_container a,
-.ect-feedback-notice-wrapper .logo_container img {
-    width: 100%;
-    height: auto;
-    display: inline-block;
-}
-
-.ect-feedback-notice-wrapper .message_container,
-.ect-simple-notice .message_container {
+.ect-feedback-notice-wrapper .message_container{
     display: table-cell;
     padding: 5px 22px 5px 5px;
     vertical-align: middle;
@@ -55,18 +39,6 @@
 
 .ect-feedback-notice-wrapper ul li .button-primary:hover {
     border: 1px solid #2271b1;
-}
-
-.ctp-notice-red.uninstall {
-    max-width: 700px;
-    display: block;
-    padding: 8px;
-    border: 2px solid #157d0f;
-    margin: 10px 0;
-    background: #13a50b;
-    font-weight: bold;
-    font-size: 13px;
-    color: #ffffff;
 }
 
 .csf-field.csf-field-checkbox .csf-fieldset {

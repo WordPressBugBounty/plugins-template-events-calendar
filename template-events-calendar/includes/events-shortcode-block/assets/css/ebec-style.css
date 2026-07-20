@@ -155,6 +155,7 @@ border-left: 0px
   
   .ebec-event-details {
     padding-inline: 30px;
+    width: 82%;
   }
 
   .ebec-minimal-list-wrapper .ebec-event-details{
@@ -192,10 +193,6 @@ border-left: 0px
    .style-1  .ebec-events-read-more{
     font-size:14px;
   }
-  #ect-events-minimal-list-content .ebec-list-posts.style-1.ebec-simple-event .ebec-event-details{
-    border-left: 3px solid#dbf5ff;
-  
-  }
   .ebec-list-posts.style-1 {
     display: flex;
     flex-wrap: nowrap;
@@ -221,6 +218,8 @@ border-left: 0px
     line-height: 0px;
     border: 0px;
     background-color: transparent;
+    position: absolute;
+    left: 48px;
   }
   .ebec-start-date-picker .components-datetime__time-field-time,
   .ebec-end-date-picker .components-datetime__time-field-time{
@@ -229,11 +228,6 @@ border-left: 0px
   .ebec-start-date-picker .components-base-control__field,
   .ebec-end-date-picker .components-base-control__field{
     padding: 0px
-  }
-  .ebec-start-date-picker .components-datetime__time-separator,
-  .ebec-end-date-picker .components-datetime__time-separator{
-    position: absolute;
-    left: 48px;
   }
 /* Date Picker CSS END */
 /* No Event Text CSS */
@@ -295,10 +289,6 @@ border-left: 0px
   
   }
   @media(min-width:1200px){
-    .ebec-event-date {
-     width:15%;
-     margin-right: 15px;
-   }
     .ebec-right-wrapper {
      width:85%;
    }
@@ -322,9 +312,6 @@ border-left: 0px
     padding-left:16px;
   
     }
-    .ebec-left-wrapper {
-    width:22%; 
-    }
     .style-1 .ebec-event-details {
       width: 80%;
   }
@@ -344,11 +331,6 @@ border-left: 0px
       justify-content: center;
       align-items: center;
     }
-      .style-1 .ebec-event-date {
-        width: 30%;
-        margin-right: 5px;
-        padding-right: 5px;
-      }
       .style-1 .ebec-right-wrapper {
         width: 70%;
         padding-left: 0px;
@@ -360,9 +342,6 @@ border-left: 0px
     font-weight: bold;
     color: #00445e;
    }
-  .ebec-event-details {
-    width: 82%;
-  }
   .ebec-event-datetimes {
     display: flex;
     flex-direction: column;
@@ -396,13 +375,10 @@ border-left: 0px
 }
 .ebec-month-header.ebec-simple-event:after{
     color: #00445e;  
+    background-color: #00445e;
 }
 .ebec-list-wrapper>:not(.ebec-minimal-list-wrapper) .ebec-list-posts.style-1.ebec-simple-event .ebec-event-details{
     border-left: 3px solid#00445e;
-}
-
-.ebec-month-header.ebec-simple-event:after {
-    background-color: #00445e;
 }
 .ebec-featured-event .ebec-event-datetimes {
     color: #3a2201;
@@ -423,13 +399,7 @@ border-left: 0px
 .ebec-minimal-list-desc {
     color: #515d64;
 }
-.ebec-featured-event .ebec-event-datetimes {
-    color: #3a2201;
-}
 
-.ebec-multi-select-control select#inspector-select-control-2 {
-  height: auto;
-}
 .ebec-impressum-select-multiple.ebec-impressum-select-multiple.ebec-impressum-select-multiple select[multiple] {
     height: auto;
     padding: 8px;

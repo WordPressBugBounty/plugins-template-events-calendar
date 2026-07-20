@@ -320,7 +320,6 @@ body{
     border-color: #2D3644 !important;
 }
 /* Card Action Buttons */
-.ect-card-action { margin-top: 15px; }
 .ect-main-grid { display: grid; grid-template-columns: 1fr 320px; gap: 30px; }
 .ect-cards-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
 .ect-section-title { 

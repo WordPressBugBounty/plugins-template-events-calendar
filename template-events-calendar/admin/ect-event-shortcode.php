@@ -11,25 +11,6 @@ if (!class_exists('ECT_event_shortcode')) {
     class ECT_event_shortcode
     {
 
-/**
- * The unique instance of the plugin.
- *
- */
-        private static $instance;
-
-        /**
-         * Gets an instance of our plugin.
-         *
-         */
-        public static function get_instance()
-        {
-            if (null === self::$instance) {
-                self::$instance = new self();
-            }
-
-            return self::$instance;
-        }
-
         /**
          * The Constructor
          */
@@ -292,33 +273,7 @@ if (!class_exists('ECT_event_shortcode')) {
                 ));
             }
 
-            /**
-             * Fetch all timeline items for shortcode builder options
-             *
-             * @return array $ids An array of timeline item's ID & title
-             */
-            if(!function_exists('ect_free_select_category')){
-            function ect_free_select_category()
-            {
-
-                $terms = get_terms(array(
-                    'taxonomy' => 'tribe_events_cat',
-                    'hide_empty' => true,
-                ));
-                $ect_categories = array();
-                $ect_categories['all'] = esc_html(__('All Categories', 'template-events-calendar'));
-
-                if (!empty($terms) || !is_wp_error($terms)) {
-                    foreach ($terms as $term) {
-                        $ect_categories[$term->slug] = $term->name;
-                    }
-                }
-
-                return $ect_categories;
-
-            }
         }
-    }
 
     }
 

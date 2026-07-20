@@ -15,7 +15,6 @@ if (!class_exists('ect_admin_notices')):
 
         private static $instance = null;
         private $messages = array();
-        private $version = '1.0.0';
 
         /**
          * initialize the class with single instance

@@ -15,23 +15,6 @@ if (! class_exists('ECTSettings')) {
 
 
 		/**
-		 * The unique instance of the plugin.
-		 */
-		private static $instance;
-
-		/**
-		 * Gets an instance of our plugin.
-		 */
-		public static function get_instance()
-		{
-			if (null === self::$instance) {
-				self::$instance = new self();
-			}
-			return self::$instance;
-		}
-
-
-		/**
 		 * The Constructor
 		 */
 		public function __construct()
@@ -60,10 +43,6 @@ if (! class_exists('ECTSettings')) {
 				}
 				
 			}
-		}
-		public function cpfm_option_callback() {
-			$cpfm_opt_in_choice_cool_events = get_option('cpfm_opt_in_choice_cool_events');
-			return isset($cpfm_opt_in_choice_cool_events);
 		}
 
 		/**

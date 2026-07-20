@@ -42,12 +42,11 @@
             $('.cp-feedback-error').remove();
             if(reasonkeychecked){
                     if(  $('#cool-plugins-feedback-'+plugin_slug + ' #cp-feedback-terms-input').is(":checked") === false){
-                        var getSelectedValue = document.getElementsByClassName('cp-feedback-terms-input');   
                         var para = document.createElement("p");
                         var content = document.createTextNode('* Please agree to the details by checking the box before submitting the form.');
                         para.appendChild(content);
                         para.classList.add('cp-feedback-error');
-                        $(getSelectedValue).parent().append(para);
+                        $('.cp-feedback-terms-input').parent().append(para);
                         return;
                     }
                     else{
@@ -83,12 +82,11 @@
                 })
             }
             else{
-                var getSelectedValue = document.getElementsByClassName('cp-feedback-terms-input');   
                 var para = document.createElement("p");
                 var content = document.createTextNode('* Please select at least one reason.');
                 para.appendChild(content);
                 para.classList.add('cp-feedback-error');
-                $(getSelectedValue).parent().append(para);
+                $('.cp-feedback-terms-input').parent().append(para);
             }
         });
 

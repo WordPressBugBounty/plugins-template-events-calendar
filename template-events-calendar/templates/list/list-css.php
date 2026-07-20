@@ -20,12 +20,12 @@ switch ($style) {
         }
         $ect_output_css .= '
         #ect-events-list-content .style-1.ect-simple-event .ect-list-post-left .ect-list-date {
-            background: ' . esc_html($thisPlugin::ect_hex2rgba($main_skin_color, .96)) . ';
+            background: ' . esc_html(self::ect_hex2rgba($main_skin_color, .96)) . ';
         }';
         // Default List Featured event skin color
         $ect_output_css .= '
         #ect-events-list-content .style-1.ect-featured-event .ect-list-post-left .ect-list-date {
-            background: ' . esc_html($thisPlugin::ect_hex2rgba($featured_event_skin_color, .85)) . ';
+            background: ' . esc_html(self::ect_hex2rgba($featured_event_skin_color, .85)) . ';
         }';
         break;
     case 'style-2':

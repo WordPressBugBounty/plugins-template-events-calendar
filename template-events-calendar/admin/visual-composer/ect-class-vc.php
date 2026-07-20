@@ -22,7 +22,7 @@ if (!class_exists('EctVCAddon')) {
                 $ect_categories=array();
                 $ect_categories['all'] = esc_html(__('all','template-events-calendar'));
         
-                if (!empty($terms) || !is_wp_error($terms)) {
+                if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
                     foreach ($terms as $term) {
                         $ect_categories[$term->name] =$term->slug;
                     }

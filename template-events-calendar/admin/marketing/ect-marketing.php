@@ -225,8 +225,6 @@ if (!class_exists('ECT_TEC_Notice')) {
             require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
             require_once ABSPATH . 'wp-admin/includes/plugin.php';
         
-            $plugin_slug = sanitize_text_field(wp_unslash($_POST['slug'])); 
-
             // API call correct slug se
             $api = plugins_api('plugin_information', [
                 'slug'   => $plugin_slug,

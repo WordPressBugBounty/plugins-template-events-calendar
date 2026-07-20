@@ -27,13 +27,6 @@ class EBEC_Register_Block {
 		add_action('init', array($this, 'ebec_modify_rest_api_limits'), 20);
 	}
 
-	public function ebec_editor_assets() {
-			$id = get_the_ID();
-		if ( has_block( 'ebec/event-list', $id ) ) {
-			wp_enqueue_style( 'ebec-block-style-front', ECT_PLUGIN_URL . 'includes/events-shortcode-block/assets/css/ebec-style.css', array(), ECT_VERSION, 'all' );
-		}
-	}
-
 
 	public function ebec_block_editor_assets() {
 
@@ -391,17 +384,12 @@ class EBEC_Register_Block {
 			);
 		}
 		if ( ! empty( $attributes['ebec_ev_category'] ) ) {
-			$event_categories = array_map(
-				'sanitize_key',
-				(array) $attributes['ebec_ev_category']
-			);
-
-			if ( ! in_array( 'all', $event_categories, true ) ) {
+			if ( ! in_array( 'all', $attributes['ebec_ev_category'] ) ) {
 				$tax_query = array(
 					array(
 						'taxonomy' => 'tribe_events_cat',
 						'field'    => 'slug',
-						'terms'    => $event_categories,
+						'terms'    => $attributes['ebec_ev_category'],
 					),
 				);
 			}

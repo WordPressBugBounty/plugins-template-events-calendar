@@ -212,7 +212,8 @@ class CPFM_Feedback_Notice {
             $output .= '<p>' . esc_html__('Opt in to receive email updates about security improvements, new features, helpful tutorials, and occasional special offers. We\'ll collect:', 'template-events-calendar') . '</p>';
             $output .= '<ul>';
             $output .= '<li>' . esc_html__('Your website home URL and WordPress admin email.', 'template-events-calendar') . '</li>';
-            $output .= '<li>' . esc_html__('To check plugin compatibility, we will collect the following: list of active plugins and themes, server type, MySQL version, WordPress version, memory limit, site language and database prefix.', 'template-events-calendar') . '</li>';
+            $output .= '<li>' . esc_html__('To check plugin compatibility, we will collect the following: list of active plugins and themes, server type, MySQL version, WordPress version, memory limit, site language and database prefix. ', 'template-events-calendar');
+            $output .= '<a href="https://my.coolplugins.net/terms/usage-tracking/" target="_blank">' . esc_html__('Click here', 'template-events-calendar') . '</a></li>';
             $output .= '</ul>';
             
             $output .= '</div>';

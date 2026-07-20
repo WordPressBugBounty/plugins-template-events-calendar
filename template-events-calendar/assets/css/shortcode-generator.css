@@ -1,19 +1,3 @@
-i.ect-own-icon {
-    background-image: url('ect-icons.svg');
-}
-
-/* Other admin side css */
-span.ectadmin-description img {
-    width: 22px;
-    height: auto;
-    margin-right: 5px;
-    vertical-align: middle;
-}
-.mce-container .ect-note {
-    color:red !Important;
-}
-
-
 /* events demo page css start*/
 
 .ect_started-section {
@@ -113,10 +97,6 @@ iframe.ect_events-video{
     margin: 12px;
     border-radius: 14px;
     max-width: 416px;
-}
-
-.ect_get_pro_features{
-    display: inline-block;
 }
 @media only screen and (max-width: 991px) {
     .ect_step-content {

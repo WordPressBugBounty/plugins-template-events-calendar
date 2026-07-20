@@ -52,9 +52,6 @@
 #ect-events-list-content .ect-list-post.style-1 .ect-list-date .ect-date-area .ev-weekday {
     font-size: 17px;
 }
-#ect-events-list-content .ect-list-post.style-1 .ect-list-date .ect-date-area .ev-time {
-    font-size: 15px;
-}
 #ect-events-list-content .ect-list-post.style-3 .ect-list-date .ect-date-area .ev-day,
 #ect-events-list-content .ect-list-post.style-3 .ect-list-date .ect-date-area .ev-mo,
 #ect-events-list-content .ect-list-post.style-3 .ect-list-date .ect-date-area .ev-yr,
@@ -339,12 +336,6 @@ List Common Styles
     line-height: 23px;
 }
 
-a.ect-event-read-more {
-    text-decoration: none;
-    margin-top: 10px;
-    display: inline-block;
-}
-
 #ect-events-list-content .ect-list-cost {
     position: relative;
 }
@@ -442,14 +433,7 @@ a.ect-event-read-more {
     border-radius: 10px 0px 0px 10px;
 }
 
-.ect-modern-time {
-    text-align: center;
-    font-size: 0.65em !Important;
-    line-height: 1.25em;
-}
-
-
-/***      CSS for Classic List Style  ***/
+/*** CSS for Classic List Style  ***/
 
 .style-3 .ect-list-post-right .ect-list-description {
     width: 100%;
@@ -590,9 +574,6 @@ a.ect-event-read-more {
         padding-top: 0px;
         flex-wrap: wrap;
     }
-    .ect-event-category ul.tribe_events_cat {
-        justify-content: center;
-    }
     #ect-events-list-content .ect-share-wrapper .ect-social-share-list:before {
         left: inherit;
         right: 6px;
@@ -639,9 +620,6 @@ a.ect-event-read-more {
     .ect-list-description .ect-event-content {
         align-items: center;
     }
-    .ect-modern-time {
-        display: inline-block;
-    }
     .ect-clslist-event-date,
     .ect-clslist-event-info,
     .ect-clslist-event-details,
@@ -686,59 +664,6 @@ a.ect-event-read-more {
 .ect-list-post.style-2 .ect-list-description {
     border-bottom: none;
     gap: 8px;
-}
-
-
-/*** style 4*/
-
-.style-4 .ect-list-schedule {
-    background: white;
-    border: 1px solid #C5C5C5;
-    padding: 2px;
-    position: absolute;
-    width: 100px;
-    right: 0;
-    left: auto;
-    bottom: 0;
-}
-
-.ect-list-schedule-wrap {
-    align-items: center;
-    border: 1px solid #C5C5C5;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.ect-list-schedule .ev-mo {
-    color: #FA5A41;
-    font-size: 0.625rem;
-    letter-spacing: 0.15em;
-    line-height: 0.9;
-}
-
-.ect-list-schedule .ev-day {
-    font-size: 1.5rem;
-    line-height: 1;
-}
-
-.ect-grid-image-style4 {
-    width: 100%;
-    position: relative;
-}
-
-.ect-list-schedule span {
-    display: block;
-    text-align: center;
-}
-
-#ect-events-list-content .ect-share-style-4 .ect-share-wrapper {
-    right: unset;
-    left: 11px;
-}
-
-#ect-events-list-content .style-4 .ect-rate-area {
-    float: none;
 }
 
 .ect-list-post .ect-icon-clock:before,

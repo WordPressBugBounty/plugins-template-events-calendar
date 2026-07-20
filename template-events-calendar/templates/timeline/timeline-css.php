@@ -193,7 +193,7 @@ $ect_output_css .= '#event-timeline-wrapper .timeline-view-venue
 
 $ect_output_css .= '
 #ect-timeline-wrapper .ect-simple-event ect-timeline-header .ect-date-area {
-     background: ' . esc_html( $thisPlugin::ect_hex2rgba( $main_skin_color, .95 ) ) . ';
+     background: ' . esc_html( self::ect_hex2rgba( $main_skin_color, .95 ) ) . ';
 }';
 
 if ( $main_skin_alternate_color !== '' ) {

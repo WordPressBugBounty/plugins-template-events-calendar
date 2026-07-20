@@ -3,7 +3,7 @@
 Plugin Name:Events Shortcodes For The Events Calendar
 Plugin URI:https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
 Description:<a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Shortcodes to show The Events Calendar plugin events list on any page or post in different layouts.
-Version:2.6.7
+Version:2.7.0
 Requires PHP:7.2
 Author:Cool Plugins
 Author URI: https://coolplugins.net/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
@@ -20,7 +20,7 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 if (! defined('ECT_VERSION')) {
-	define('ECT_VERSION', '2.6.7');//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+	define('ECT_VERSION', '2.7.0');//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 }
 
 /*** Defined constent for later use */
@@ -57,7 +57,7 @@ if (! class_exists('EventsCalendarTemplates')) {
 		private function __construct() {}
 
 		// register all hooks
-		public function registers()
+		public function register_hooks()
 		{
 			
 			if (file_exists(plugin_dir_path(__DIR__) . 'the-events-calendar-templates-and-shortcode/the-events-calendar-templates-and-shortcode.php')) {
@@ -82,6 +82,7 @@ if (! class_exists('EventsCalendarTemplates')) {
 
 			/*** Load required files */
 			add_action('plugins_loaded', array(self::$instance, 'ect_load_files'));
+			add_action('after_setup_theme', array(self::$instance, 'ect_load_bricks_integration'), 11);
 			add_action('init', array(self::$instance, 'ect_load_textdomain'));
 			add_action('admin_enqueue_scripts', array(self::$instance, 'ect_tc_css'));
 			/*** Template Setting Page Link */
@@ -100,109 +101,158 @@ if (! class_exists('EventsCalendarTemplates')) {
 			add_action('admin_print_scripts', [$this, 'ect_hide_unrelated_notices']);
 		}
 
-		public function ect_hide_unrelated_notices(){ 
-			
-			// phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded, Generic.Metrics.NestingLevel.MaxExceeded
-            $events_pages = false;
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Checking page parameter to conditionally hide notices, no data processing
-            if (isset($_GET['page'])) {
-				
-                // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Checking page parameter to conditionally hide notices, no data processing
-				$page_param = sanitize_key( wp_unslash( $_GET['page'] ) );
+		public function ect_hide_unrelated_notices() {
+			$events_pages      = $this->ect_is_events_admin_page();
+			$is_post_type_page = $this->ect_is_events_post_type();
 
-				$allowed_pages = array(
-					'cool-plugins-events-addon',
-					'cool-events-registration',
-					'tribe-events-shortcode-template-settings',
-					'tribe_events-events-template-settings',
-					'countdown_for_the_events_calendar',
-					'esas-speaker-sponsor-settings',
-					'esas_speaker',
-					'esas_sponsor',
-					'ewpe',
-					'epta'
-				);
-
-				if (in_array($page_param, $allowed_pages, true)) {
-					$events_pages = true;
-				}
-            }
-			$is_post_type_page = false;
-
-			$current_screen = get_current_screen();
-			
-			if ( $current_screen && ! empty( $current_screen->post_type ) ) {
-			
-				$allowed_post_types = array(
-					'esas_speaker',
-					'esas_sponsor',
-					'epta',
-					'ewpe'
-				);
-			
-				if ( in_array( $current_screen->post_type, $allowed_post_types, true ) ) {
-					$is_post_type_page = true;
-				}
+			if ( $events_pages ) {
+				$this->ect_strip_foreign_notices();
 			}
-            if ($events_pages) {
-                global $wp_filter;
-                // Define rules to remove callbacks.
-                $rules = [
-                    'user_admin_notices' => [], // remove all callbacks.
-                    'admin_notices'      => [],
-                    'all_admin_notices'  => [],
-                    'admin_footer'       => [
-                        'render_delayed_admin_notices', // remove this particular callback.
-                    ],
-                ];
-                $notice_types = array_keys($rules);
-                foreach ($notice_types as $notice_type) {
-                    if (empty($wp_filter[$notice_type]) || empty($wp_filter[$notice_type]->callbacks) || ! is_array($wp_filter[$notice_type]->callbacks)) {
-                        continue;
-                    }
-                    $remove_all_filters = empty($rules[$notice_type]);
-                    foreach ($wp_filter[$notice_type]->callbacks as $priority => $hooks) {
-                        foreach ($hooks as $name => $arr) {
-                            if (is_object($arr['function']) && is_callable($arr['function'])) {
-                                if ($remove_all_filters) {
-                                    unset($wp_filter[$notice_type]->callbacks[$priority][$name]);
-                                }
-                                continue;
-                            }
-                            $class = ! empty($arr['function'][0]) && is_object($arr['function'][0]) ? strtolower(get_class($arr['function'][0])) : '';
-                            // Remove all callbacks except WPForms notices.
-                            if ($remove_all_filters && strpos($class, 'wpforms') === false) {
-                                unset($wp_filter[$notice_type]->callbacks[$priority][$name]);
-                                continue;
-                            }
-                            $cb = is_array($arr['function']) ? $arr['function'][1] : $arr['function'];
-                            // Remove a specific callback.
-                            if (! $remove_all_filters) {
-                                if (in_array($cb, $rules[$notice_type], true)) {
-                                    unset($wp_filter[$notice_type]->callbacks[$priority][$name]);
-                                }
-                                continue;
-                            }
-                        }
-                    }
-                }
-            }
-// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
-			if (!$events_pages && !$is_post_type_page) {
-
-				// ✅ GLOBAL LOCK SYSTEM
-				if (!defined('ECT_ADMIN_NOTICE_HOOKED')) {
-
-					define('ECT_ADMIN_NOTICE_HOOKED', true);
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound, WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			if ( ! $events_pages && ! $is_post_type_page ) {
+				if ( ! defined( 'ECT_ADMIN_NOTICE_HOOKED' ) ) {
+					define( 'ECT_ADMIN_NOTICE_HOOKED', true );
 
 					add_action(
 						'admin_notices',
-						array($this, 'ect_dash_admin_notices'),
+						array( $this, 'ect_dash_admin_notices' ),
 						PHP_INT_MAX
 					);
 				}
 			}
-        }
+		}
+
+		/**
+		 * Check whether the current admin screen is an events addon page.
+		 *
+		 * @return bool
+		 */
+		private function ect_is_events_admin_page() {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Checking page parameter to conditionally hide notices, no data processing
+			if ( ! isset( $_GET['page'] ) ) {
+				return false;
+			}
+
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Checking page parameter to conditionally hide notices, no data processing
+			$page_param = sanitize_key( wp_unslash( $_GET['page'] ) );
+
+			$allowed_pages = array(
+				'cool-plugins-events-addon',
+				'cool-events-registration',
+				'tribe-events-shortcode-template-settings',
+				'tribe_events-events-template-settings',
+				'countdown_for_the_events_calendar',
+				'esas-speaker-sponsor-settings',
+				'esas_speaker',
+				'esas_sponsor',
+				'ewpe',
+				'epta',
+			);
+
+			return in_array( $page_param, $allowed_pages, true );
+		}
+
+		/**
+		 * Check whether the current admin screen is an events addon post type.
+		 *
+		 * @return bool
+		 */
+		private function ect_is_events_post_type() {
+			$current_screen = get_current_screen();
+
+			if ( ! $current_screen || empty( $current_screen->post_type ) ) {
+				return false;
+			}
+
+			$allowed_post_types = array(
+				'esas_speaker',
+				'esas_sponsor',
+				'epta',
+				'ewpe',
+			);
+
+			return in_array( $current_screen->post_type, $allowed_post_types, true );
+		}
+
+		/**
+		 * Remove third-party admin notices on events addon pages.
+		 */
+		private function ect_strip_foreign_notices() {
+			global $wp_filter;
+
+			$rules = array(
+				'user_admin_notices' => array(),
+				'admin_notices'      => array(),
+				'all_admin_notices'  => array(),
+				'admin_footer'       => array(
+					'render_delayed_admin_notices',
+				),
+			);
+
+			foreach ( array_keys( $rules ) as $notice_type ) {
+				if ( empty( $wp_filter[ $notice_type ] ) || empty( $wp_filter[ $notice_type ]->callbacks ) || ! is_array( $wp_filter[ $notice_type ]->callbacks ) ) {
+					continue;
+				}
+
+				$remove_all_filters = empty( $rules[ $notice_type ] );
+
+				foreach ( $wp_filter[ $notice_type ]->callbacks as $priority => $hooks ) {
+					foreach ( $hooks as $name => $arr ) {
+						if ( is_object( $arr['function'] ) && is_callable( $arr['function'] ) ) {
+							if ( $remove_all_filters ) {
+								unset( $wp_filter[ $notice_type ]->callbacks[ $priority ][ $name ] );
+							}
+							continue;
+						}
+
+						$class = ! empty( $arr['function'][0] ) && is_object( $arr['function'][0] ) ? strtolower( get_class( $arr['function'][0] ) ) : '';
+
+						if ( $remove_all_filters && strpos( $class, 'wpforms' ) === false ) {
+							unset( $wp_filter[ $notice_type ]->callbacks[ $priority ][ $name ] );
+							continue;
+						}
+
+						$cb = is_array( $arr['function'] ) ? $arr['function'][1] : $arr['function'];
+
+						if ( ! $remove_all_filters && in_array( $cb, $rules[ $notice_type ], true ) ) {
+							unset( $wp_filter[ $notice_type ]->callbacks[ $priority ][ $name ] );
+						}
+					}
+				}
+			}
+		}
+
+		public function register_feedback_notice() {
+			if ( ! class_exists( 'CPFM_Feedback_Notice' ) || ! current_user_can( 'manage_options' ) ) {
+				return;
+			}
+
+			$notice = array(
+				'title'          => __( 'Events Addons By Cool Plugins', 'template-events-calendar' ),
+				'message'        => __( 'Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'template-events-calendar' ),
+				'pages'          => array( 'cool-plugins-events-addon', 'tribe_events-events-template-settings' ),
+				'always_show_on' => array( 'cool-plugins-events-addon', 'tribe_events-events-template-settings' ),
+				'plugin_name'    => 'ect',
+			);
+
+			CPFM_Feedback_Notice::cpfm_register_notice( 'cool_events', $notice );
+
+			if ( ! isset( $GLOBALS['cool_plugins_feedback'] ) ) {
+				$GLOBALS['cool_plugins_feedback'] = array();
+			}
+
+			$GLOBALS['cool_plugins_feedback']['cool_events'][] = $notice;
+		}
+
+		public function handle_opt_in( $category ) {
+			$ects_options = get_option( 'ects_options' );
+
+			if ( $category === 'cool_events' ) {
+				ECT_cronjob::ect_send_data();
+				$ects_options['ect_cpfm_feedback_data'] = true;
+				update_option( 'ects_options', $ects_options );
+			}
+		}
 		
 		public function ect_dash_admin_notices() {
 
@@ -232,6 +282,34 @@ if (! class_exists('EventsCalendarTemplates')) {
 		public function cpfm_load_files() {
 			require_once ECT_PLUGIN_DIR . 'admin/cpfm-feedback/cron/class-cron.php';
 		}
+		/**
+		 * Whether the Bricks theme is active.
+		 *
+		 * @return bool
+		 */
+		public static function ect_is_bricks_theme_active()
+		{
+			return defined('BRICKS_VERSION') || get_template() === 'bricks';
+		}
+
+		/**
+		 * Load Bricks Builder integration when Bricks theme is active.
+		 *
+		 * @return void
+		 */
+		public function ect_load_bricks_integration()
+		{
+			if (! self::ect_is_bricks_theme_active()) {
+				return;
+			}
+
+			if (! class_exists('Tribe__Events__Main') && ! defined('Tribe__Events__Main::VERSION')) {
+				return;
+			}
+
+			require_once ECT_PLUGIN_DIR . 'bricks/bricks.php';
+		}
+
 		/*** Load required files */
 		public function ect_load_files()
 		{
@@ -260,43 +338,8 @@ if (! class_exists('EventsCalendarTemplates')) {
 				}
 
 
-				add_action('cpfm_register_notice', function () {
-
-					if (!class_exists('CPFM_Feedback_Notice') || !current_user_can('manage_options')) {
-						return;
-					}
-					$notice = [
-
-						'title' => __('Events Addons By Cool Plugins', 'template-events-calendar'),
-						'message' => __('Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'template-events-calendar'),
-						'pages' => ['cool-plugins-events-addon', 'tribe_events-events-template-settings'],
-						'always_show_on' => ['cool-plugins-events-addon', 'tribe_events-events-template-settings'], // This enables auto-show
-						'plugin_name' => 'ect',
-
-					];
-
-					CPFM_Feedback_Notice::cpfm_register_notice('cool_events', $notice);
-
-					if (!isset($GLOBALS['cool_plugins_feedback'])) {
-						$GLOBALS['cool_plugins_feedback'] = [];
-					}
-
-					$GLOBALS['cool_plugins_feedback']['cool_events'][] = $notice;
-				});
-
-				add_action('cpfm_after_opt_in_ect', function ($category) {
-
-					$ects_options = get_option('ects_options');
-
-
-					if ($category === 'cool_events') {
-
-						ECT_cronjob::ect_send_data();
-						$ects_options['ect_cpfm_feedback_data'] = true;
-						update_option('ects_options', $ects_options);
-						
-					}
-				});
+				add_action( 'cpfm_register_notice', array( $this, 'register_feedback_notice' ) );
+				add_action( 'cpfm_after_opt_in_ect', array( $this, 'handle_opt_in' ) );
 
 				require_once __DIR__ . '/admin/events-addon-page/events-addon-page.php';
 				cool_plugins_events_addon_settings_page('the-events-calendar', 'cool-plugins-events-addon', '📅 Events Addons For The Events Calendar');
@@ -363,11 +406,6 @@ if (! class_exists('EventsCalendarTemplates')) {
 					// default is 3
 				)
 			);
-		}
-
-		public function shortcodes_submenu()
-		{
-			add_submenu_page('cool-plugins-events-addon', 'Shortcodes & Template', '<strong>Shortcodes & Template</strong>', 'manage_options', 'admin.php?page=tribe_events-events-template-settings', false, 15);
 		}
 
 		/*** Check The Events calender is installled or not. If user has not installed yet then show notice */
@@ -618,4 +656,4 @@ if (! class_exists('EventsCalendarTemplates')) {
 
 /*** THANKS - CoolPlugins.net ) */
 $ect = EventsCalendarTemplates::get_instance();
-$ect->registers();
+$ect->register_hooks();

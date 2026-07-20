@@ -59,156 +59,200 @@ if ( !class_exists('cool_plugins_events_addons')) {
             }
             
             public function ect_dashboard_install_plugin() {
+				$status      = array();
+				$plugin_slug = $this->ect_validate_dashboard_install_request( $status );
 
-			    if ( empty( $_POST['slug'] ) ) {
-				    wp_send_json_error( array(
-					    'slug'         => '',
-					    'errorCode'    => 'no_plugin_specified',
-					    'errorMessage' => __( 'No plugin specified.', 'template-events-calendar' ),
-				    ));
-			    }
+				$status['install'] = 'plugin';
+				$status['slug']    = $plugin_slug;
 
-		        $plugin_slug = sanitize_key( wp_unslash( $_POST['slug'] ) );
+				require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+				require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+				require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
-			    check_ajax_referer('ect-plugin-install-' . $plugin_slug);
-
-                if ( ! current_user_can( 'install_plugins' ) ) {
-                    $status['errorMessage'] = __( 'Sorry, you are not allowed to install plugins on this site.', 'template-events-calendar' );
-                    wp_send_json_error( $status );
-                }
-                // Only allow installation of known marketing plugins (ignore client-manipulated slugs).
-			    $allowed_slugs = array(
-				    "event-page-templates-addon-for-the-events-calendar",
-                    "events-block-for-the-events-calendar",
-                    "events-search-addon-for-the-events-calendar",
-                    "template-events-calendar",
-                    "events-widgets-for-elementor-and-the-events-calendar",
-                    "countdown-for-the-events-calendar",
-                    "events-calendar-modules-for-divi",
-                    "the-events-calendar-templates-and-shortcode",
-                    "events-widgets-pro",
-                    "event-single-page-builder-pro",
-                    "cp-events-calendar-modules-for-divi-pro",
-                    "events-speakers-and-sponsors",
+				$pro_plugins_slugs = array(
+					'events-widgets-pro',
+					'the-events-calendar-templates-and-shortcode',
+					'event-single-page-builder-pro',
+					'cp-events-calendar-modules-for-divi-pro',
+					'events-speakers-and-sponsors',
 				);
-			    if ( ! in_array( $plugin_slug, $allowed_slugs, true ) ) {
-				    wp_send_json_error( array(
-					    'slug'         => $plugin_slug,
-					    'errorCode'    => 'plugin_not_allowed',
-					    'errorMessage' => __( 'This plugin cannot be installed from here.', 'template-events-calendar' ),
-				));
-			    }
 
-			    $status = array(
-				    'install' => 'plugin',
-				    'slug'    => $plugin_slug,
-			    );
-			
-                require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-                require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
-                require_once ABSPATH . 'wp-admin/includes/plugin.php';
-			
-			// Check if it is a pro plugin activation request
-                $pro_plugins_slugs = array(
-                    'events-widgets-pro',
-                    'the-events-calendar-templates-and-shortcode',
-                    'event-single-page-builder-pro',
-                    'cp-events-calendar-modules-for-divi-pro',
-                    'events-speakers-and-sponsors',
-                );
+				if ( in_array( $plugin_slug, $pro_plugins_slugs, true ) ) {
+					$this->ect_activate_pro_plugin( $plugin_slug );
+				}
 
-			if ( in_array( $plugin_slug, $pro_plugins_slugs, true ) ) {
+				$this->ect_install_and_activate_plugin( $plugin_slug, $status );
+			}
 
+			/**
+			 * Validate AJAX install/activate request and return a sanitized slug.
+			 *
+			 * @param array $status Status payload used for error responses.
+			 * @return string
+			 */
+			private function ect_validate_dashboard_install_request( &$status ) {
+				if ( empty( $_POST['slug'] ) ) {
+					wp_send_json_error(
+						array(
+							'slug'         => '',
+							'errorCode'    => 'no_plugin_specified',
+							'errorMessage' => __( 'No plugin specified.', 'template-events-calendar' ),
+						)
+					);
+				}
+
+				$plugin_slug = sanitize_key( wp_unslash( $_POST['slug'] ) );
+
+				check_ajax_referer( 'ect-plugin-install-' . $plugin_slug );
+
+				if ( ! current_user_can( 'install_plugins' ) ) {
+					$status['errorMessage'] = __( 'Sorry, you are not allowed to install plugins on this site.', 'template-events-calendar' );
+					wp_send_json_error( $status );
+				}
+
+				$allowed_slugs = array(
+					'event-page-templates-addon-for-the-events-calendar',
+					'events-block-for-the-events-calendar',
+					'events-search-addon-for-the-events-calendar',
+					'template-events-calendar',
+					'events-widgets-for-elementor-and-the-events-calendar',
+					'countdown-for-the-events-calendar',
+					'events-calendar-modules-for-divi',
+					'the-events-calendar-templates-and-shortcode',
+					'events-widgets-pro',
+					'event-single-page-builder-pro',
+					'cp-events-calendar-modules-for-divi-pro',
+					'events-speakers-and-sponsors',
+				);
+
+				if ( ! in_array( $plugin_slug, $allowed_slugs, true ) ) {
+					wp_send_json_error(
+						array(
+							'slug'         => $plugin_slug,
+							'errorCode'    => 'plugin_not_allowed',
+							'errorMessage' => __( 'This plugin cannot be installed from here.', 'template-events-calendar' ),
+						)
+					);
+				}
+
+				return $plugin_slug;
+			}
+// phpcs:disable WordPress.Security.NonceVerification.Missing
+			/**
+			 * Activate an already-installed pro plugin from the dashboard.
+			 *
+			 * @param string $plugin_slug Plugin slug.
+			 */
+			private function ect_activate_pro_plugin( $plugin_slug ) {
 				if ( ! current_user_can( 'activate_plugin', $plugin_slug ) ) {
 					wp_send_json_error( array( 'message' => __( 'Permission denied', 'template-events-calendar' ) ) );
 				}
 
-				$plugin_file = $plugin_slug . '/' . $plugin_slug . '.php';
+				$plugin_file       = $plugin_slug . '/' . $plugin_slug . '.php';
+				$pagenow           = isset( $_POST['pagenow'] ) ? sanitize_key( wp_unslash( $_POST['pagenow'] ) ) : '';
+				$network_wide      = ( is_multisite() && 'import' !== $pagenow );
+				$activation_result = activate_plugin( $plugin_file, '', $network_wide );
 
-				$pagenow        = isset($_POST['pagenow']) ? sanitize_key(wp_unslash($_POST['pagenow'])) : '';
-				$network_wide = (is_multisite() && 'import' !== $pagenow);
-				$activation_result = activate_plugin($plugin_file, '', $network_wide);
-
-				if (is_wp_error($activation_result)) {
-					wp_send_json_error(array('message' => $activation_result->get_error_message()));
+				if ( is_wp_error( $activation_result ) ) {
+					wp_send_json_error( array( 'message' => $activation_result->get_error_message() ) );
 				}
 
-				wp_send_json_success( array(
-                    'message'    => __( 'Plugin activated successfully', 'template-events-calendar' ),
-                    'activated'  => true,
-                    'plugin_slug' => $plugin_slug,
-                ) );
-			}else{
-				$api = plugins_api( 'plugin_information', array(
-					'slug'   => $plugin_slug,
-					'fields' => array(
-						'sections' => false,
-					),
-				));
+				wp_send_json_success(
+					array(
+						'message'     => __( 'Plugin activated successfully', 'template-events-calendar' ),
+						'activated'   => true,
+						'plugin_slug' => $plugin_slug,
+					)
+				);
+			}
+
+			/**
+			 * Attempt to activate a plugin file and update the status payload.
+			 *
+			 * @param string $plugin_file Plugin basename.
+			 * @param array  $status      Status payload.
+			 * @param string $pagenow     Current admin page context.
+			 * @return array
+			 */
+			private function ect_try_activate_plugin_file( $plugin_file, $status, $pagenow = '' ) {
+				if ( ! current_user_can( 'activate_plugin', $plugin_file ) ) {
+					return $status;
+				}
+
+				$network_wide      = ( is_multisite() && current_user_can( 'manage_network_plugins' ) && 'import' !== $pagenow );
+				$activation_result = activate_plugin( $plugin_file, '', $network_wide );
+
+				if ( is_wp_error( $activation_result ) ) {
+					$status['errorCode']    = $activation_result->get_error_code();
+					$status['errorMessage'] = $activation_result->get_error_message();
+					wp_send_json_error( $status );
+				}
+
+				$status['activated'] = true;
+				return $status;
+			}
+
+			/**
+			 * Install a free plugin from wordpress.org and activate it.
+			 *
+			 * @param string $plugin_slug Plugin slug.
+			 * @param array  $status      Status payload.
+			 */
+			private function ect_install_and_activate_plugin( $plugin_slug, $status ) {
+				$api = plugins_api(
+					'plugin_information',
+					array(
+						'slug'   => $plugin_slug,
+						'fields' => array(
+							'sections' => false,
+						),
+					)
+				);
 
 				if ( is_wp_error( $api ) ) {
-					$status['errorMessage'] = sanitize_text_field($api->get_error_message());
+					$status['errorMessage'] = sanitize_text_field( $api->get_error_message() );
 					wp_send_json_error( $status );
 				}
 
 				$status['pluginName'] = $api->name;
-				
+
 				$skin     = new WP_Ajax_Upgrader_Skin();
 				$upgrader = new Plugin_Upgrader( $skin );
 				$result   = $upgrader->install( $api->download_link );
-				
+
 				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 					$status['debug'] = $skin->get_upgrade_messages();
 				}
-                
-				if ( is_wp_error( $result ) ) {
 
+				if ( is_wp_error( $result ) ) {
 					$status['errorCode']    = $result->get_error_code();
 					$status['errorMessage'] = $result->get_error_message();
 					wp_send_json_error( $status );
+				}
 
-				} elseif ( is_wp_error( $skin->result ) ) {
-					
-					if($skin->result->get_error_message() === 'Destination folder already exists.'){
-							
+				if ( is_wp_error( $skin->result ) ) {
+					if ( $skin->result->get_error_message() === 'Destination folder already exists.' ) {
 						$install_status = install_plugin_install_status( $api );
-						$pagenow        = isset( $_POST['pagenow'] ) ? sanitize_key( wp_unslash($_POST['pagenow']) ) : '';
-
-						if ( current_user_can( 'activate_plugin', $install_status['file'] )) {
-
-							$network_wide = (is_multisite() && current_user_can( 'manage_network_plugins' ) && 'import' !== $pagenow );
-							$activation_result = activate_plugin( $install_status['file'], '', $network_wide );
-							if ( is_wp_error( $activation_result ) ) {
-								
-								$status['errorCode']    = $activation_result->get_error_code();
-								$status['errorMessage'] = $activation_result->get_error_message();
-								wp_send_json_error( $status );
-
-							} else {
-
-								$status['activated'] = true;
-								
-							}
-							wp_send_json_success( $status );
-						}
-					}else{
-					
-						$status['errorCode']    = $skin->result->get_error_code();
-						$status['errorMessage'] = $skin->result->get_error_message();
-						wp_send_json_error( $status );
+						$pagenow        = isset( $_POST['pagenow'] ) ? sanitize_key( wp_unslash( $_POST['pagenow'] ) ) : '';
+						$status         = $this->ect_try_activate_plugin_file( $install_status['file'], $status, $pagenow );
+						wp_send_json_success( $status );
 					}
-					
-				} elseif ( $skin->get_errors()->has_errors() ) {
 
+					$status['errorCode']    = $skin->result->get_error_code();
+					$status['errorMessage'] = $skin->result->get_error_message();
+					wp_send_json_error( $status );
+				}
+
+				if ( $skin->get_errors()->has_errors() ) {
 					$status['errorMessage'] = $skin->get_error_messages();
 					wp_send_json_error( $status );
+				}
 
-				} elseif ( is_null( $result ) ) {
-
+				if ( is_null( $result ) ) {
 					global $wp_filesystem;
 
 					$status['errorCode']    = 'unable_to_connect_to_filesystem';
-					$status['errorMessage'] = __( 'Unable to connect to the filesystem. Please confirm your credentials.' , 'template-events-calendar' );
+					$status['errorMessage'] = __( 'Unable to connect to the filesystem. Please confirm your credentials.', 'template-events-calendar' );
 
 					if ( $wp_filesystem instanceof WP_Filesystem_Base && is_wp_error( $wp_filesystem->errors ) && $wp_filesystem->errors->has_errors() ) {
 						$status['errorMessage'] = esc_html( $wp_filesystem->errors->get_error_message() );
@@ -218,25 +262,23 @@ if ( !class_exists('cool_plugins_events_addons')) {
 				}
 
 				$install_status = install_plugin_install_status( $api );
-				$pagenow        = isset( $_POST['pagenow'] ) ? sanitize_key( wp_unslash($_POST['pagenow']) ) : '';
+				$pagenow        = isset( $_POST['pagenow'] ) ? sanitize_key( wp_unslash( $_POST['pagenow'] ) ) : '';
 
-				// 🔄 Auto-activate the plugin right after successful install
 				if ( current_user_can( 'activate_plugin', $install_status['file'] ) && is_plugin_inactive( $install_status['file'] ) ) {
-
-					$network_wide = ( is_multisite() && 'import' !== $pagenow );
+					$network_wide      = ( is_multisite() && 'import' !== $pagenow );
 					$activation_result = activate_plugin( $install_status['file'], '', $network_wide );
 
 					if ( is_wp_error( $activation_result ) ) {
 						$status['errorCode']    = $activation_result->get_error_code();
 						$status['errorMessage'] = $activation_result->get_error_message();
 						wp_send_json_error( $status );
-					} else {
-						$status['activated'] = true;
 					}
+
+					$status['activated'] = true;
 				}
+
 				wp_send_json_success( $status );
 			}
-		}
         
 
 
@@ -273,207 +315,206 @@ if ( !class_exists('cool_plugins_events_addons')) {
              */
             function displayPluginAdminDashboard(){
 
-                $tag = $this->plugin_tag;
-                $plugins = $this->request_wp_plugins_data( $tag );
-                $pro_plugins = $this->request_pro_plugins_data( $tag );
-                
-                $this->ect_disable_free_plugins();
-                
-                // Define PRO plugins list - These are PRO plugins that need to be purchased
-                $pro_plugin_slugs = array_keys($pro_plugins);
-                
-                // Map Free plugins to their PRO counterparts
-                // If PRO version exists, FREE version should be hidden
-                $free_to_pro_mapping = array();
-                
-                if(!empty($pro_plugins)){
-                    foreach($pro_plugins as $slug => $data){
-                        if(isset($data['incompatible']) && !empty($data['incompatible']) && $data['incompatible'] !== 'false'){
-                            $free_to_pro_mapping[$data['incompatible']] = $slug;
-                        }
-                    }
-                }
-                
-                $prefix = 'ect';
-                
-                if( !empty( $plugins ) || !empty($pro_plugins) ){
-                    
-                    // Separate plugins into categories
-                    $activated_addons = array();
-                    $available_addons = array();
-                    $pro_addons = array();
-                    
-                    // Process free plugins
-                    if(!empty($plugins)){
-                        foreach($plugins as $plugin){
-                            $plugin_slug = $plugin['slug'];
-                            
-                            // IMPORTANT: Skip PRO plugins from free plugins list
-                            // PRO plugins will be handled separately from pro_plugins array
-                            if(in_array($plugin_slug, $pro_plugin_slugs)){
-                                continue; // Skip this plugin, it will be handled in PRO section
-                            }
-                            
-                            // NEW LOGIC: Check if this FREE plugin has a PRO counterpart installed AND active
-                            // Only hide FREE when PRO is active; if PRO is deactivated, show FREE in list
-                            if(isset($free_to_pro_mapping[$plugin_slug])){
-                                $pro_version_slug = $free_to_pro_mapping[$plugin_slug];
-                                $pro_plugin_dir = WP_PLUGIN_DIR . '/' . $pro_version_slug;
-                                
-                                if(file_exists($pro_plugin_dir)){
-                                    $pro_is_active = false;
-                                    $pro_files = glob($pro_plugin_dir . '/*.php');
-                                    if(!empty($pro_files)){
-                                        foreach($pro_files as $pf){
-                                            $basename = plugin_basename($pf);
-                                            if(is_plugin_active($basename)){
-                                                $pro_is_active = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    if($pro_is_active){
-                                        continue; // Skip FREE plugin, PRO version is active
-                                    }
-                                }
-                            }
-                            
-                            $plugin_dir = WP_PLUGIN_DIR . '/' . $plugin_slug;
-                            
-                            // Check if plugin exists
-                            if(file_exists($plugin_dir)){
-                                // Check if plugin is active
-                                $plugin_files = glob($plugin_dir . '/*.php');
-                                $is_active = false;
-                                $plugin_main_file = '';
-                                
-                                foreach($plugin_files as $plugin_file){
-                                    $plugin_basename = plugin_basename($plugin_file);
-                                    
-                                    // Store the first valid plugin file as fallback
-                                    if(empty($plugin_main_file)){
-                                        $plugin_data = get_file_data($plugin_file, array('Plugin Name' => 'Plugin Name'));
-                                        if(!empty($plugin_data['Plugin Name'])){
-                                            $plugin_main_file = $plugin_basename;
-                                        }
-                                    }
-                                    
-                                    if(is_plugin_active($plugin_basename)){
-                                        $is_active = true;
-                                        $plugin_main_file = $plugin_basename;
-                                        break;
-                                    }
-                                }
-                                
-                                // Set plugin basename for both active and inactive plugins
-                                if(!empty($plugin_main_file)){
-                                    $plugin['plugin_basename'] = $plugin_main_file;
-                                    
-                                    // Get actual installed plugin version
-                                    $plugin_file_path = WP_PLUGIN_DIR . '/' . $plugin_main_file;
-                                    if(file_exists($plugin_file_path)){
-                                        $plugin_data = get_plugin_data($plugin_file_path, false, false);
-                                        if(!empty($plugin_data['Version'])){
-                                            $plugin['installed_version'] = $plugin_data['Version'];
-                                        }
-                                    }
-                                }
-                                
-                                if($is_active){
-                                    // Check for updates
-                                    $plugin['has_update'] = $this->check_plugin_update($plugin_slug);
-                                    $activated_addons[] = $plugin;
-                                }else{
-                                    // Installed but inactive
-                                    $plugin['needs_activation'] = true;
-                                    $plugin['has_update'] = $this->check_plugin_update($plugin_slug);
-                                    $available_addons[] = $plugin;
-                                }
-                            }else{
-                                // Not installed
-                                $available_addons[] = $plugin;
-                            }
-                        }
-                    }
-                    
-                    // Process PRO plugins
-                    if(!empty($pro_plugins)){
-                        foreach($pro_plugins as $plugin){
-                            $plugin_slug = $plugin['slug'];
-                            
-                            // Validate if this is actually a PRO plugin
-                            $has_buy_link = !empty($plugin['buyLink']);
-                            $is_pro_slug = (strpos($plugin_slug, '-pro') !== false) || in_array($plugin_slug, $pro_plugin_slugs);
-                            
-                            if(!$has_buy_link && !$is_pro_slug){
-                                continue;
-                            }
-                            
-                            $plugin_dir = WP_PLUGIN_DIR . '/' . $plugin_slug;
-                            
-                            // Check if PRO plugin exists
-                            if(file_exists($plugin_dir)){
-                                // Check if plugin is active
-                                $plugin_files = glob($plugin_dir . '/*.php');
-                                $is_active = false;
-                                $plugin_main_file = '';
-                                
-                                foreach($plugin_files as $plugin_file){
-                                    $plugin_basename = plugin_basename($plugin_file);
-                                    
-                                    // Store the first valid plugin file as fallback
-                                    if(empty($plugin_main_file)){
-                                        $plugin_data = get_file_data($plugin_file, array('Plugin Name' => 'Plugin Name'));
-                                        if(!empty($plugin_data['Plugin Name'])){
-                                            $plugin_main_file = $plugin_basename;
-                                        }
-                                    }
-                                    
-                                    if(is_plugin_active($plugin_basename)){
-                                        $is_active = true;
-                                        $plugin_main_file = $plugin_basename;
-                                        break;
-                                    }
-                                }
-                                
-                                // Set plugin basename for both active and inactive plugins
-                                if(!empty($plugin_main_file)){
-                                    $plugin['plugin_basename'] = $plugin_main_file;
-                                    
-                                    // Get actual installed plugin version
-                                    $plugin_file_path = WP_PLUGIN_DIR . '/' . $plugin_main_file;
-                                    if(file_exists($plugin_file_path)){
-                                        $plugin_data = get_plugin_data($plugin_file_path, false, false);
-                                        if(!empty($plugin_data['Version'])){
-                                            $plugin['installed_version'] = $plugin_data['Version'];
-                                        }
-                                    }
-                                }
-                                
-                                if($is_active){
-                                    // Active PRO plugin (user ke paas hai + active) → Activated Addons
-                                    $plugin['has_update'] = $this->check_plugin_update($plugin_slug);
-                                    $activated_addons[] = $plugin;
-                                }else{
-                                    // Installed but inactive premium plugin (the user owns it but it’s not active) → Show it under Available Addons (including update checks).
-                                    $plugin['needs_activation'] = true;
-                                    $plugin['is_pro_installed'] = true; // Mark as PRO
-                                    $plugin['has_update'] = $this->check_plugin_update($plugin_slug);
-                                    $available_addons[] = $plugin;
-                                }
-                            }else{
-                                // PRO plugin NOT INSTALLED (user ke paas NAHI hai) → Pro Addons
-                                $pro_addons[] = $plugin;
-                            }
-                        }
-                    }
-                    
-                    // Render new dashboard
-                    $this->render_modern_dashboard($prefix, $activated_addons, $available_addons, $pro_addons);
+                $data = $this->get_dashboard_data();
 
-                }else{
+                if ( empty( $data['has_plugins'] ) ) {
                     echo '<div class="notice notice-warning ect-required-plugin-notice"><p>' . esc_html__( 'No plugins data available at the moment.', 'template-events-calendar' ) . '</p></div>';
+                    return;
                 }
+
+                $this->render_modern_dashboard(
+                    $data['prefix'],
+                    $data['activated_addons'],
+                    $data['available_addons'],
+                    $data['pro_addons']
+                );
+            }
+
+            /**
+             * Prepare dashboard plugin lists for rendering.
+             *
+             * @return array{
+             *     has_plugins: bool,
+             *     prefix: string,
+             *     activated_addons: array,
+             *     available_addons: array,
+             *     pro_addons: array
+             * }
+             */
+            private function get_dashboard_data() {
+
+                $tag         = $this->plugin_tag;
+                $plugins     = $this->request_wp_plugins_data( $tag );
+                $pro_plugins = $this->request_pro_plugins_data( $tag );
+
+                $this->ect_disable_free_plugins();
+
+                $pro_plugin_slugs = array_keys( $pro_plugins );
+
+                $free_to_pro_mapping = array();
+                if ( ! empty( $pro_plugins ) ) {
+                    foreach ( $pro_plugins as $slug => $pro_data ) {
+                        if ( isset( $pro_data['incompatible'] ) && ! empty( $pro_data['incompatible'] ) && $pro_data['incompatible'] !== 'false' ) {
+                            $free_to_pro_mapping[ $pro_data['incompatible'] ] = $slug;
+                        }
+                    }
+                }
+
+                $activated_addons = array();
+                $available_addons = array();
+                $pro_addons       = array();
+
+                if ( empty( $plugins ) && empty( $pro_plugins ) ) {
+                    return array(
+                        'has_plugins'       => false,
+                        'prefix'            => 'ect',
+                        'activated_addons'  => $activated_addons,
+                        'available_addons'  => $available_addons,
+                        'pro_addons'        => $pro_addons,
+                    );
+                }
+
+                if ( ! empty( $plugins ) ) {
+                    foreach ( $plugins as $plugin ) {
+                        $plugin_slug = $plugin['slug'];
+
+                        if ( in_array( $plugin_slug, $pro_plugin_slugs, true ) ) {
+                            continue;
+                        }
+
+                        if ( isset( $free_to_pro_mapping[ $plugin_slug ] ) ) {
+                            $pro_version_slug = $free_to_pro_mapping[ $plugin_slug ];
+                            $pro_plugin_dir   = WP_PLUGIN_DIR . '/' . $pro_version_slug;
+
+                            if ( file_exists( $pro_plugin_dir ) ) {
+                                $pro_is_active = false;
+                                $pro_files     = glob( $pro_plugin_dir . '/*.php' );
+                                if ( ! empty( $pro_files ) ) {
+                                    foreach ( $pro_files as $pf ) {
+                                        $basename = plugin_basename( $pf );
+                                        if ( is_plugin_active( $basename ) ) {
+                                            $pro_is_active = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if ( $pro_is_active ) {
+                                    continue;
+                                }
+                            }
+                        }
+
+                        $classified = $this->ect_classify_installed_plugin( $plugin );
+                        if ( 'activated' === $classified['bucket'] ) {
+                            $activated_addons[] = $classified['plugin'];
+                        } elseif ( 'available' === $classified['bucket'] ) {
+                            $available_addons[] = $classified['plugin'];
+                        }
+                    }
+                }
+
+                if ( ! empty( $pro_plugins ) ) {
+                    foreach ( $pro_plugins as $plugin ) {
+                        $plugin_slug = $plugin['slug'];
+
+                        $has_buy_link = ! empty( $plugin['buyLink'] );
+                        $is_pro_slug  = ( strpos( $plugin_slug, '-pro' ) !== false ) || in_array( $plugin_slug, $pro_plugin_slugs, true );
+
+                        if ( ! $has_buy_link && ! $is_pro_slug ) {
+                            continue;
+                        }
+
+                        $classified = $this->ect_classify_installed_plugin( $plugin, true );
+                        if ( 'activated' === $classified['bucket'] ) {
+                            $activated_addons[] = $classified['plugin'];
+                        } elseif ( 'available' === $classified['bucket'] ) {
+                            $available_addons[] = $classified['plugin'];
+                        } elseif ( 'pro' === $classified['bucket'] ) {
+                            $pro_addons[] = $classified['plugin'];
+                        }
+                    }
+                }
+
+                return array(
+                    'has_plugins'      => true,
+                    'prefix'           => 'ect',
+                    'activated_addons' => $activated_addons,
+                    'available_addons' => $available_addons,
+                    'pro_addons'       => $pro_addons,
+                );
+            }
+
+            /**
+             * Classify a plugin as activated, available, or pro (not installed).
+             *
+             * @param array $plugin Plugin data.
+             * @param bool  $is_pro Whether this is a pro plugin entry.
+             * @return array{bucket: string, plugin: array}
+             */
+            private function ect_classify_installed_plugin( $plugin, $is_pro = false ) {
+                $plugin_slug = $plugin['slug'];
+                $plugin_dir  = WP_PLUGIN_DIR . '/' . $plugin_slug;
+
+                if ( ! file_exists( $plugin_dir ) ) {
+                    return array(
+                        'bucket' => $is_pro ? 'pro' : 'available',
+                        'plugin' => $plugin,
+                    );
+                }
+
+                $plugin_files     = glob( $plugin_dir . '/*.php' );
+                $is_active        = false;
+                $plugin_main_file = '';
+
+                if ( ! empty( $plugin_files ) ) {
+                    foreach ( $plugin_files as $plugin_file ) {
+                        $plugin_basename = plugin_basename( $plugin_file );
+
+                        if ( empty( $plugin_main_file ) ) {
+                            $plugin_data = get_file_data( $plugin_file, array( 'Plugin Name' => 'Plugin Name' ) );
+                            if ( ! empty( $plugin_data['Plugin Name'] ) ) {
+                                $plugin_main_file = $plugin_basename;
+                            }
+                        }
+
+                        if ( is_plugin_active( $plugin_basename ) ) {
+                            $is_active        = true;
+                            $plugin_main_file = $plugin_basename;
+                            break;
+                        }
+                    }
+                }
+
+                if ( ! empty( $plugin_main_file ) ) {
+                    $plugin['plugin_basename'] = $plugin_main_file;
+
+                    $plugin_file_path = WP_PLUGIN_DIR . '/' . $plugin_main_file;
+                    if ( file_exists( $plugin_file_path ) ) {
+                        $plugin_data = get_plugin_data( $plugin_file_path, false, false );
+                        if ( ! empty( $plugin_data['Version'] ) ) {
+                            $plugin['installed_version'] = $plugin_data['Version'];
+                        }
+                    }
+                }
+
+                if ( $is_active ) {
+                    $plugin['has_update'] = $this->check_plugin_update( $plugin_slug );
+                    return array(
+                        'bucket' => 'activated',
+                        'plugin' => $plugin,
+                    );
+                }
+
+                $plugin['needs_activation'] = true;
+                $plugin['has_update']       = $this->check_plugin_update( $plugin_slug );
+                if ( $is_pro ) {
+                    $plugin['is_pro_installed'] = true;
+                }
+
+                return array(
+                    'bucket' => 'available',
+                    'plugin' => $plugin,
+                );
             }
             
             /**

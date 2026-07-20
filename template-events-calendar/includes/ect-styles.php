@@ -3,52 +3,15 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 //phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 class EctStyles {
 
-
-	/**
-	 * The unique instance of the plugin.
-	 */
-	private static $instance;
-
-	/**
-	 * Gets an instance of our plugin.
-	 */
-	public static function get_instance() {
-		if ( null === self::$instance ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
-
-	/**
-	 * Constructor.
-	 *
-	 * @param array $options
-	 */
-	public function __construct() {     }
-
 	 /**
 	  * Register all hooks
 	  */
 
 	public static function registers() {
-		$thisPlugin = new self();
-		/*** Enqueued script and styles */
-		// add_action('wp_enqueue_scripts', array($thisPlugin, 'ect_styles'));
-		$thisPlugin::load_files();
+		self::load_files();
 
 	}
 
-	/*** Register CSS style assets */
-	public static function ect_styles() {
-		wp_register_style( 'ect-common-styles', ECT_PLUGIN_URL . 'assets/css/ect-common-styles.min.css', null, ECT_VERSION, 'all' );
-		wp_register_style( 'ect-timeline-styles', ECT_PLUGIN_URL . 'assets/css/ect-timeline.min.css', null, ECT_VERSION, 'all' );
-		wp_register_style( 'ect-list-styles', ECT_PLUGIN_URL . 'assets/css/ect-list-view.min.css', null, ECT_VERSION, 'all' );
-		wp_register_style( 'ect-minimal-list-styles', ECT_PLUGIN_URL . 'assets/css/ect-minimal-list-view.css', null, ECT_VERSION, 'all' );
-		// scripts
-		wp_register_script( 'ect-sharebutton', ECT_PLUGIN_URL . 'assets/js/ect-sharebutton.min.js', array( 'jquery' ), ECT_VERSION, true );
-		wp_register_style( 'ect-sharebutton-css', ECT_PLUGIN_URL . 'assets/css/ect-sharebutton.min.css', null, ECT_VERSION, 'all' );
-	}
 	public static function load_files() {
 
 			// Inside ect-tinycolor folder exists darken,lighten color.
@@ -65,8 +28,7 @@ class EctStyles {
 	/*** Load CSS styles based on template. */
 	public static function ect_load_requried_assets( $template, $style ) {
 		wp_enqueue_style( 'ect-common-styles', ECT_PLUGIN_URL . 'assets/css/ect-common-styles.min.css', null, ECT_VERSION, 'all' );
-		$thisPlugin   = new self();
-		$custom_style = $thisPlugin::ect_custom_styles( $template, $style );
+		$custom_style = self::ect_custom_styles( $template, $style );
 		if ( in_array( $template, array( 'timeline', 'classic-timeline', 'timeline-view' ) ) ) {
 			wp_enqueue_style( 'ect-timeline-styles', ECT_PLUGIN_URL . 'assets/css/ect-timeline.min.css', null, ECT_VERSION, 'all' );
 			wp_add_inline_style( 'ect-timeline-styles', $custom_style );
@@ -82,13 +44,12 @@ class EctStyles {
 	}
 	public static function get_typeo_output( $settings ) {
 
-		$output    = '';
-		$important = '';
+		$output = '';
 		// Font family sanitize.
 		$font_family = ! empty( $settings['font-family'] ) ? preg_replace( '/[^a-zA-Z0-9,\s"-]/', '', sanitize_text_field( $settings['font-family'] ) ) : '';
 		$backup_family = ! empty( $settings['backup-font-family'] ) ? ', ' . preg_replace( '/[^a-zA-Z0-9,\s"-]/', '', sanitize_text_field( $settings['backup-font-family'] ) ) : '';
 		if ( $font_family ) {
-			$output .= 'font-family:"' . $font_family . '"' . $backup_family . $important . ';';
+			$output .= 'font-family:"' . $font_family . '"' . $backup_family . ';';
 		}
 		// Allowed CSS properties.
 		$properties = array(
@@ -116,7 +77,7 @@ class EctStyles {
 			} else {
 				$value = preg_replace( '/[;{}]/', '', $value );
 			}
-			$output .= $property . ':' . $value . $important . ';';
+			$output .= $property . ':' . $value . ';';
 		}
 		$properties = array(
 			'font-size',
@@ -135,7 +96,7 @@ class EctStyles {
 			$current_unit = ( 'line-height' === $property )
 				? $line_height_unit
 				: $unit;
-			$output .= $property . ':' . $value . $current_unit . $important . ';';
+			$output .= $property . ':' . $value . $current_unit . ';';
 		}
 		return $output;
 	}
@@ -180,7 +141,6 @@ class EctStyles {
 	}
 		/** This function is used to apply custom styles/typography settings */
 	public static function ect_custom_styles( $template, $style ) {
-		 $thisPlugin    = new self();
 		$ect_output_css = '';
 
 		$options         = get_option( 'ects_options' );
@@ -188,22 +148,22 @@ class EctStyles {
 		$custom_css      = ! empty( $options['custom_css'] ) ? $options['custom_css'] : '';
 		$main_skin_color = ! empty( $options['main_skin_color'] ) ? $options['main_skin_color'] : '#5bbd8a';
 		if ( empty( $options['main_skin_alternate_color'] ) ) {
-			$ect_title_styles1         = ! empty( $options['ect_title_styles'] ) ? $options['ect_title_styles'] : '';
-			$main_skin_alternate_color = $ect_title_styles1['color'];
+			$ect_title_styles1         = ! empty( $options['ect_title_styles'] ) ? $options['ect_title_styles'] : array();
+			$main_skin_alternate_color = ! empty( $ect_title_styles1['color'] ) ? $ect_title_styles1['color'] : '#ffffff';
 		} else {
 			$main_skin_alternate_color = ! empty( $options['main_skin_alternate_color'] ) ? $options['main_skin_alternate_color'] : '#ffffff';
 		}
 		$featured_event_skin_color = ! empty( $options['featured_event_skin_color'] ) ? $options['featured_event_skin_color'] : '#008cff';
 		$featured_event_font_color = ! empty( $options['featured_event_font_color'] ) ? $options['featured_event_font_color'] : '#ffffff';
 		$event_desc_bg_color       = ! empty( $options['event_desc_bg_color'] ) ? $options['event_desc_bg_color'] : '#ffffff';
-		$title_styles              = $thisPlugin::get_typeo_output( ! empty( $options['ect_title_styles'] ) ? $options['ect_title_styles'] : '' );
+		$title_styles              = self::get_typeo_output( ! empty( $options['ect_title_styles'] ) ? $options['ect_title_styles'] : '' );
 		$ect_title_styles          = ! empty( $options['ect_title_styles'] ) ? $options['ect_title_styles'] : '';
 		$ect_title_color           = ! empty( $ect_title_styles['color'] ) ? $ect_title_styles['color'] : '#383838';
 		$ect_title_font_famiily    = ! empty( $ect_title_styles['font-family'] ) ? $ect_title_styles['font-family'] : '';
 		$ect_title_font_size       = ! empty( $ect_title_styles['font-size'] ) ? $ect_title_styles['font-size'] : '18';
-		$ect_desc_styles           = $thisPlugin::get_typeo_output( ! empty( $options['ect_desc_styles'] ) ? $options['ect_desc_styles'] : '' );
-		$ect_venue_styles          = $thisPlugin::get_typeo_output( ! empty( $options['ect_desc_venue'] ) ? $options['ect_desc_venue'] : '' );
-		$ect_date_style            = $thisPlugin::get_typeo_output( ! empty( $options['ect_dates_styles'] ) ? $options['ect_dates_styles'] : '' );
+		$ect_desc_styles           = self::get_typeo_output( ! empty( $options['ect_desc_styles'] ) ? $options['ect_desc_styles'] : '' );
+		$ect_venue_styles          = self::get_typeo_output( ! empty( $options['ect_desc_venue'] ) ? $options['ect_desc_venue'] : '' );
+		$ect_date_style            = self::get_typeo_output( ! empty( $options['ect_dates_styles'] ) ? $options['ect_dates_styles'] : '' );
 		// Fetch Description Typograpy
 		$ect_desc_style        = ! empty( $options['ect_desc_styles'] ) ? $options['ect_desc_styles'] : '';
 		$ect_desc_color        = ! empty( $ect_desc_style['color'] ) ? $ect_desc_style['color'] : '#a5a5a5';
@@ -266,9 +226,9 @@ class EctStyles {
 		}
 
 		if ( ! empty( $custom_css ) ) {
-			return $thisPlugin::minify_css( $ect_output_css . $custom_css );
+			return self::minify_css( $ect_output_css . $custom_css );
 		} else {
-			return $thisPlugin::minify_css( $ect_output_css );
+			return self::minify_css( $ect_output_css );
 		}
 	}
 

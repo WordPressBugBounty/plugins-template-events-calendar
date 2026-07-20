@@ -57,12 +57,29 @@
         });
     }
 
-    function getPluginSlug(plugin) {
-        const slugs = {
-            'events-calendar-modules-for-divi': 'events-calendar-modules-for-divi'
-        };
+    /**
+     * Bind install-button click handlers inside a container.
+     *
+     * @param {Element|jQuery} container
+     */
+    function bindInstallButtons(container) {
+        var $installBtns = $(container).find('button.ect-install-plugin');
 
-        return slugs[plugin] || plugin;
+        if ($installBtns.length === 0) {
+            return;
+        }
+
+        $installBtns.each(function () {
+            var btn = this;
+            var pluginSlug = btn.getAttribute('data-plugin');
+
+            $(btn).off('click.ectInstall').on('click.ectInstall', function (e) {
+                e.preventDefault();
+                if (pluginSlug) {
+                    installPlugin($(btn), pluginSlug);
+                }
+            });
+        });
     }
 
 
@@ -73,23 +90,12 @@
             if (twaeControlDone) return;
             if (!elementor.addControlView || !elementor.modules || !elementor.modules.controls) return;
             twaeControlDone = true;
-            console.log('elementor:init');
             var callbackfunction = elementor.modules.controls.BaseData.extend({
                 onRender: function (data) {
                     if (!data.el) return;
                     var customNotice = data.el.querySelector('.ect-tec-notice-divi');
                     if (!customNotice) return;
-                    var installBtns = customNotice.querySelectorAll('button.ect-install-plugin');
-                    if (installBtns.length === 0) return;
-                    installBtns.forEach(function (btn) {
-                        var installSlug = btn.getAttribute('data-plugin');
-                        var pluginSlug = getPluginSlug(installSlug);
-
-                        btn.addEventListener('click', function (event) {
-                            event.preventDefault();
-                            installPlugin(jQuery(btn), pluginSlug);
-                        });
-                    });
+                    bindInstallButtons(customNotice);
                 },
             });
             elementor.addControlView('raw_html', callbackfunction);
@@ -106,21 +112,7 @@
             const customNotice = $('.ect-tec-notice-divi');
             if (customNotice.length === 0) return;
 
-            const installBtns = customNotice.find('button.ect-install-plugin');
-            if (installBtns.length === 0) return;
-
-            installBtns.each(function () {
-                const btn = this;
-                const installSlug = btn.getAttribute('data-plugin');
-                const pluginSlug = getPluginSlug(installSlug);
-
-                $(btn).on('click', function (e) {
-                    e.preventDefault();
-                    if (pluginSlug) {
-                        installPlugin($(btn), pluginSlug);
-                    }
-                });
-            });
+            bindInstallButtons(customNotice);
         });
     }
 

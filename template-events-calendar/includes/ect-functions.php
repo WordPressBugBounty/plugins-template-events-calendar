@@ -122,6 +122,11 @@ function ect_custom_date_formats($date_format,$template,$event_id,$ev_time){
     //grab event image
     function ect_get_event_image($event_id,$size){
 		$default_img = ECT_PLUGIN_URL."assets/images/event-template-bg.png";
+		if ( defined( 'ECT_PLUGIN_DIR' ) && defined( 'ECT_PLUGIN_URL' )
+			&& ! file_exists( ECT_PLUGIN_DIR . 'assets/images/event-template-bg.png' )
+			&& file_exists( ECT_PLUGIN_DIR . 'assets/images/event-template-default.svg' ) ) {
+			$default_img = ECT_PLUGIN_URL . 'assets/images/event-template-default.svg';
+		}
 		// ect_default_img
         $ev_post_img='';
         $feat_img_url = wp_get_attachment_image_src(get_post_thumbnail_id($event_id),$size);
@@ -148,3 +153,29 @@ function ect_custom_date_formats($date_format,$template,$event_id,$ev_time){
             }
             return $ev_post_img;
     }
+
+if ( ! function_exists( 'ect_free_select_category' ) ) {
+	/**
+	 * Fetch event categories for shortcode builder options.
+	 *
+	 * @return array<string, string>
+	 */
+	function ect_free_select_category() {
+		$terms = get_terms(
+			array(
+				'taxonomy'   => 'tribe_events_cat',
+				'hide_empty' => true,
+			)
+		);
+		$ect_categories        = array();
+		$ect_categories['all'] = esc_html( __( 'All Categories', 'template-events-calendar' ) );
+
+		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+			foreach ( $terms as $term ) {
+				$ect_categories[ $term->slug ] = $term->name;
+			}
+		}
+
+		return $ect_categories;
+	}
+}
