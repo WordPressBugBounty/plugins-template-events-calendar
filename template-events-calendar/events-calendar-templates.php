@@ -3,7 +3,7 @@
 Plugin Name:Events Shortcodes For The Events Calendar
 Plugin URI:https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
 Description:<a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Shortcodes to show The Events Calendar plugin events list on any page or post in different layouts.
-Version:2.7.0
+Version:2.8.0
 Requires PHP:7.2
 Author:Cool Plugins
 Author URI: https://coolplugins.net/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
@@ -20,12 +20,13 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 if (! defined('ECT_VERSION')) {
-	define('ECT_VERSION', '2.7.0');//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+	define('ECT_VERSION', '2.8.0');//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 }
 
 /*** Defined constent for later use */
 define('ECT_PLUGIN_URL', plugin_dir_url(__FILE__));//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 define('ECT_PLUGIN_DIR', plugin_dir_path(__FILE__));//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+define('ECT_PLUGIN_FILE', __FILE__);//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 define('ECT_FEEDBACK_URL','https://feedback.coolplugins.net/');//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 
 /*** EventsCalendarTemplates main class by CoolPlugins.net */
@@ -75,7 +76,11 @@ if (! class_exists('EventsCalendarTemplates')) {
 			 
 			add_action('admin_init', array(self::$instance, 'ect_settings_migration'));
 			add_action('admin_init', array(self::$instance, 'onInit'));
-			add_action('activated_plugin', array(self::$instance, 'ect_plugin_redirection'));
+
+			if ( is_admin() ) {
+				require_once ECT_PLUGIN_DIR . 'admin/class-ect-eca-integration.php';
+				ECT_ECA_Integration::boot_admin();
+			}
 
 			/*** Check The Event Calendar is installed or not */
 			add_action('plugins_loaded', array(self::$instance, 'ect_check_event_calender_installed'));
@@ -97,8 +102,25 @@ if (! class_exists('EventsCalendarTemplates')) {
 
 			/***Include Share Buttons*/
 			require_once ECT_PLUGIN_DIR . '/includes/ect-share-functions.php';
-			$this->cpfm_load_files();
+			$this->cpfm_feedback_cron_init();
+			add_action('init', array($this, 'register_cpfm_notices'), 999);
+			add_action('cpfm_after_opt_in_ect', array($this, 'ect_handle_cpfm_opt_in'));
 			add_action('admin_print_scripts', [$this, 'ect_hide_unrelated_notices']);
+
+			add_action( 'plugin_opt_in_template-events-calendar', function () {
+				$ects_options = get_option( 'ects_options' );
+				if ( ! is_array( $ects_options ) ) {
+					$ects_options = array();
+				}
+				$ects_options['ect_cpfm_feedback_data'] = true;
+				update_option( 'ects_options', $ects_options );
+
+				$this->ect_register_cpfm_usage_cron();
+
+				if ( class_exists( '\CPFM_Usage_Cron' ) ) {
+					\CPFM_Usage_Cron::cpfm_schedule_event( 'ect_extra_data_update' );
+				}
+			} );
 		}
 
 		public function ect_hide_unrelated_notices() {
@@ -148,6 +170,12 @@ if (! class_exists('EventsCalendarTemplates')) {
 				'ewpe',
 				'epta',
 			);
+
+			if ( class_exists( 'ECT_ECA_Integration' ) ) {
+				$allowed_pages = array_merge( $allowed_pages, ECT_ECA_Integration::admin_page_slugs() );
+			}
+
+			$allowed_pages = array_values( array_unique( $allowed_pages ) );
 
 			return in_array( $page_param, $allowed_pages, true );
 		}
@@ -222,35 +250,297 @@ if (! class_exists('EventsCalendarTemplates')) {
 			}
 		}
 
-		public function register_feedback_notice() {
-			if ( ! class_exists( 'CPFM_Feedback_Notice' ) || ! current_user_can( 'manage_options' ) ) {
+		/**
+		 * Boot CPFM loader, usage cron registration, and onboarding telemetry filter.
+		 * Loaded unconditionally so WP-Cron requests can execute data sharing without is_admin().
+		 *
+		 * @return void
+		 */
+		public function cpfm_feedback_cron_init() {
+			if ( ! class_exists( 'CPFM_Loader' ) ) {
+				$file = ECT_PLUGIN_DIR . 'admin/cpfm-feedback/class-cpfm-loader.php';
+				if ( file_exists( $file ) ) {
+					require_once $file;
+				}
+			}
+
+			if ( class_exists( 'CPFM_Loader' ) ) {
+				CPFM_Loader::load();
+			}
+
+			$this->ect_register_cpfm_usage_cron();
+
+			// Always load the onboarding data class so the cpfm_environment filter
+			// is wired on every request type — including WP-Cron and AJAX — not just
+			// admin page views. Without this, onboarding selections are never appended
+			// to the cron payload because the filter callback is never registered.
+			if ( ! class_exists( 'ECT_Onboarding_Cpfm_Data', false ) ) {
+				$onboarding_file = ECT_PLUGIN_DIR . 'admin/ect-onboarding/includes/class-ect-onboarding-cpfm-data.php';
+				if ( file_exists( $onboarding_file ) ) {
+					require_once $onboarding_file;
+				}
+			}
+		}
+
+		/**
+		 * Register the shared usage-data cron (admin + WP-Cron).
+		 *
+		 * @return void
+		 */
+		public function ect_register_cpfm_usage_cron() {
+			static $usage_cron_registered = false;
+
+			if ( $usage_cron_registered || ! class_exists( 'CPFM_Usage_Cron' ) ) {
 				return;
 			}
 
-			$notice = array(
-				'title'          => __( 'Events Addons By Cool Plugins', 'template-events-calendar' ),
-				'message'        => __( 'Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'template-events-calendar' ),
-				'pages'          => array( 'cool-plugins-events-addon', 'tribe_events-events-template-settings' ),
-				'always_show_on' => array( 'cool-plugins-events-addon', 'tribe_events-events-template-settings' ),
-				'plugin_name'    => 'ect',
+			$usage_cron_registered = true;
+
+			CPFM_Usage_Cron::cpfm_register(
+				array(
+					'id'                     => 'ect',
+					'plugin_name'            => 'Events Shortcodes For The Events Calendar',
+					'version'                => defined( 'ECT_VERSION' ) ? ECT_VERSION : '',
+					'api'                    => defined( 'ECT_FEEDBACK_URL' ) ? ECT_FEEDBACK_URL : 'https://feedback.coolplugins.net/',
+					'cron_hook'              => 'ect_extra_data_update',
+					'consent_master_option'  => 'cpfm_opt_in_choice_cool_events',
+					'consent_callback'       => array( $this, 'ect_has_usage_tracking_consent' ),
+					'install_date_option'    => 'ect-install-date',
+					'initial_version_option' => 'ect-initial-save-version',
+					'site_key'               => '20',
+					'onboarding_data'        => 'cpfm_onboarding_preferences_cool_events',
+				)
 			);
-
-			CPFM_Feedback_Notice::cpfm_register_notice( 'cool_events', $notice );
-
-			if ( ! isset( $GLOBALS['cool_plugins_feedback'] ) ) {
-				$GLOBALS['cool_plugins_feedback'] = array();
-			}
-
-			$GLOBALS['cool_plugins_feedback']['cool_events'][] = $notice;
 		}
 
-		public function handle_opt_in( $category ) {
-			$ects_options = get_option( 'ects_options' );
+		/**
+		 * Whether usage-data sharing is enabled for Events Shortcodes Free.
+		 *
+		 * @return bool
+		 */
+		public function ect_has_usage_tracking_consent() {
+			$data = get_option( 'ects_options' );
 
-			if ( $category === 'cool_events' ) {
-				ECT_cronjob::ect_send_data();
-				$ects_options['ect_cpfm_feedback_data'] = true;
-				update_option( 'ects_options', $ects_options );
+			if ( is_array( $data ) && ! empty( $data['ect_cpfm_feedback_data'] ) ) {
+				return true;
+			}
+
+			return ( 'yes' === get_option( 'cpfm_opt_in_choice_cool_events' ) );
+		}
+
+		/**
+		 * Schedule the usage tracking cron when it is not already scheduled.
+		 *
+		 * @return void
+		 */
+		public function ect_maybe_schedule_tracking_cron() {
+			$this->ect_register_cpfm_usage_cron();
+
+			if ( class_exists( 'CPFM_Usage_Cron' ) ) {
+				CPFM_Usage_Cron::cpfm_schedule_event( 'ect_extra_data_update' );
+			}
+		}
+
+		/**
+		 * Opt-in handler: persist consent, send first payload, schedule cron.
+		 *
+		 * @param string $category Notice category key.
+		 * @return void
+		 */
+		public function ect_handle_cpfm_opt_in( $category ) {
+			if ( 'cool_events' !== $category ) {
+				return;
+			}
+
+			$this->ect_register_cpfm_usage_cron();
+
+			$ects_options = get_option( 'ects_options' );
+			if ( ! is_array( $ects_options ) ) {
+				$ects_options = array();
+			}
+			$ects_options['ect_cpfm_feedback_data'] = true;
+			update_option( 'ects_options', $ects_options );
+
+			do_action( 'ect_extra_data_update' );
+			$this->ect_maybe_schedule_tracking_cron();
+		}
+
+		/**
+		 * Register CPFM notices (opt-in notice panel, review prompt, and deactivation survey).
+		 *
+		 * @return void
+		 */
+		public function register_cpfm_notices() {
+			if ( ! is_admin() ) {
+				return;
+			}
+
+			static $registered = false;
+			if ( $registered ) {
+				return;
+			}
+			$registered = true;
+
+			add_action(
+				'cpfm_register_notice',
+				function () {
+					if ( ! class_exists( 'CPFM_Feedback_Notice' ) || ! current_user_can( 'manage_options' ) ) {
+						return;
+					}
+
+					$notice_pages = array( 'cool-plugins-events-addon', 'tribe_events-events-template-settings', 'ect-onboarding' );
+					if ( class_exists( 'ECT_ECA_Integration' ) ) {
+						$notice_pages = array_merge( $notice_pages, ECT_ECA_Integration::admin_page_slugs() );
+					}
+					$notice_pages = array_values( array_unique( $notice_pages ) );
+
+					$notice = array(
+						'title'          => __( 'Events Addons By Cool Plugins', 'template-events-calendar' ),
+						'message'        => __( 'Help us make this plugin more compatible with your site by sharing non-sensitive site data.', 'template-events-calendar' ),
+						'pages'          => $notice_pages,
+						'always_show_on' => $notice_pages,
+						'plugin_name'    => 'ect',
+					);
+
+					CPFM_Feedback_Notice::cpfm_register_notice( 'cool_events', $notice );
+
+					if ( ! isset( $GLOBALS['cool_plugins_feedback'] ) ) {
+						$GLOBALS['cool_plugins_feedback'] = array(); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+					}
+
+					$GLOBALS['cool_plugins_feedback']['cool_events'][] = $notice; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+				}
+			);
+
+			if ( class_exists( 'CPFM_Deactivation_Feedback' ) ) {
+				$name = 'Events Shortcodes For The Events Calendar';
+
+				CPFM_Deactivation_Feedback::cpfm_register(
+					array(
+						'id'                     => 'ect',
+						'slug'                   => 'template-events-calendar',
+						'plugin_name'            => $name,
+						'version'                => defined( 'ECT_VERSION' ) ? ECT_VERSION : '',
+						'api'                    => defined( 'ECT_FEEDBACK_URL' ) ? ECT_FEEDBACK_URL : 'https://feedback.coolplugins.net/',
+						'site_key'               => '20',
+						'install_date_option'    => 'ect-install-date',
+						'initial_version_option' => 'ect-initial-save-version',
+						'onboarding_data'        => 'cpfm_onboarding_preferences_cool_events',
+						'reasons'                => array(
+							'not_working'  => array(
+								'title'       => __( "The plugin isn't working", 'template-events-calendar' ),
+								'placeholder' => __( 'Which problem did you run into? We read every reply.', 'template-events-calendar' ),
+							),
+							'not_expected' => array(
+								'title'       => __( "It didn't do what I expected", 'template-events-calendar' ),
+								'placeholder' => __( 'What were you hoping it would do?', 'template-events-calendar' ),
+							),
+							'found_better' => array(
+								'title'       => __( 'I found a better plugin', 'template-events-calendar' ),
+								'placeholder' => __( 'Mind sharing which one?', 'template-events-calendar' ),
+							),
+							'temporary'    => array(
+								'title'       => __( "It's a temporary deactivation", 'template-events-calendar' ),
+								'placeholder' => '',
+							),
+							'other'        => array(
+								'title'       => __( 'Another reason', 'template-events-calendar' ),
+								'placeholder' => __( 'Please tell us more', 'template-events-calendar' ),
+							),
+						),
+						'i18n'                   => array(
+							'title'           => __( 'Before you go…', 'template-events-calendar' ),
+							/* translators: %s: plugin name (bold). */
+							'intro'           => __( 'What made you deactivate %s? Your answer helps us fix it.', 'template-events-calendar' ),
+							'submit'          => __( 'Submit & Deactivate', 'template-events-calendar' ),
+							'skip'            => __( 'Skip & Deactivate', 'template-events-calendar' ),
+							'deactivating'    => __( 'Deactivating…', 'template-events-calendar' ),
+							'pick_reason'     => __( 'Please choose a reason.', 'template-events-calendar' ),
+							'close_label'     => __( 'Close', 'template-events-calendar' ),
+							/* translators: %s: company name. */
+							'byline'          => __( 'A plugin by %s', 'template-events-calendar' ),
+							'consent'         => __( 'Submitting shares your reason plus your site URL, admin email and basic environment details (PHP, WordPress, active plugins). Skip & Deactivate sends nothing.', 'template-events-calendar' ),
+						),
+					)
+				);
+			}
+
+			if ( ! class_exists( 'CPFM_Review' ) ) {
+				$review = ECT_PLUGIN_DIR . 'admin/cpfm-feedback/class-cpfm-review.php';
+				if ( file_exists( $review ) ) {
+					require_once $review;
+				}
+			}
+
+			if ( class_exists( 'CPFM_Review' ) ) {
+				$name = 'Events Shortcodes';
+
+				CPFM_Review::cpfm_register(
+					array(
+						'id'          => 'ect',
+						'plugin_file' => __FILE__,
+						'plugin_name' => $name,
+						'review_url'  => 'https://wordpress.org/support/plugin/template-events-calendar/reviews/#new-post',
+						'capability'  => 'activate_plugins',
+						'quiet_days'  => 0,
+						'own_screens' => array(
+							'events-addons_page_tribe_events-events-template-settings',
+							'cool-plugins-events-addon_page_tribe_events-events-template-settings',
+							'toplevel_page_cool-plugins-events-addon',
+						),
+						'trigger'     => array(
+							'type'  => 'install_age',
+							'hours' => 24,
+						),
+						'notice'      => array(
+							'enabled'        => true,
+							'template'       => 'two_step',
+							'screens'        => array(
+								'plugins',
+								'edit-tribe_events',
+								'cool-plugins-events-addon',
+								'events-addons_page_tribe_events-events-template-settings',
+								'cool-plugins-events-addon_page_tribe_events-events-template-settings',
+								'toplevel_page_cool-plugins-events-addon',
+							),
+							'inline_screens' => array(),
+						),
+						'row'         => array( 'enabled' => true ),
+						'legacy'      => array(
+							'done_options'   => array(
+								'ect_review_prompt' => array( 'yes', 'done', 'dismissed' ),
+								'ect_review_shown'  => array( 'yes', 'done', 'dismissed' ),
+								'ect-ratingDiv'     => array( 'yes', 'done', 'dismissed' ),
+							),
+							'done_user_meta' => array(
+								'ect_review_dismissed' => array( '1', 'yes', 'true' ),
+							),
+							'install_dates'  => array( 'ect-free-installDate', 'ect-install-date' ),
+							'mirror_write'   => array( 'ect-ratingDiv' => 'yes' ),
+						),
+						'i18n'        => array(
+							'like_question' => sprintf(
+								/* translators: %s: plugin name. */
+								__( 'Do you like the %s plugin?', 'template-events-calendar' ),
+								$name
+							),
+							'yes_button'    => __( 'Yes, I like it', 'template-events-calendar' ),
+							'dismiss_link'  => __( 'Not good, dismiss', 'template-events-calendar' ),
+							'later_link'    => __( 'Ask me later', 'template-events-calendar' ),
+							'thanks_line'   => __( 'That is great to hear! A quick review on WordPress.org would really help us.', 'template-events-calendar' ),
+							'submit_button' => __( 'Submit review', 'template-events-calendar' ),
+							'no_link'       => __( 'I do not like it, dismiss', 'template-events-calendar' ),
+							'row_question'  => __( 'Do you like this plugin?', 'template-events-calendar' ),
+							'inline_title'  => sprintf(
+								/* translators: %s: plugin name. */
+								__( 'Enjoying %s?', 'template-events-calendar' ),
+								$name
+							),
+							'inline_text'   => __( 'A short review helps other event organisers find it.', 'template-events-calendar' ),
+							'close_label'   => __( 'Close', 'template-events-calendar' ),
+						),
+					)
+				);
 			}
 		}
 		
@@ -279,9 +569,6 @@ if (! class_exists('EventsCalendarTemplates')) {
 			}
 		}
 
-		public function cpfm_load_files() {
-			require_once ECT_PLUGIN_DIR . 'admin/cpfm-feedback/cron/class-cron.php';
-		}
 		/**
 		 * Whether the Bricks theme is active.
 		 *
@@ -313,8 +600,6 @@ if (! class_exists('EventsCalendarTemplates')) {
 		/*** Load required files */
 		public function ect_load_files()
 		{
-			
-			
 			if (class_exists('Tribe__Events__Main') or defined('Tribe__Events__Main::VERSION')) {
 				if (defined('WPB_VC_VERSION')) {
 					require_once ECT_PLUGIN_DIR . 'admin/visual-composer/ect-class-vc.php';
@@ -327,22 +612,8 @@ if (! class_exists('EventsCalendarTemplates')) {
 			}
 
 			if (is_admin()) {
-				/*** Plugin review notice file */
+				/*** Plugin marketing notice file */
 				require_once ECT_PLUGIN_DIR . 'admin/marketing/ect-marketing.php';
-				require_once ECT_PLUGIN_DIR . '/admin/feedback-notice/feedback-notice.php';
-				require_once ECT_PLUGIN_DIR . '/admin/feedback/admin-feedback-form.php';
-				require_once ECT_PLUGIN_DIR . 'admin/cpfm-feedback/cron/class-cron.php';
-				
-				if (!class_exists('CPFM_Feedback_Notice')) {
-					require_once ECT_PLUGIN_DIR . '/admin/cpfm-feedback/cpfm-feedback-notice.php';
-				}
-
-
-				add_action( 'cpfm_register_notice', array( $this, 'register_feedback_notice' ) );
-				add_action( 'cpfm_after_opt_in_ect', array( $this, 'handle_opt_in' ) );
-
-				require_once __DIR__ . '/admin/events-addon-page/events-addon-page.php';
-				cool_plugins_events_addon_settings_page('the-events-calendar', 'cool-plugins-events-addon', '📅 Events Addons For The Events Calendar');
 
 				require_once ECT_PLUGIN_DIR . 'admin/codestar-framework/codestar-framework.php';
 				require_once ECT_PLUGIN_DIR . 'admin/ect-codestar-settings.php';
@@ -393,19 +664,6 @@ if (! class_exists('EventsCalendarTemplates')) {
 					)
 				);
 			}
-			/*** Plugin review notice file */
-			ect_create_admin_notice(
-				array(
-					'id'              => 'ect_review_box',  // required and must be unique
-					'slug'            => 'ect',      // required in case of review box
-					'review'          => true,     // required and set to be true for review box
-					'review_url'      => esc_url('https://wordpress.org/support/plugin/template-events-calendar/reviews/'), // required
-					'plugin_name'     => 'Events Shortcodes  Addon',    // required
-					'review_interval' => 3,                    // optional: this will display review notice
-					// after 5 days from the installation_time	
-					// default is 3
-				)
-			);
 		}
 
 		/*** Check The Events calender is installled or not. If user has not installed yet then show notice */
@@ -480,6 +738,14 @@ if (! class_exists('EventsCalendarTemplates')) {
 		// set settings on plugin activation
 		public static function activate()
 		{
+			// Decide the post-activation redirect BEFORE writing options so
+			// fresh-install detection sees a pristine state.
+			// Fresh install → Getting Started; reactivation → Dashboard.
+			require_once ECT_PLUGIN_DIR . 'admin/ect-onboarding/class-ect-onboarding-page.php';
+			if ( class_exists( 'ECT_Onboarding_Page' ) ) {
+				ECT_Onboarding_Page::maybe_schedule_redirect();
+			}
+
 			update_option('ect-v', ECT_VERSION);
 			update_option('ect-type', 'FREE');
 			update_option('ect-free-installDate', gmdate('Y-m-d h:i:s'));
@@ -639,15 +905,6 @@ if (! class_exists('EventsCalendarTemplates')) {
 				update_option('settings_migration_status', 'done');
 				delete_option('ect_options');
 			}
-		}
-		public function ect_plugin_redirection( $plugin ) {
-			if ( plugin_basename( __FILE__ ) !== $plugin ) {
-				return;
-			}
-			wp_safe_redirect(
-				admin_url( 'admin.php?page=tribe_events-events-template-settings#tab=get-started' )
-			);
-			exit;
 		}
 	}
 }

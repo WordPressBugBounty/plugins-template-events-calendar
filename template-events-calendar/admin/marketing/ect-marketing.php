@@ -85,7 +85,6 @@ if (!class_exists('ECT_TEC_Notice')) {
                 'edit-tribe_events',
                 'tribe_events',                     
                 'tribe_events_page_tec-events-settings',
-                'toplevel_page_cool-plugins-events-addon',
                 'events-addons_page_tribe_events-events-template-settings',
                 'plugins'
             ];
@@ -130,7 +129,6 @@ if (!class_exists('ECT_TEC_Notice')) {
                 'edit-tribe_events',
                 'tribe_events',                     
                 'tribe_events_page_tec-events-settings',
-                'toplevel_page_cool-plugins-events-addon',
                 'events-addons_page_tribe_events-events-template-settings',
                 'plugins'
             ];

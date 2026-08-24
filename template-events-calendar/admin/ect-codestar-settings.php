@@ -21,9 +21,26 @@ if (! class_exists('ECTSettings')) {
 		{
 			// register actions
 			$this->create_settings_panel();
-			add_action('csf_options_before', array($this, 'inject_events_addon_header'));
-			add_action('csf_ects_options_save_after', array($this,'ect_plugin_settings_saved'));
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_eca_shell_styles' ) );
+			add_action( 'csf_options_before', array( $this, 'inject_events_addon_header' ) );
+			add_action( 'csf_options_after', array( $this, 'inject_events_addon_footer' ) );
+			add_action( 'csf_ects_options_save_after', array( $this, 'ect_plugin_settings_saved' ) );
 
+		}
+
+		/**
+		 * Ensure ECA header chrome loads on Shortcode Settings.
+		 *
+		 * @param string $hook_suffix Current admin page hook.
+		 */
+		public function enqueue_eca_shell_styles( $hook_suffix = '' ) {
+			$hook = (string) $hook_suffix;
+			if ( false === strpos( $hook, 'tribe_events-events-template-settings' ) ) {
+				return;
+			}
+			if ( class_exists( 'ECA_Dashboard_Page' ) ) {
+				ECA_Dashboard_Page::enqueue_shell_styles();
+			}
 		}
 		public function ect_plugin_settings_saved(){
 
@@ -32,36 +49,43 @@ if (! class_exists('ECTSettings')) {
  			$opt_in = !empty($data['ect_cpfm_feedback_data']) ? $data['ect_cpfm_feedback_data']:'';
 			
 			if (!empty($opt_in)) {
-				if(!wp_next_scheduled('ect_extra_data_update')){
-                wp_schedule_event(time(), 'every_30_days', 'ect_extra_data_update');
+				if ( class_exists( 'CPFM_Usage_Cron' ) ) {
+					CPFM_Usage_Cron::cpfm_schedule_event( 'ect_extra_data_update' );
+				} elseif (!wp_next_scheduled('ect_extra_data_update')) {
+					wp_schedule_event(time(), 'every_30_days', 'ect_extra_data_update');
 				}
-           
-			}else {
-
-				if (wp_next_scheduled('ect_extra_data_update')) {
+			} else {
+				if ( 'yes' !== get_option( 'cpfm_opt_in_choice_cool_events' ) && wp_next_scheduled('ect_extra_data_update') ) {
 					wp_clear_scheduled_hook('ect_extra_data_update');
 				}
-				
 			}
 		}
 
 		/**
-		 * Inject Events Addon Header before CodeStar Framework HTML
+		 * Inject shared ECA dashboard header before CodeStar Framework HTML.
 		 */
 		public function inject_events_addon_header() {
 			$screen = get_current_screen();
-			
-			// Check if we're on the shortcode settings page
-			if (isset($screen->id) && strpos($screen->id, 'tribe_events-events-template-settings') !== false) {
-				//if (EventsCalendarTemplates::ect_header_display()) {
-					$header_file = ECT_PLUGIN_DIR . '/admin/events-addon-page/includes/dashboard-header.php';
-					
-					if(file_exists($header_file)){
-						$page_title = 'Shortcode Settings';
-						$show_wrapper = false; // No wrapper needed
-						include($header_file);
-					}
-			   // }
+			if ( ! isset( $screen->id ) || false === strpos( $screen->id, 'tribe_events-events-template-settings' ) ) {
+				return;
+			}
+
+			if ( class_exists( 'ECA_Dashboard_Page' ) ) {
+				ECA_Dashboard_Page::render_admin_header( 'none' );
+			}
+		}
+
+		/**
+		 * Close shared ECA dashboard shell after CodeStar Framework HTML.
+		 */
+		public function inject_events_addon_footer() {
+			$screen = get_current_screen();
+			if ( ! isset( $screen->id ) || false === strpos( $screen->id, 'tribe_events-events-template-settings' ) ) {
+				return;
+			}
+
+			if ( class_exists( 'ECA_Dashboard_Page' ) ) {
+				ECA_Dashboard_Page::render_admin_footer();
 			}
 		}
 
@@ -657,7 +681,7 @@ function ect_shortcode_attr() {
                     <li><strong>slider-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-slider/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
                     <li><strong>accordion-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-accordion/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
                     <li><strong>masonry-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-masonry/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
-                    <li><strong>highlighted-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-highlighted-layout-demos/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
+                    <li><strong>highlighted-layout</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-highlighted-layout-demos/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
                 </ul>
             </td>
         </tr>

@@ -3,21 +3,21 @@ Contributors: satindersingh, narinder-singh, coolplugins, eventscalendaraddons
 Donate link: https://donate.stripe.com/5kQdR92iBevO75WbPm6c00i
 Tags: the events calendar, shortcode, event, calendar, event calendar
 Requires at least: 5.6
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.2
-Stable tag: 2.7.0
+Stable tag: 2.8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Add The Events Calendar shortcode or Gutenberg block to show upcoming events list with event details on any WordPress page using smart event filters.
+Add The Events Calendar shortcode, Gutenberg block, or Events Widget Element (Bricks Builder) to show events listing on any WordPress page using smart event filters.
 
 == Description ==
-
-**[Events Shortcodes](https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=top_description)** extends the functionality of **[The Events Calendar](https://stellarwp.pxf.io/tec)** plugin by adding shortcode and Gutenberg block support for displaying events anywhere on your website. This [events calendar extension](https://eventscalendaraddons.com/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=homepage&utm_content=top_description) allows you to insert event listings into pages, posts, landing pages, or custom sections using simple shortcode attributes or the integrated block editor interface.
-
-If you are looking for **[The Events Calendar shortcode](https://eventscalendaraddons.com/doc/add-the-events-calendar-shortcode/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=docs&utm_content=top_description)**, this addon provides a simple and flexible solution. It helps you present events created with The Events Calendar plugin in multiple layouts including list view, timeline format, and minimal list styles that help visitors quickly understand event schedules and details. For users who need more advanced options, the Pro version adds additional layouts such as grid displays, carousels, sliders, and other dynamic event showcase styles that help create engaging event sections across different pages of your website.
+**[Events Shortcodes](https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=top_description)**  extends the functionality of  **[The Events Calendar](https://stellarwp.pxf.io/tec)** plugin by adding shortcode, Gutenberg Block, and Bricks Builder component support for displaying events anywhere on your website. This [events calendar extension](https://eventscalendaraddons.com/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=homepage&utm_content=top_description) allows you to insert event listings into pages, posts, landing pages, or custom sections using simple shortcode attributes or the integrated block editor interface.
 
 https://youtu.be/uL3ToWGncbM
+
+If you are looking for **[The Events Calendar shortcode](https://eventscalendaraddons.com/doc/add-the-events-calendar-shortcode/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=docs&utm_content=top_description)**, this addon provides a simple and flexible solution. It helps you present events created with The Events Calendar plugin in multiple layouts including list view, timeline format, and minimal list styles that help visitors quickly understand event schedules and details.
+
 
 👉 **View Plugin Demos: (*FREE*)**
  
@@ -34,6 +34,8 @@ https://youtu.be/uL3ToWGncbM
 * **The Events Calendar Shortcode & Block**  
 Insert events into any content area of your website using a dedicated Gutenberg events block or a simple [shortcode for The Events Calendar](https://eventscalendaraddons.com/doc/the-events-calendar-shortcode-attributes/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=docs&utm_content=features). You can place an event feed inside posts, landing pages, or widgets without modifying your theme files.  
   * `[events-calendar-templates category="all" template="default" style="style-1" date_format="default" start_date="" end_date="" limit="10" order="ASC" hide-venue="no" time="future" socialshare="no"]`
+
+* **Bricks Builder Integration:** Easily display The Events Calendar events inside Bricks Builder using the dedicated Events component. Add event listings to any Bricks page or template, customize layouts visually, and create dynamic event sections without using shortcodes or custom code.
 
 * **Multiple Event Layouts & Styles**  
 Choose between list, timeline, and minimal list layouts to showcase a list of events in different visual styles. These layouts help organize event dates, titles, and details in a structured format that works well for event pages, schedules, and activity listings. The Pro version adds additional layouts such as grid, carousel, slider, accordion, and masonry views.
@@ -78,6 +80,7 @@ The Pro version provides advanced filtering options that allow you to display sp
 * Content creators and bloggers can embed schedule blocks inside articles, announcements, or event recap posts using shortcode. This makes it easy to connect written content with relevant schedules or upcoming activities.
 * Upgrade The Events Calendar from a simple display to a modern events calendar. Instead of relying only on the default calendar view, this plugin introduces structured layouts such as lists and timelines that make event information easier to read and navigate.
 * Since the plugin uses a shortcode, it works with almost any WordPress theme. You can show list of events on websites built with popular themes such as Astra, GeneratePress, OceanWP, Kadence, Blocksy, and Neve, as well as custom-developed themes.
+* In addition to shortcodes and Gutenberg blocks, the plugin also includes a dedicated Events Widget component for Bricks Builder, making it easy to display events inside custom Bricks layouts without writing any code.
 * Using Events Shortcodes addon alongside The Events Calendar plugin gives you more control over how event information appears across your website. It improves your site’s event management and event display in an easy way.
 
 ### Who Can Use Events Shortcodes?
@@ -201,6 +204,14 @@ You can also display events using the block-based editor:
 * Publish or update the page and preview it.
  
 https://youtu.be/sLGIOmlNPtY
+
+= 7. Use Events Widgets Element(Bricks Builder) =
+* From your WordPress Dashboard, navigate to Pages and edit the page using Bricks Builder.
+* Click the **"+"** icon to add a new element.
+* Search for **Events Widgets** in the Bricks elements panel.
+* **Drag** and **drop** the component into your desired section.
+* After adding the component, customize the event listing from the element settings.
+* Once satisfied publish your page and preview it.
 
 For detailed guides, check the [full documentation of Events Shortcodes](https://eventscalendaraddons.com/docs/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=docs&utm_content=installation) plugin.
 
@@ -384,13 +395,8 @@ It works well with popular themes such as:
 
 It can also be used with custom WordPress themes developed by agencies or developers.
 
-= Can I use Events Shortcodes with Elementor or Divi page builders? =
-Yes. Because the plugin uses shortcode and block output, it works with most WordPress page builders including:
-
-* Elementor  
-* Divi  
-* Beaver Builder  
-* WPBakery  
+= Can I use Events Shortcodes with Gutenberg, Bricks Builder, Elementor, or Divi? =
+Yes. The free plugin includes shortcode support, Gutenberg Block support, and a dedicated Bricks Builder component for displaying events inside Bricks layouts. 
 
 For deeper integration with specific builders, you can use dedicated addons:
 
@@ -403,20 +409,23 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Screenshots ==
 1. Events List Template - Display Events from The Events Calendar
-2. Events List Template Style 2 - Upcoming Events Layout
-3. Events List Template Style 3 - Custom Event List Design
-4. Minimal Events List Layout for Compact Event Display
-5. Events Shortcodes Plugin Settings Panel
-6. The Events Calendar Shortcode Block
-7. Shortcode Generator for The Events Calendar 
-8. Gutenberg Block for The Events Calendar
+2. Events List Template Style 3 - Custom Event List Design
+3. Gutenberg Block for The Events Calendar
+4. The Events Calendar Shortcode Block
+
 
 == Changelog ==
+
+= 2.8.0 | AUG 24, 2026 =
+* New: Introduced a "Get Started" onboarding page for a smoother setup experience.
+* New: Added a guided sample events demo creation flow to help users get started quickly.
+* Removed: Removed the legacy dashboard and replaced it with the new onboarding experience.
+* Improved: Simplified the initial setup process with a quick-start demo.
 
 = 2.7.0 | JUL 20, 2026 =
 * Added: Initial integration with Bricks Builder.
 * Improved: Code quality and overall plugin stability. 
-* Tested up to: The Events Calendar 6.17.0.
+* Tested up to: The Events Calendar 6.17.0
 
 = 2.6.7 | JUL 10, 2026 =
 * Fixed: Incorrect CSS file enqueue issue.

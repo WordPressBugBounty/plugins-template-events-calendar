@@ -173,13 +173,20 @@ class ect_feedback{
 				'plugin_uri' => !empty($plugin_url) ? $plugin_url : $author_url,
 			];
 		}
+
+		$extra_details = [
+			'wp_theme'       => $theme_data,
+			'active_plugins' => $plugin_data,
+		];
+
+		// Leading \ required — this file is namespaced ECT\feedback.
+		if ( class_exists( '\CPFM_Onboarding_Optin', false ) ) {
+			$extra_details['user_preference_onboarding'] = \CPFM_Onboarding_Optin::get_preferences_for_extra_details();
+		}
 	
 		return [
 			'server_info'   => $server_info,
-			'extra_details' => [
-				'wp_theme'       => $theme_data,
-				'active_plugins' => $plugin_data,
-			],
+			'extra_details' => $extra_details,
 		];
 	}
 
