@@ -3,7 +3,7 @@
 Plugin Name:Events Shortcodes For The Events Calendar
 Plugin URI:https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
 Description:<a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Shortcodes to show The Events Calendar plugin events list on any page or post in different layouts.
-Version:2.8.0
+Version:2.8.1
 Requires PHP:7.2
 Author:Cool Plugins
 Author URI: https://coolplugins.net/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
@@ -20,7 +20,7 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 if (! defined('ECT_VERSION')) {
-	define('ECT_VERSION', '2.8.0');//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+	define('ECT_VERSION', '2.8.1');//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 }
 
 /*** Defined constent for later use */
@@ -75,7 +75,6 @@ if (! class_exists('EventsCalendarTemplates')) {
 			register_deactivation_hook(__FILE__, array('EventsCalendarTemplates', 'deactivate'));
 			 
 			add_action('admin_init', array(self::$instance, 'ect_settings_migration'));
-			add_action('admin_init', array(self::$instance, 'onInit'));
 
 			if ( is_admin() ) {
 				require_once ECT_PLUGIN_DIR . 'admin/class-ect-eca-integration.php';
@@ -103,6 +102,7 @@ if (! class_exists('EventsCalendarTemplates')) {
 			/***Include Share Buttons*/
 			require_once ECT_PLUGIN_DIR . '/includes/ect-share-functions.php';
 			$this->cpfm_feedback_cron_init();
+			add_action( 'init', array( $this, 'register_welcome_notice' ), 1 );
 			add_action('init', array($this, 'register_cpfm_notices'), 999);
 			add_action('cpfm_after_opt_in_ect', array($this, 'ect_handle_cpfm_opt_in'));
 			add_action('admin_print_scripts', [$this, 'ect_hide_unrelated_notices']);
@@ -248,6 +248,12 @@ if (! class_exists('EventsCalendarTemplates')) {
 					}
 				}
 			}
+
+			// Re-attach our welcome notice after the foreign-notice wipe
+			// (countdown does the same on its settings screen).
+			if ( class_exists( 'CPFM_Welcome_Notice' ) ) {
+				add_action( 'admin_notices', array( 'CPFM_Welcome_Notice', 'cpfm_maybe_render' ) );
+			}
 		}
 
 		/**
@@ -363,6 +369,49 @@ if (! class_exists('EventsCalendarTemplates')) {
 
 			do_action( 'ect_extra_data_update' );
 			$this->ect_maybe_schedule_tracking_cron();
+		}
+
+		/**
+		 * Register the one-time "major update is here" notice.
+		 * Hooked to init 1 so i18n strings are safe (WP 6.7+).
+		 *
+		 * @return void
+		 */
+		public function register_welcome_notice() {
+			if ( ! is_admin() || ! class_exists( 'CPFM_Welcome_Notice' ) ) {
+				return;
+			}
+			if (version_compare(get_option('ect-v'), '2.4.0', '>=')) {
+				return;
+			}
+			CPFM_Welcome_Notice::cpfm_register(
+				array(
+					'id'             => 'ect',
+					'option'         => 'ect-free-setting-migration',
+					'settings_url'   => admin_url( 'admin.php?page=tribe_events-events-template-settings' ),
+					'screens'        => array(
+						'plugins',
+						'events-addons_page_tribe_events-events-template-settings',
+						'cool-plugins-events-addon_page_tribe_events-events-template-settings',
+						'toplevel_page_cool-plugins-events-addon',
+					),
+					'inline_screens' => array(
+						'events-addons_page_tribe_events-events-template-settings',
+						'cool-plugins-events-addon_page_tribe_events-events-template-settings',
+					),
+					'i18n'           => array(
+						'headline'    => __( 'Events Shortcodes major update is here.', 'template-events-calendar' ),
+						'body'        => __( 'The plugin has been updated with new features and improvements.', 'template-events-calendar' ),
+						'cta'         => __( 'See new settings', 'template-events-calendar' ),
+						'dismiss'     => __( 'Dismiss', 'template-events-calendar' ),
+						'close_label' => __( 'Close', 'template-events-calendar' ),
+					),
+				)
+			);
+
+			// Survive ect_strip_foreign_notices() on Events Addons screens
+			// (same pattern as CPFM_Review_Notice).
+			add_action( 'ect_display_admin_notices', array( 'CPFM_Welcome_Notice', 'cpfm_maybe_render' ) );
 		}
 
 		/**
@@ -627,45 +676,7 @@ if (! class_exists('EventsCalendarTemplates')) {
 			EventsShortcode::registers();
 			require_once ECT_PLUGIN_DIR . 'admin/ect-event-shortcode.php';
 		}
-		//phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralText
-		public static function onInit()
-		{
-			if (version_compare(get_option('ect-v'), '2.4.0', '<')) {
-				ect_create_admin_notice(
-					array(
-						'id'              => 'ect-pro-setting-change',
-						'message' => wp_kses(
-										sprintf(
-											/* translators: %s: Settings page URL. */
-											__(
-												'<strong>Major design update</strong> for <strong>Events Shortcodes</strong> plugin in version 2.4.0! Update or reset <a href="%s">style settings</a> if you face any design issues.',
-												'template-events-calendar'
-											),
-											esc_url( admin_url( 'admin.php?page=tribe_events-events-template-settings' ) )
-										),
-										array(
-											'a'      => array(
-												'href' => array(),
-											),
-											'strong' => array(),
-										)
-									),
-						'review_interval' => 0,
-					)
-				);
-			}
-
-			if (version_compare(get_option('ect-v'), '1.8', '<')) {
-				ect_create_admin_notice(
-					array(
-						'id'              => 'ect-free-setting-migration',
-						'message'         => wp_kses_post(__('<strong>Important Update</strong>:- <strong>Events Shortcodes & Templates</strong> plugin has integrated new settings panel. Please save your settings and check events views.', 'template-events-calendar')),
-						'review_interval' => 0,
-					)
-				);
-			}
-		}
-
+		
 		/*** Check The Events calender is installled or not. If user has not installed yet then show notice */
 		public function ect_check_event_calender_installed()
 		{
