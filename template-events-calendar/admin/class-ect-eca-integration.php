@@ -37,15 +37,7 @@ if ( ! class_exists( 'ECT_ECA_Integration' ) ) {
 		 * Load dashboard classes and register this addon as the ESB host.
 		 */
 		public static function boot_admin() {
-			if ( ! defined( 'ECA_DASHBOARD_VERSION' ) ) {
-				define( 'ECA_DASHBOARD_VERSION', self::DASHBOARD_VERSION ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
-			}
-
-			require_once ECT_PLUGIN_DIR . 'admin/eca-dashboard/includes/class-eca-addon-map.php';
-			require_once ECT_PLUGIN_DIR . 'admin/eca-dashboard/includes/class-eca-dashboard-environment.php';
 			require_once ECT_PLUGIN_DIR . 'admin/eca-dashboard/includes/class-eca-dashboard-registry.php';
-			require_once ECT_PLUGIN_DIR . 'admin/eca-dashboard/includes/class-eca-dashboard-i18n.php';
-			require_once ECT_PLUGIN_DIR . 'admin/eca-dashboard/includes/class-eca-dashboard-page.php';
 			require_once ECT_PLUGIN_DIR . 'admin/ect-onboarding/class-ect-onboarding-page.php';
 
 			ECA_Dashboard_Registry::submit( self::DASHBOARD_VERSION, ECT_PLUGIN_DIR . 'admin/eca-dashboard/' );

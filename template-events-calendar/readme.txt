@@ -5,7 +5,7 @@ Tags: the events calendar, shortcode, event, calendar, event calendar
 Requires at least: 5.6
 Tested up to: 7.1
 Requires PHP: 7.2
-Stable tag: 2.8.1
+Stable tag: 2.8.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -415,6 +415,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 2.8.2 | Sept 01, 2026 =
+* Improved: Code Improvements & Optimization.
+* Tested up to: The Events Calendar 6.17.3.1.
 
 = 2.8.1 | AUG 25, 2026 =
 * Fixed: Call to undefined function ect_create_admin_notice(). 
