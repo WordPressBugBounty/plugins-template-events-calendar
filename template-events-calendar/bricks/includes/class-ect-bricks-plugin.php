@@ -509,7 +509,8 @@ if ( ! class_exists( 'ECT_Bricks_Plugin', false ) ) {
 		}
 
 		/**
-		 * Builder panel: load base stylesheet so Grid (PRO only) can be shown non-interactive.
+		 * Builder panel: Grid (PRO only) click-through, plus Cool Timeline-style
+		 * gold group icons and a Style Settings heading.
 		 *
 		 * @return void
 		 */
@@ -519,7 +520,50 @@ if ( ! class_exists( 'ECT_Bricks_Plugin', false ) ) {
 			}
 
 			self::ect_bricks_register_events_widget_styles();
+			self::ect_bricks_load_controls_dependencies();
 			wp_enqueue_style( 'ect-bricks-events-widget-base' );
+
+			$css_path = ECT_BRICKS_DIR . 'assets/css/ect-bricks-builder-panel.css';
+			$js_path  = ECT_BRICKS_DIR . 'assets/js/ect-bricks-builder-panel.js';
+			$css_ver  = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG && file_exists( $css_path ) )
+				? (string) filemtime( $css_path )
+				: ECT_VERSION;
+			$js_ver   = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG && file_exists( $js_path ) )
+				? (string) filemtime( $js_path )
+				: ECT_VERSION;
+
+			wp_enqueue_style(
+				'ect-bricks-builder-panel',
+				ECT_BRICKS_URL . 'assets/css/ect-bricks-builder-panel.css',
+				array(),
+				$css_ver
+			);
+
+			wp_enqueue_script(
+				'ect-bricks-builder-panel',
+				ECT_BRICKS_URL . 'assets/js/ect-bricks-builder-panel.js',
+				array(),
+				$js_ver,
+				true
+			);
+
+			self::ect_bricks_load_settings_dependencies();
+
+			wp_localize_script(
+				'ect-bricks-builder-panel',
+				'ectBricksBuilderPanel',
+				array(
+					'styleSettingsLabel' => __( 'Events Shortcodes Style Settings', 'template-events-calendar' ),
+					'gridUrl'            => 'https://eventscalendaraddons.com/bricks/grid/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=bricks_grid_editor_panel',
+					'upgradeUrl'         => ECT_Bricks_Layout_Controls::ect_bricks_get_pro_url( 'bricks_pro_lock_editor_panel' ),
+					'upgradeLabel'       => __( 'Upgrade to Pro', 'template-events-calendar' ),
+					'proLockGroups'      => ECT_Bricks_Layout_Controls::ect_bricks_pro_lock_groups(),
+					'defaultParts'       => array(
+						'parts_style1' => \ECT_Bricks_Settings_Normalizer::ect_bricks_get_default_list_parts( 'style-1' ),
+						'parts_style2' => \ECT_Bricks_Settings_Normalizer::ect_bricks_get_default_list_parts( 'style-2' ),
+					),
+				)
+			);
 		}
 
 		/**

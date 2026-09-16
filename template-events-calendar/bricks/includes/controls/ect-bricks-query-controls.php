@@ -39,6 +39,25 @@ if ( ! class_exists( 'ECT_Bricks_Query_Controls', false ) ) {
 				'placeholder' => esc_html__( 'All categories', 'template-events-calendar' ),
 			);
 
+			ECT_Bricks_Layout_Controls::ect_bricks_register_pro_lock_control(
+				$element,
+				'event_featured',
+				array(
+					'tab'       => 'content',
+					'group'     => 'event_query',
+					'label'     => esc_html__( 'Featured events', 'template-events-calendar' ),
+					'type'      => 'select',
+					'options'   => array(
+						'all'          => esc_html__( 'All Events', 'template-events-calendar' ),
+						'featured'     => esc_html__( 'Featured Events', 'template-events-calendar' ),
+						'non_featured' => esc_html__( 'Non-featured Events', 'template-events-calendar' ),
+					),
+					'inline'    => true,
+					'clearable' => false,
+					'default'   => 'all',
+				)
+			);
+
 			$element->controls['event_time_mode'] = array(
 				'tab'     => 'content',
 				'group'   => 'event_query',

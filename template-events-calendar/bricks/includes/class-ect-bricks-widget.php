@@ -11,7 +11,7 @@ class ECT_Bricks_Widget extends \Bricks\Element {
 
 	public $category = 'general';
 	public $name     = 'ect-bricks-events-loop';
-	public $icon     = 'ti-loop';
+	public $icon     = 'ect-bricks-eicon-events-widget';
 	public $nestable = false;
 
 	public function get_label() {
@@ -23,7 +23,7 @@ class ECT_Bricks_Widget extends \Bricks\Element {
 	}
 
 	public function set_control_groups() {
-		// Order: Layouts → Events Query → Elements → Dynamic Messages → List Style 1.
+		// Order: Layouts → Events Query → Elements → Dynamic Messages → Pagination.
 		$this->control_groups['layouts'] = array(
 			'title' => esc_html__( 'Layouts', 'template-events-calendar' ),
 			'tab'   => 'content',
@@ -41,6 +41,11 @@ class ECT_Bricks_Widget extends \Bricks\Element {
 
 		$this->control_groups['dynamic_messages'] = array(
 			'title' => esc_html__( 'Dynamic Messages', 'template-events-calendar' ),
+			'tab'   => 'content',
+		);
+
+		$this->control_groups['pagination'] = array(
+			'title' => esc_html__( 'Pagination', 'template-events-calendar' ),
 			'tab'   => 'content',
 		);
 

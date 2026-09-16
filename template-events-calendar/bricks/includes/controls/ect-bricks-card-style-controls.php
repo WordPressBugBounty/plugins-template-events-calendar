@@ -42,6 +42,41 @@ if ( ! class_exists( 'ECT_Bricks_Card_Style_Controls', false ) ) {
 				),
 			);
 
+			ECT_Bricks_Layout_Controls::ect_bricks_register_pro_lock_control(
+				$element,
+				'ect_bricks_sep_featured_event',
+				array(
+					'tab'   => 'style',
+					'group' => 'events_card',
+					'label' => esc_html__( 'Featured events', 'template-events-calendar' ),
+					'type'  => 'separator',
+				)
+			);
+
+			ECT_Bricks_Layout_Controls::ect_bricks_register_pro_lock_control(
+				$element,
+				'ect_bricks_featured_event_background',
+				array(
+					'tab'         => 'style',
+					'group'       => 'events_card',
+					'label'       => esc_html__( 'Background', 'template-events-calendar' ),
+					'type'        => 'color',
+					'placeholder' => esc_html__( 'Default', 'template-events-calendar' ),
+				)
+			);
+
+			ECT_Bricks_Layout_Controls::ect_bricks_register_pro_lock_control(
+				$element,
+				'ect_bricks_featured_event_text_color',
+				array(
+					'tab'         => 'style',
+					'group'       => 'events_card',
+					'label'       => esc_html__( 'Text color', 'template-events-calendar' ),
+					'type'        => 'color',
+					'placeholder' => esc_html__( 'Default', 'template-events-calendar' ),
+				)
+			);
+
 			$element->controls['ect_bricks_sep_card_border'] = array(
 				'tab'   => 'style',
 				'group' => 'events_card',
@@ -219,11 +254,11 @@ if ( ! class_exists( 'ECT_Bricks_Card_Style_Controls', false ) ) {
 					'placeholder' => (string) ( $ph['color'] ?? '#ffffff' ),
 					'responsive'  => true,
 					'required'    => $required,
+					// Direct paint on badges only — avoid CSS vars on `&` so Bricks `:hover`
+					// cannot retarget every card via `#brxe:hover { --shell-cat-color }`.
+					// Control keys containing `_hover` are treated as Color:hover, so a var
+					// on the widget root would recolor every image category on widget hover.
 					'css'         => array(
-						array(
-							'property' => $var_prefix . '-color',
-							'selector' => '&',
-						),
 						array(
 							'property' => 'color',
 							'selector' => $target,
@@ -239,10 +274,6 @@ if ( ! class_exists( 'ECT_Bricks_Card_Style_Controls', false ) ) {
 					'responsive'  => true,
 					'required'    => $required,
 					'css'         => array(
-						array(
-							'property' => $var_prefix . '-bg',
-							'selector' => '&',
-						),
 						array(
 							'property' => 'background-color',
 							'selector' => $target,
@@ -297,6 +328,10 @@ if ( ! class_exists( 'ECT_Bricks_Card_Style_Controls', false ) ) {
 				'required' => $required,
 			);
 
+			// Store hover tokens on the root only. Never use `& .event-badge--blue:hover` in
+			// Bricks `css` maps — Bricks rewrites that to `#brxe:hover .event-badge--blue`
+			// and every badge in the widget changes when any card is hovered.
+			// Actual paint happens in base CSS on `.event-badge--blue:hover` only.
 			$element->controls[ $key( 'hover_color' ) ] = array(
 				'tab'         => 'style',
 				'group'       => 'featured_image',

@@ -43,7 +43,7 @@ if ( ! class_exists( 'ECT_Bricks_Styles', false ) ) {
 					'ect_bricks_part_has_organizer_segment',
 				),
 				'ECT_Bricks_Part_Options'        => array(
-					'ect_bricks_part_options',
+					'ect_bricks_get_part_options',
 					'ect_bricks_part_options_shared',
 					'ect_bricks_clean_part',
 				),

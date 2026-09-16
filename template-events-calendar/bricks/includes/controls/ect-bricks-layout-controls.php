@@ -13,18 +13,106 @@ if ( ! class_exists( 'ECT_Bricks_Layout_Controls', false ) ) {
 
 	final class ECT_Bricks_Layout_Controls {
 
+		/**
+		 * Events Shortcodes Pro landing URL with campaign tags.
+		 *
+		 * @param string $utm_content utm_content value.
+		 * @return string
+		 */
+		public static function ect_bricks_get_pro_url( $utm_content ) {
+			return add_query_arg(
+				array(
+					'utm_source'   => 'ect_plugin',
+					'utm_medium'   => 'inside',
+					'utm_campaign' => 'get_pro',
+					'utm_content'  => sanitize_key( $utm_content ),
+				),
+				'https://eventscalendaraddons.com/plugin/events-shortcodes-pro/'
+			);
+		}
+
+		/**
+		 * Compact Get Pro helper used as native control description text.
+		 *
+		 * @param string $url        Destination URL.
+		 * @param string $after_link Unlinked trailing copy (already translated).
+		 * @return string
+		 */
+		public static function ect_bricks_get_pro_notice_html( $url, $after_link ) {
+			$link = '<a class="ect-bricks-get-pro-link" href="' . esc_url( $url ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Get Pro', 'template-events-calendar' ) . '</a>';
+
+			return $link . ' ' . esc_html( $after_link );
+		}
+
+		/**
+		 * Display-only Pro teaser controls (no CSS, no rerender, not responsive).
+		 *
+		 * @param object              $element Bricks element.
+		 * @param string              $key     Control key.
+		 * @param array<string,mixed> $control Control config.
+		 * @return void
+		 */
+		public static function ect_bricks_register_pro_lock_control( $element, $key, array $control ) {
+			unset( $control['css'] );
+			$control['rerender']   = false;
+			$control['responsive'] = false;
+			$element->controls[ $key ] = $control;
+		}
+
+		/**
+		 * Control keys wrapped by the gold Upgrade to Pro overlay.
+		 * Each group keeps its own Get Pro tracking URL.
+		 *
+		 * @return array<int,array{keys:string[],url:string}>
+		 */
+		public static function ect_bricks_pro_lock_groups() {
+			return array(
+				array(
+					'keys' => array(
+						'show_pagination',
+						'pagination_type',
+						'pagination_alignment',
+						'pagination_margin_top',
+						'pagination_color',
+						'pagination_background',
+						'pagination_active_color',
+						'pagination_active_background',
+						'pagination_padding',
+						'pagination_hover_animation',
+					),
+					'url'  => self::ect_bricks_get_pro_url( 'bricks_pagination_editor_panel' ),
+				),
+				array(
+					'keys' => array( 'event_featured' ),
+					'url'  => self::ect_bricks_get_pro_url( 'bricks_featured_editor_panel' ),
+				),
+				array(
+					'keys' => array(
+						'ect_bricks_sep_featured_event',
+						'ect_bricks_featured_event_background',
+						'ect_bricks_featured_event_text_color',
+					),
+					'url'  => self::ect_bricks_get_pro_url( 'bricks_featured_style_panel' ),
+				),
+			);
+		}
+
 		private static function ect_bricks_register_template_controls( $element ) {
 			$element->controls['layout_template'] = array(
-				'tab'               => 'content',
-				'group'             => 'layouts',
-				'label'             => esc_html__( 'Template', 'template-events-calendar' ),
-				'type'              => 'select',
-				'options'           => array(	
+				'tab'         => 'content',
+				'group'       => 'layouts',
+				'label'       => esc_html__( 'Template', 'template-events-calendar' ),
+				'type'        => 'select',
+				'options'     => array(	
 					'list' => esc_html__( 'List', 'template-events-calendar' ),
 					'grid' => esc_html__( 'Grid (PRO only)', 'template-events-calendar' ),
 				),
-				'inline'   => true,
-				'default'  => 'list',
+				'inline'      => true,
+				'default'     => 'list',
+				'description' => self::ect_bricks_get_pro_notice_html(
+					self::ect_bricks_get_pro_url( 'bricks_layout_editor_panel' ),
+					__( 'to unlock more Advanced Layouts', 'template-events-calendar' )
+				),
 			);
 
 			$element->controls['list_item_style'] = array(
@@ -129,9 +217,165 @@ if ( ! class_exists( 'ECT_Bricks_Layout_Controls', false ) ) {
 			);
 		}
 
+		private static function ect_bricks_register_pagination_upsell( $element ) {
+			$base = array(
+				'tab'   => 'content',
+				'group' => 'pagination',
+			);
+
+			self::ect_bricks_register_pro_lock_control(
+				$element,
+				'show_pagination',
+				array_merge(
+					$base,
+					array(
+						'label'   => esc_html__( 'Show Pagination', 'template-events-calendar' ),
+						'type'    => 'checkbox',
+						'inline'  => true,
+						'default' => true,
+					)
+				)
+			);
+
+			self::ect_bricks_register_pro_lock_control(
+				$element,
+				'pagination_type',
+				array_merge(
+					$base,
+					array(
+						'label'   => esc_html__( 'Select Pagination', 'template-events-calendar' ),
+						'type'    => 'select',
+						'options' => array(
+							'default' => esc_html__( 'Default', 'template-events-calendar' ),
+							'ajax'    => esc_html__( 'Load More Button', 'template-events-calendar' ),
+						),
+						'inline'  => true,
+						'default' => 'default',
+					)
+				)
+			);
+
+			self::ect_bricks_register_pro_lock_control(
+				$element,
+				'pagination_alignment',
+				array_merge(
+					$base,
+					array(
+						'label'   => esc_html__( 'Alignment', 'template-events-calendar' ),
+						'type'    => 'justify-content',
+						'exclude' => 'space',
+						'inline'  => true,
+						'default' => 'center',
+					)
+				)
+			);
+
+			self::ect_bricks_register_pro_lock_control(
+				$element,
+				'pagination_margin_top',
+				array_merge(
+					$base,
+					array(
+						'label'       => esc_html__( 'Distance From Top', 'template-events-calendar' ),
+						'type'        => 'number',
+						'units'       => true,
+						'placeholder' => 24,
+						'inline'      => true,
+					)
+				)
+			);
+
+			// Compact teaser only — full color / spacing controls live in Pro.
+			self::ect_bricks_register_pro_lock_control(
+				$element,
+				'pagination_color',
+				array_merge(
+					$base,
+					array(
+						'label'       => esc_html__( 'Color', 'template-events-calendar' ),
+						'type'        => 'text',
+						'inline'      => true,
+						'placeholder' => esc_html__( 'Color value', 'template-events-calendar' ),
+					)
+				)
+			);
+
+			self::ect_bricks_register_pro_lock_control(
+				$element,
+				'pagination_background',
+				array_merge(
+					$base,
+					array(
+						'label'       => esc_html__( 'Background Color', 'template-events-calendar' ),
+						'type'        => 'text',
+						'inline'      => true,
+						'placeholder' => esc_html__( 'Color value', 'template-events-calendar' ),
+					)
+				)
+			);
+
+			self::ect_bricks_register_pro_lock_control(
+				$element,
+				'pagination_active_color',
+				array_merge(
+					$base,
+					array(
+						'label'       => esc_html__( 'Active Color', 'template-events-calendar' ),
+						'type'        => 'text',
+						'inline'      => true,
+						'placeholder' => esc_html__( 'Color value', 'template-events-calendar' ),
+					)
+				)
+			);
+
+			self::ect_bricks_register_pro_lock_control(
+				$element,
+				'pagination_active_background',
+				array_merge(
+					$base,
+					array(
+						'label'       => esc_html__( 'Active Background Color', 'template-events-calendar' ),
+						'type'        => 'text',
+						'inline'      => true,
+						'placeholder' => esc_html__( 'Color value', 'template-events-calendar' ),
+					)
+				)
+			);
+
+			self::ect_bricks_register_pro_lock_control(
+				$element,
+				'pagination_padding',
+				array_merge(
+					$base,
+					array(
+						'label'   => esc_html__( 'Padding', 'template-events-calendar' ),
+						'type'    => 'text',
+						'inline'  => true,
+						'default' => '8 20 8 20',
+					)
+				)
+			);
+
+			self::ect_bricks_register_pro_lock_control(
+				$element,
+				'pagination_hover_animation',
+				array_merge(
+					$base,
+					array(
+						'label'   => esc_html__( 'Animation', 'template-events-calendar' ),
+						'type'    => 'select',
+						'options' => ECT_Bricks_Hover_Controls::ect_bricks_hover_animation_options( false, true ),
+						'inline'  => true,
+						'default' => 'none',
+					)
+				)
+			);
+		}
+
 		public static function ect_bricks_register_layout_controls( $element ) {
 			self::ect_bricks_register_template_controls( $element );
 			self::ect_bricks_register_layout_display_controls( $element );
+			self::ect_bricks_register_pagination_upsell( $element );
 		}
 	}
 }

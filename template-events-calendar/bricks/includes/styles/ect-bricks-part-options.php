@@ -275,7 +275,7 @@ if ( ! class_exists( 'ECT_Bricks_Part_Options', false ) ) {
 			);
 		}
 
-		public static function ect_bricks_part_options() {
+		public static function ect_bricks_get_part_options() {
 			return array_merge(
 				self::ect_bricks_part_options_shared(),
 				ECT_Bricks_Meta_Combo::ect_bricks_meta_combo_options_all()

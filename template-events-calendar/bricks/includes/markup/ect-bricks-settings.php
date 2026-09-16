@@ -91,16 +91,45 @@ if ( ! class_exists( 'ECT_Bricks_Settings_Normalizer', false ) ) {
 			return self::ect_bricks_parts_clean( $parts ) === array();
 		}
 
-		/** Assign Bricks repeater row ids when missing. */
+		/**
+		 * Default List Elements rows (with Bricks row ids when available).
+		 *
+		 * @param string $list_item_style style-1|style-2
+		 * @return array<int,array<string,mixed>>
+		 */
+		public static function ect_bricks_get_default_list_parts( $list_item_style = 'style-1' ) {
+			if ( ! class_exists( 'ECT_Bricks_List_Defaults', false ) ) {
+				$path = defined( 'ECT_BRICKS_DIR' ) ? ECT_BRICKS_DIR . 'templates/ect-bricks-list-defaults.php' : '';
+				if ( $path !== '' && is_readable( $path ) ) {
+					require_once $path;
+				}
+			}
+			if ( ! class_exists( 'ECT_Bricks_List_Defaults', false ) ) {
+				return array();
+			}
+
+			$defaults = \ECT_Bricks_List_Defaults::ect_bricks_default_parts( $list_item_style );
+			if ( ! is_array( $defaults ) ) {
+				return array();
+			}
+
+			return self::ect_bricks_parts_assign_ids( $defaults );
+		}
+
+		/** Assign Bricks repeater row ids (6-char lowercase alphanumeric). */
 		public static function ect_bricks_parts_assign_ids( array $rows ) {
 			foreach ( $rows as $index => $row ) {
-				if ( ! is_array( $row ) || ! empty( $row['id'] ) ) {
+				if ( ! is_array( $row ) ) {
+					continue;
+				}
+				$id = isset( $row['id'] ) ? (string) $row['id'] : '';
+				if ( preg_match( '/^[a-z0-9]{6}$/', $id ) ) {
 					continue;
 				}
 				if ( class_exists( '\Bricks\Helpers' ) && method_exists( '\Bricks\Helpers', 'generate_random_id' ) ) {
 					$rows[ $index ]['id'] = \Bricks\Helpers::generate_random_id( false );
 				} else {
-					$rows[ $index ]['id'] = 'ect-bricks-part-' . absint( $index );
+					$rows[ $index ]['id'] = substr( md5( uniqid( (string) wp_rand(), true ) ), 0, 6 );
 				}
 			}
 			return $rows;
@@ -224,6 +253,45 @@ if ( ! class_exists( 'ECT_Bricks_Settings_Normalizer', false ) ) {
 		}
 
 		/**
+		 * True when image category hover Style options are configured.
+		 *
+		 * @param array<string,mixed> $settings Widget settings.
+		 * @return bool
+		 */
+		public static function ect_bricks_shell_category_hover_active( array $settings ) {
+			if ( ! self::ect_bricks_show_shell_category_badge( $settings ) ) {
+				return false;
+			}
+
+			foreach (
+				array(
+					'ect_bricks_shell_category_hover_color',
+					'ect_bricks_shell_category_hover_background',
+				) as $key
+			) {
+				$value = ECT_Bricks_Value_Utils::ect_bricks_norm_hover_paint_color(
+					ECT_Bricks_Value_Utils::ect_bricks_resolve_responsive_value( $settings[ $key ] ?? '' )
+				);
+				if ( $value !== '' ) {
+					return true;
+				}
+			}
+
+			$hover_td = ECT_Bricks_Value_Utils::ect_bricks_sanitize_text_decoration_slug(
+				$settings['ect_bricks_shell_category_hover_text_decoration'] ?? ''
+			);
+			if ( $hover_td !== '' ) {
+				return true;
+			}
+
+			$cat_hover = ECT_Bricks_Value_Utils::ect_bricks_sanitize_hover_animation_slug(
+				$settings['ect_bricks_shell_category_hover_animation'] ?? ''
+			);
+
+			return $cat_hover !== '' && $cat_hover !== 'none';
+		}
+
+		/**
 		 * Root CSS classes for Style tab shell presets (hover, date alignment, badge hover).
 		 *
 		 * @param array<string,mixed> $settings Widget settings.
@@ -242,6 +310,10 @@ if ( ! class_exists( 'ECT_Bricks_Settings_Normalizer', false ) ) {
 
 			if ( ! self::ect_bricks_show_shell_category_badge( $settings ) ) {
 				return $classes;
+			}
+
+			if ( self::ect_bricks_shell_category_hover_active( $settings ) ) {
+				$classes[] = 'ect-has-shell-cat-hover';
 			}
 
 			$cat_hover = ECT_Bricks_Value_Utils::ect_bricks_sanitize_hover_animation_slug( $settings['ect_bricks_shell_category_hover_animation'] ?? '' );

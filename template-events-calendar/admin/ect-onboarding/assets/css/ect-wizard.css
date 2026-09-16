@@ -575,19 +575,13 @@
 
 .ect-editor-selector__options {
   display: grid;
-  /* Column count is set from the number of VISIBLE options (JS sets data-cols):
-     2–3 options -> 1 full-width column; 4+ options -> 2 columns. */
   grid-template-columns: 1fr;
   gap: 0.625rem;
   align-content: start;
 }
-.ect-editor-selector__options[data-cols="2"] {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-/* 1-column (2–3 options): vertically center the short stack next to the tall
-   video so it doesn't sit lonely at the top. */
+.ect-editor-selector__options[data-cols="2"],
 .ect-editor-selector__options[data-cols="1"] {
-  align-self: center;
+  grid-template-columns: 1fr;
 }
 
 /* Using anchor tags — override anchor defaults so the option renders as a card.

@@ -5,7 +5,7 @@ Tags: the events calendar, shortcode, event, calendar, event calendar
 Requires at least: 5.6
 Tested up to: 7.1
 Requires PHP: 7.2
-Stable tag: 2.8.3
+Stable tag: 2.8.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -415,6 +415,11 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= 2.8.4 | Sept 16, 2026 =
+* Added: Smooth Free-to-Pro migration support for Bricks.
+* Improved: Get Started onboarding flow and Bricks Events Widget panel.
+* Fixed: Fatal error compatibility issue with PHP 7.4.
 
 = 2.8.3 | Sept 10, 2026 =
 * Removed: Unused code and unnecessary files.

@@ -268,9 +268,9 @@ if ( ! class_exists( 'ECT_Bricks_Part_Fields', false ) ) {
 
 		public static function ect_bricks_part_fields_for_style2() {
 			$options = class_exists( 'ECT_Bricks_Styles', false )
-			? \ECT_Bricks_Styles::ect_bricks_part_options()
+			? \ECT_Bricks_Styles::ect_bricks_get_part_options()
 			: array();
-			$fields  = self::ect_bricks_part_fields( $options, true );
+			$fields  = self::ect_bricks_get_part_fields( $options, true );
 			$out     = array();
 
 			foreach ( $fields as $key => $field ) {
@@ -285,7 +285,7 @@ if ( ! class_exists( 'ECT_Bricks_Part_Fields', false ) ) {
 			return $out;
 		}
 
-		public static function ect_bricks_part_fields( ?array $part_options = null, $hide_combo_background = false ) {
+		public static function ect_bricks_get_part_fields( ?array $part_options = null, $hide_combo_background = false ) {
 			if ( $part_options === null ) {
 				$part_options = class_exists( 'ECT_Bricks_Styles', false )
 					? \ECT_Bricks_Styles::ect_bricks_part_options_shared()
@@ -492,10 +492,10 @@ if ( ! class_exists( 'ECT_Bricks_Part_Fields', false ) ) {
 
 		public static function ect_bricks_part_fields_for_style1() {
 			$options = class_exists( 'ECT_Bricks_Styles', false )
-			? \ECT_Bricks_Styles::ect_bricks_part_options()
+			? \ECT_Bricks_Styles::ect_bricks_get_part_options()
 			: array();
 
-			return self::ect_bricks_part_fields( $options );
+			return self::ect_bricks_get_part_fields( $options );
 		}
 
 		private static function ect_bricks_part_date_fields( array $date_parts, array $date_format_options, array $time_format_options ) {

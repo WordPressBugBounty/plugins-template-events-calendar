@@ -56,7 +56,7 @@ var ECT_ONBOARDING_CONFIG = {
   UTM_HOSTS: ['eventscalendaraddons.com', 'coolplugins.net'],
 
   // ----- Destination detection (drives utm_campaign) -----
-  RX_DEMO:   /eventscalendaraddons\.com\/(shortcode|demos)\//,
+  RX_DEMO:   /eventscalendaraddons\.com\/(shortcode|demos|bricks)\//,
   RX_POLICY: /coolplugins\.net\/terms\/usage-tracking/,
   RX_BUNDLE: /eventscalendaraddons\.com\/pricing/,
   RX_DOCS:   /eventscalendaraddons\.com\/docs\//,
@@ -309,6 +309,58 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
         if (badge) badge.hidden = true;
       }
     }
+
+    updateLayoutDemoLink(editor);
+    applyBricksLayoutStyles(editor);
+  }
+
+  function updateLayoutDemoLink(editor) {
+    var link = step2.querySelector('.ect-settings-row__demo');
+    if (!link) return;
+    var bricksUrl = link.getAttribute('data-demo-href-bricks');
+    var defaultUrl = link.getAttribute('data-demo-href-default');
+    if (!bricksUrl || !defaultUrl) return;
+    var next = editor === 'bricks' ? bricksUrl : defaultUrl;
+    var currentBase = (link.getAttribute('href') || '').split('?')[0].replace(/\/$/, '');
+    var nextBase = next.split('?')[0].replace(/\/$/, '');
+    if (currentBase === nextBase) return;
+    link.setAttribute('href', next);
+    if (window.__ECT && window.__ECT.applyUtm) window.__ECT.applyUtm();
+  }
+
+  // Bricks-only: List has Style 1 + 2; Grid has Style 1. Do not mutate other editors.
+  function applyBricksLayoutStyles(editor) {
+    var cards = step2.querySelectorAll('.ect-style-card');
+    if (editor !== 'bricks') {
+      cards.forEach(function (card) {
+        if (!card.hasAttribute('data-ect-bricks-hidden')) return;
+        card.hidden = false;
+        card.removeAttribute('data-ect-bricks-hidden');
+      });
+      return;
+    }
+    var layoutCard = step2.querySelector('[data-editor-only="bricks"] .ect-layout-card.is-selected');
+    var layout = layoutCard ? layoutCard.dataset.value : 'list';
+    cards.forEach(function (card) {
+      var hideFor = (card.getAttribute('data-hide-for') || '').split(/\s+/).filter(Boolean);
+      var bricksLayouts = (card.getAttribute('data-bricks-layouts') || '').split(/\s+/).filter(Boolean);
+      var hide = hideFor.indexOf('bricks') !== -1
+        || (bricksLayouts.length > 0 && bricksLayouts.indexOf(layout) === -1);
+      if (hide) {
+        card.hidden = true;
+        card.setAttribute('data-ect-bricks-hidden', '1');
+        card.classList.remove('is-selected');
+      } else {
+        card.hidden = false;
+        card.removeAttribute('data-ect-bricks-hidden');
+      }
+    });
+    var styleGroup = step2.querySelector('[data-required-selection="style"]');
+    if (!styleGroup || styleGroup.hidden || styleGroup.closest('[hidden]')) return;
+    if (styleGroup.querySelector('.ect-style-card.is-selected:not([hidden])')) return;
+    var first = styleGroup.querySelector('.ect-style-card:not([hidden]):not([data-pro])')
+      || styleGroup.querySelector('.ect-style-card:not([hidden])');
+    if (first) first.click();
   }
 
   function updateEditorSelectedBodyAttr() {
@@ -438,6 +490,13 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
   document.addEventListener('click', function (e) {
     if (!e.target.closest('.ect-layout-card, .ect-style-card, .ect-toggle-option, .ect-editor-option')) return;
     requestAnimationFrame(function () {
+      var builder = document.body.getAttribute('data-editor-selected') || 'shortcode';
+      var displayMode = document.body.getAttribute('data-display-mode') || 'native';
+      var editor = displayMode === 'shortcode' ? 'shortcode' : builder;
+      if (editor === 'elementor' || editor === 'divi' || editor === 'wpbakery') editor = 'shortcode';
+      if (editor === 'bricks' && e.target.closest('.ect-layout-card')) {
+        applyBricksLayoutStyles(editor);
+      }
       updateProState();
       updateFilterBarDemoLink();
     });
@@ -675,6 +734,9 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
 
   // ----- Demo links (Featured / Taxonomy) toggle on Yes selection -----
   function updateDemoLinks() {
+    var builder = document.body.getAttribute('data-editor-selected') || 'shortcode';
+    var displayMode = document.body.getAttribute('data-display-mode') || 'native';
+    var editor = displayMode === 'shortcode' ? 'shortcode' : builder;
     ['featured', 'taxonomy'].forEach(function (key) {
       var link = step3.querySelector('[data-demo-link="' + key + '"]');
       if (!link) return;
@@ -682,6 +744,16 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
       if (!group) return;
       var yes = group.querySelector('.ect-toggle-option[data-value="yes"].is-selected');
       link.hidden = !yes;
+      if (key !== 'featured') return;
+      var bricksUrl = link.getAttribute('data-demo-href-bricks');
+      var defaultUrl = link.getAttribute('data-demo-href-default');
+      if (!bricksUrl || !defaultUrl) return;
+      var next = editor === 'bricks' ? bricksUrl : defaultUrl;
+      var currentBase = (link.getAttribute('href') || '').split('?')[0].replace(/\/$/, '');
+      var nextBase = next.split('?')[0].replace(/\/$/, '');
+      if (currentBase === nextBase) return;
+      link.setAttribute('href', next);
+      if (window.__ECT && window.__ECT.applyUtm) window.__ECT.applyUtm();
     });
   }
 
@@ -2177,18 +2249,11 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
     return true;
   }
 
-  // Step-1 option grid columns follow the number of VISIBLE editor options:
-  // 2–3 options -> 1 full-width column, 4+ -> 2 columns. Uses computed display
-  // (not offsetParent) so it is correct even when Step 1 is not the active step.
+  // Step-1 editor options stay a single-column list (not a 2-col grid).
   function applyOptionColumns() {
     var container = document.querySelector('.ect-editor-selector__options');
     if (!container) return;
-    var opts = container.querySelectorAll('.ect-editor-option');
-    var visible = 0;
-    for (var i = 0; i < opts.length; i++) {
-      if (getComputedStyle(opts[i]).display !== 'none') visible++;
-    }
-    container.setAttribute('data-cols', visible >= 4 ? '2' : '1');
+    container.setAttribute('data-cols', '1');
   }
 
   function autoSelectPreferred() {

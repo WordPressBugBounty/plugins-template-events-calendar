@@ -559,6 +559,9 @@ if ( ! class_exists( 'ECT_Onboarding_Draft_Page' ) ) {
 
 			$style_value = self::selection_value( $selections, 'style', 'style-1' );
 			$list_item_style = in_array( $style_value, array( 'style-1', 'style-2' ), true ) ? $style_value : 'style-1';
+			if ( 'grid' === $layout_template ) {
+				$list_item_style = 'style-1';
+			}
 
 			$time_value = self::selection_value( $selections, 'time', 'upcoming' );
 			$time_map   = array(
@@ -582,33 +585,40 @@ if ( ! class_exists( 'ECT_Onboarding_Draft_Page' ) ) {
 				'event_time_mode' => 'all',
 				'posts_per_page'  => 10,
 				'order'           => 'ASC',
+				'event_featured'  => ( 'yes' === self::selection_value( $selections, 'featured', 'no' ) ) ? 'featured' : 'all',
 			);
 
 			if ( ! empty( $categories ) && ! in_array( 'all', $categories, true ) ) {
 				$settings['event_categories'] = $categories;
 			}
 
-			self::ensure_bricks_list_defaults();
-			if ( class_exists( 'ECT_Bricks_List_Defaults', false ) ) {
-				$parts_key = ( 'style-2' === $list_item_style ) ? 'parts_style2' : 'parts_style1';
-				$settings[ $parts_key ] = ECT_Bricks_List_Defaults::ect_bricks_default_parts( $list_item_style );
+			foreach ( self::bricks_default_layout_parts() as $parts_key => $rows ) {
+				$settings[ $parts_key ] = $rows;
 			}
 
 			return $settings;
 		}
 
 		/**
-		 * Load Bricks list default parts helper when available.
+		 * Default Elements stacks for List Style 1 and 2 so switching Style
+		 * in Bricks still has repeater rows.
+		 *
+		 * @return array<string,array<int,array<string,mixed>>>
 		 */
-		private static function ensure_bricks_list_defaults() {
-			if ( class_exists( 'ECT_Bricks_List_Defaults', false ) ) {
-				return;
+		private static function bricks_default_layout_parts() {
+			if ( class_exists( 'ECT_Bricks_Plugin', false ) ) {
+				ECT_Bricks_Plugin::ect_bricks_load_settings_dependencies();
+			}
+			if ( ! class_exists( 'ECT_Bricks_Settings_Normalizer', false ) ) {
+				return array();
 			}
 
-			$path = ECT_PLUGIN_DIR . 'bricks/templates/ect-bricks-list-defaults.php';
-			if ( file_exists( $path ) ) {
-				require_once $path;
-			}
+			return array_filter(
+				array(
+					'parts_style1' => ECT_Bricks_Settings_Normalizer::ect_bricks_get_default_list_parts( 'style-1' ),
+					'parts_style2' => ECT_Bricks_Settings_Normalizer::ect_bricks_get_default_list_parts( 'style-2' ),
+				)
+			);
 		}
 
 		/**

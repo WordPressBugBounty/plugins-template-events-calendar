@@ -150,10 +150,11 @@ if ( ! trait_exists( 'ECT_Bricks_Part_Chrome_Media', false ) ) {
 		}
 
 		/**
-		 * Inline shell category paint/hover CSS variables on the widget root (.ect-ev).
+		 * Inline shell category hover CSS variables on the widget root (.ect-ev).
 		 *
-		 * Guarantees image category hover styles on the frontend even when Bricks
-		 * only paints vars on the element wrapper in the builder.
+		 * Hover tokens only (not normal color/bg). Normal colors are painted by Bricks
+		 * directly on `.event-badge--blue`. Hover paint is applied in CSS exclusively on
+		 * `.event-badge--blue:hover` so card/widget hover cannot recolor every badge.
 		 *
 		 * @param array<string,mixed> $settings Widget settings.
 		 * @return string Semicolon-separated declarations (no style= wrapper).
@@ -164,9 +165,7 @@ if ( ! trait_exists( 'ECT_Bricks_Part_Chrome_Media', false ) ) {
 			}
 
 			$map = array(
-				'ect_bricks_shell_category_color'       => '--ect-bricks-shell-cat-color',
-				'ect_bricks_shell_category_background'  => '--ect-bricks-shell-cat-bg',
-				'ect_bricks_shell_category_hover_color' => '--ect-bricks-shell-cat-hover-color',
+				'ect_bricks_shell_category_hover_color'      => '--ect-bricks-shell-cat-hover-color',
 				'ect_bricks_shell_category_hover_background' => '--ect-bricks-shell-cat-hover-bg',
 			);
 

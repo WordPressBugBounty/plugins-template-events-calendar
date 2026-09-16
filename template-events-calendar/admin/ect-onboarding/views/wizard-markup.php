@@ -214,7 +214,7 @@ if ( ! defined( 'ABSPATH' ) ) {
               <div class="ect-settings-row__meta">
                 <h3 class="ect-settings-row__title">Layout</h3>
                 <p class="ect-settings-row__desc">How events are arranged on the page.</p>
-                <a class="ect-demo-link ect-settings-row__demo" href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/" target="_blank" rel="noopener">
+                <a class="ect-demo-link ect-settings-row__demo" href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/" data-demo-href-default="https://eventscalendaraddons.com/demos/events-shortcodes-pro/" data-demo-href-bricks="https://eventscalendaraddons.com/bricks/grid/" data-utm="demo" target="_blank" rel="noopener">
                   <span class="dashicons dashicons-external" aria-hidden="true"></span>
                   <span>View All Layouts Demos</span>
                 </a>
@@ -273,22 +273,17 @@ if ( ! defined( 'ABSPATH' ) ) {
                 </a>
               </div>
 
-              <!-- Bricks layouts (3) -->
+              <!-- Bricks layouts: List (free) + Grid (Pro). No carousel. -->
               <div class="ect-layout-grid ect-layout-grid--2col" data-editor-only="bricks" data-required-selection="layout" hidden>
                 <a href="#" role="button" class="ect-layout-card" data-value="list">
                   <span class="ect-layout-card__icon" aria-hidden="true"><span class="dashicons dashicons-editor-justify"></span></span>
                   <span class="ect-layout-card__name">List</span>
                   <span class="ect-layout-card__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
                 </a>
-                <a href="#" role="button" class="ect-layout-card" data-value="grid">
+                <a href="#" role="button" class="ect-layout-card" data-value="grid" data-pro="true">
+                  <span class="ect-layout-card__pro">Pro</span>
                   <span class="ect-layout-card__icon" aria-hidden="true"><span class="dashicons dashicons-grid-view"></span></span>
                   <span class="ect-layout-card__name">Grid</span>
-                  <span class="ect-layout-card__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
-                </a>
-                <a href="#" role="button" class="ect-layout-card" data-value="carousel" data-pro="true">
-                  <span class="ect-layout-card__pro">Pro</span>
-                  <span class="ect-layout-card__icon" aria-hidden="true"><span class="dashicons dashicons-images-alt2"></span></span>
-                  <span class="ect-layout-card__name">Carousel</span>
                   <span class="ect-layout-card__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
                 </a>
               </div>
@@ -308,20 +303,20 @@ if ( ! defined( 'ABSPATH' ) ) {
             </div>
             <div class="ect-settings-row__body">
               <div class="ect-style-row" data-required-selection="style">
-                <a href="#" role="button" class="ect-style-card" data-value="style-1">
+                <a href="#" role="button" class="ect-style-card" data-value="style-1" data-bricks-layouts="list grid">
                   <span class="ect-style-card__name">Style 1</span>
                   <span class="ect-style-card__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
                 </a>
-                <a href="#" role="button" class="ect-style-card" data-value="style-2">
+                <a href="#" role="button" class="ect-style-card" data-value="style-2" data-bricks-layouts="list">
                   <span class="ect-style-card__name">Style 2</span>
                   <span class="ect-style-card__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
                 </a>
-                <a href="#" role="button" class="ect-style-card" data-value="style-3" data-pro-for="bricks">
+                <a href="#" role="button" class="ect-style-card" data-value="style-3" data-pro-for="bricks" data-hide-for="bricks">
                   <span class="ect-style-card__pro" data-pro-badge-for="bricks" hidden>Pro</span>
                   <span class="ect-style-card__name">Style 3</span>
                   <span class="ect-style-card__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
                 </a>
-                <a href="#" role="button" class="ect-style-card" data-value="style-4" data-pro="true">
+                <a href="#" role="button" class="ect-style-card" data-value="style-4" data-pro="true" data-hide-for="bricks">
                   <span class="ect-style-card__pro">Pro</span>
                   <span class="ect-style-card__name">Style 4</span>
                   <span class="ect-style-card__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
@@ -556,7 +551,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     <span class="ect-toggle-option__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
                   </a>
                 </div>
-                <a class="ect-demo-link" href="https://eventscalendaraddons.com/shortcode/featured-events/" target="_blank" rel="noopener" data-demo-link="featured" hidden>
+                <a class="ect-demo-link" href="https://eventscalendaraddons.com/shortcode/featured-events/" data-demo-href-default="https://eventscalendaraddons.com/shortcode/featured-events/" data-demo-href-bricks="https://eventscalendaraddons.com/bricks/grid/" data-utm="demo" target="_blank" rel="noopener" data-demo-link="featured" hidden>
                   <span class="dashicons dashicons-external" aria-hidden="true"></span>
                   <span>See it live</span>
                 </a>
