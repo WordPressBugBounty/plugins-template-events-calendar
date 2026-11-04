@@ -1,0 +1,488 @@
+/* Events Loop Builder — list-1 layout styles (loaded only when this layout is on the page). */
+/* Moved from frontend.css (original order kept; loads right after it). */
+.elb-loop-output .wp-block-elb-flex-container.elb-card__body--list-1 {
+  min-width: 0;
+}
+/* List templates — pin children to the start edge, but do NOT lock text-align
+   (event title Alignment setting must win via inline style). */
+.elb-card__body--list-1>:is(.wp-block-elb-event-meta, .elb-event-meta, .elb-meta, .wp-block-elb-event-time),
+.elb-card--list-1 .elb-card__body>:is(.wp-block-elb-event-meta, .wp-block-elb-event-time),
+.elb-card--list-1 :is(.elb-event-meta, .elb-meta),
+/* Details column: full-width so Layout → Alignment (left/center/right) works
+   for venue / price / category (.elb-meta items mode). Each :is() groups selectors of equal
+   specificity, so every element keeps the same selector strength. */
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__details-col>:is(.wp-block-elb-event-meta, .elb-event-meta),
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__details-col .elb-meta {
+  align-self: stretch;
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+/* Default grow — Custom Width on the body column must override. */
+:where(.elb-loop-output .wp-block-elb-flex-container.elb-card__body--list-1) {
+  flex: 1 1 0;
+  width: auto;
+  max-width: none;
+}
+/* Body fills remaining row space after image + Gap (beats locked % width). */
+.elb-loop-output .wp-block-elb-flex-container:is(.elb-card--list-1, .elb-card--horizontal-magazine) .wp-block-elb-flex-container:is(.elb-card__body--list-1):not(.elb-user-width) {
+  flex: 1 1 0 !important;
+  width: auto !important;
+  max-width: none !important;
+  min-width: 0 !important;
+}
+/* User Width on the List 1 body (.elb-user-width): the media column without its own Width takes the rest. */
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine):has(> .elb-card__body.elb-user-width, > * > .elb-card__body.elb-user-width) .elb-card__media-col:not(.elb-user-width) {
+  flex: 1 1 0 !important;
+  width: auto !important;
+  max-width: none !important;
+}
+:is(.elb-card--list-1, .elb-card--horizontal-magazine),
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine),
+.elb-loop-output .wp-block-elb-flex-container.elb-card--list-1,
+.elb-loop-output .wp-block-elb-flex-container.elb-card--horizontal-magazine {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start !important;
+  overflow: hidden !important;
+  box-shadow: var(--elb-card-shadow);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__media-col,
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__media-col,
+.elb-loop-output .wp-block-elb-flex-container.elb-card__media-col {
+  position: relative !important;
+  min-width: 0;
+  align-self: stretch;
+  overflow: hidden;
+}
+
+/* Keep the category anchored to the image content box when the media container has padding.
+   The editor naturally layers both blocks inside its padded block-list wrapper; mirror that
+   structure on the frontend for both direct and inner-content container markup. */
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__media-col:has(> .elb-meta--on-image),
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__media-col:has(> .elb-flex-container-inner-blocks-wrap > .elb-meta--on-image) > .elb-flex-container-inner-blocks-wrap {
+  display: grid !important;
+}
+
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__media-col > :is(.wp-block-elb-event-image, .elb-meta--on-image),
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__media-col > .elb-flex-container-inner-blocks-wrap > :is(.wp-block-elb-event-image, .elb-meta--on-image) {
+  grid-area: 1 / 1;
+}
+
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__media-col .elb-meta--on-image {
+  position: relative !important;
+  inset: auto !important;
+  align-self: start !important;
+  justify-self: start;
+  margin: 12px !important;
+}
+
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__media-col img,
+.elb-loop-output .elb-card--list-1 .elb-card__media-col img {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  aspect-ratio: auto;
+  object-fit: cover;
+  display: block;
+  transition: var(--elb-img-zoom-transition, transform 0.35s ease);
+}
+
+/* List Style 1: the photo column stretches to the card, so the image fills it. */
+.elb-card--list-1 .elb-card__media-col .wp-block-elb-event-image,
+.elb-loop-output .elb-card--list-1 .elb-card__media-col .wp-block-elb-event-image {
+  height: 100%;
+}
+
+.elb-card--list-1 .elb-card__body,
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__body--list-1 {
+  min-width: 0;
+  padding: 22px 24px;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  justify-content: flex-start !important;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+/* Date column stretches so the divider is full height; badge aligns via
+   elb-date-valign-* (top / center / bottom). Style-panel colors/spacing
+   target the badge (and margin on this column) via --elb-field-*. */
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) :is(.wp-block-elb-event-date, .elb-event-date) {
+  flex: 0 0 auto;
+  /* Keep the divider gutter. Style → Date Style preset reset can set field
+     padding to 12px 0, which would otherwise wipe padding-right and pull the
+     date flush against the line (and nudge it down). Badge spacing still uses
+     --elb-field-padding. */
+  padding: 0 16px 0 0 !important;
+  margin: var(--elb-field-margin, 0) !important;
+  border-right: 1px solid var(--elb-border);
+  align-self: stretch !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  align-items: center;
+  box-sizing: border-box;
+  background: transparent !important;
+}
+
+/* Venue · Time same line; Ticket wraps — grey icons, no circles */
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-event-info-row:not(.elb-has-layout),
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-event-info-row:not(.elb-has-layout),
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .wp-block-elb-event-info-row:not(.elb-has-layout) {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center;
+  justify-content: flex-start !important;
+  gap: 12px 20px !important;
+  width: 100%;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Full-width so textAlign can position the button (left/center/right) */
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .wp-block-elb-event-read-more,
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .wp-block-elb-event-read-more {
+  width: 100% !important;
+  max-width: 100% !important;
+  align-self: stretch !important;
+  box-sizing: border-box;
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 4px;
+}
+
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .wp-block-elb-event-read-more .elb-event-read-more {
+  width: 100% !important;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Date | content header row — keep date on the cross-start edge.
+   !important beats inline align-self/margins from textAlign.
+   Magazine header stretches the date so the divider is full height. */
+.wp-block-elb-flex-container:not(.elb-card__body--list-1):has(> .wp-block-elb-event-date + .wp-block-elb-flex-container)>.wp-block-elb-event-date,
+.wp-block-elb-flex-container:not(.elb-card__body--list-1):has(> .elb-flex-container-inner-blocks-wrap > .wp-block-elb-event-date + .wp-block-elb-flex-container)>.elb-flex-container-inner-blocks-wrap>.wp-block-elb-event-date {
+  align-self: flex-start !important;
+  margin-inline: 0 !important;
+}
+
+.elb-loop-output :where(.wp-block-elb-flex-container.elb-card__media-col) {
+  max-width: 34%;
+}
+
+/* List 1 / Magazine cards keep overflow:hidden (card group above); only the hover transition applies. */
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) {
+  transition: var(--elb-card-transition, transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease);
+}
+
+/* Default column share in the editor — allow shrink so mid-width rows don't overflow.
+   On the frontend the .elb-loop-output media-col rule in frontend.css (flex: 0 1 auto) wins. */
+:where(.elb-card--list-1 .elb-card__media-col,
+  .elb-card--horizontal-magazine .elb-card__media-col) {
+  flex: 0 1 34%;
+  max-width: 34%;
+  min-width: 0;
+}
+/* render.php wraps the linked image in <a style="height:auto">, which broke the
+   height:100% chain: the photo kept its natural height with white space below
+   whenever the text column made the row taller (e.g. a narrower card). The editor
+   has no link wrapper, so the image filled the column there. */
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__media-col .wp-block-elb-event-image > a {
+  height: 100% !important;
+}
+/* Custom Width locks nested containers with flex-shrink:0 on the frontend; let the body give way
+   for the card's Gap like the editor (flex:1) instead of overflowing past the card edge. */
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .wp-block-elb-flex-container.elb-card__body--list-1 {
+  flex-shrink: 1;
+}
+/* Fallback only — Container → Layout Direction must win via elbFrontendCss. */
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__body--list-1>.elb-flex-container-inner-blocks-wrap {
+  justify-content: flex-start !important;
+}
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__details-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* No gap lock — Container → Gap owns it; field Spacing → Padding sets the rhythm. */
+}
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) :is(.wp-block-elb-event-date, .elb-event-date):hover {
+  background: transparent !important;
+}
+/* Style-panel hover colors on the badge, not the date column. */
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) :is(.wp-block-elb-event-date, .elb-event-date):hover .elb-date-badge {
+  background: var(--elb-f-hover-bg, var(--elb-field-bg, transparent)) !important;
+  color: var(--elb-f-hover-color, var(--elb-field-color, inherit)) !important;
+}
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) :is(.wp-block-elb-event-date, .elb-event-date):hover .elb-date-badge .elb-date-badge__day,
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) :is(.wp-block-elb-event-date, .elb-event-date):hover .elb-date-badge .elb-date-badge__month {
+  color: var(--elb-f-hover-color, var(--elb-field-color, inherit)) !important;
+}
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .wp-block-elb-event-title {
+  /* Allow Event Title → HTML tag / Style typography / Presets to override layout default. */
+  align-self: stretch;
+  font-size: var(--elb-field-font-size, 1.25rem);
+  font-weight: var(--elb-field-font-weight, 700);
+  color: var(--elb-field-color, var(--elb-container-color, var(--elb-slate-900)));
+  background-color: var(--elb-field-bg, transparent);
+  box-shadow: var(--elb-field-box-shadow, none);
+  text-align: left;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+/* Venue + time on first line; cost alone on the next line */
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-event-info-row:not(.elb-has-layout) .elb-info-row__item--ticket,
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-event-info-row:not(.elb-has-layout) .elb-info-row__item--ticket,
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .wp-block-elb-event-info-row:not(.elb-has-layout) .elb-info-row__item--ticket {
+  flex: 0 0 100% !important;
+  width: 100% !important;
+  max-width: 100%;
+}
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-info-row__icon {
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+  background: var(--elb-icon-bg, transparent) !important;
+  border-radius: 0 !important;
+  color: var(--elb-icon-color, var(--elb-container-color, var(--elb-slate-400))) !important;
+  fill: currentColor;
+}
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-info-row__icon *,
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-info-row__icon svg {
+  color: var(--elb-icon-color, var(--elb-container-color, var(--elb-slate-400))) !important;
+  fill: currentColor;
+}
+/* Outlined View Details — List Classic default.
+   Rest state must stay visible on a white card (hover-only paint was a regression:
+   transparent fill + white/--matching text made the control vanish until :hover).
+   Solid Style fills set --elb-btn-bg on the <a>; Look presets use modifier classes. */
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-ticket-btn:not(.elb-ticket-btn--subtle) {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  opacity: 1 !important;
+  visibility: visible !important;
+  background: transparent !important;
+  background-image: none !important;
+  color: var(--elb-blue-600) !important;
+  -webkit-text-fill-color: var(--elb-blue-600) !important;
+  border: 1.5px solid var(--elb-blue-600);
+  font-size: var(--elb-fs-base);
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: var(--elb-radius-sm);
+  text-decoration: none;
+  box-shadow: none;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  box-sizing: border-box;
+  line-height: 1.25;
+}
+/* Style panel text colour (outline) — never allow white/near-white to wipe the label. */
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) a.elb-ticket-btn[style*="--elb-btn-color"]:not(.elb-ticket-btn--subtle) {
+  color: var(--elb-btn-color, var(--elb-blue-600)) !important;
+  -webkit-text-fill-color: var(--elb-btn-color, var(--elb-blue-600)) !important;
+  border-color: var(--elb-btn-color, var(--elb-blue-600));
+}
+/* Solid fill when PHP published a real --elb-btn-bg (Primary / custom background). */
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) a.elb-ticket-btn[style*="--elb-btn-bg"]:not(.elb-ticket-btn--subtle) {
+  background: var(--elb-btn-bg) !important;
+  color: var(--elb-btn-color, var(--elb-white)) !important;
+  -webkit-text-fill-color: var(--elb-btn-color, var(--elb-white)) !important;
+  border-color: var(--elb-btn-bg);
+}
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-ticket-btn:not(.elb-ticket-btn--subtle):hover {
+  background: var(--elb-btn-hover-bg, var(--elb-blue-600)) !important;
+  color: var(--elb-btn-hover-color, var(--elb-white)) !important;
+  -webkit-text-fill-color: var(--elb-btn-hover-color, var(--elb-white)) !important;
+  border-color: var(--elb-btn-hover-bg, var(--elb-blue-600));
+}
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-ticket-btn--subtle:hover,
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) a.elb-ticket-btn--subtle:hover {
+  background: var(--elb-btn-hover-bg, var(--elb-blue-600)) !important;
+  color: var(--elb-btn-hover-color, var(--elb-white)) !important;
+  -webkit-text-fill-color: var(--elb-btn-hover-color, var(--elb-white)) !important;
+  border-color: var(--elb-btn-hover-bg, var(--elb-blue-600));
+}
+.elb-card--list-1 .elb-card__meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px 20px;
+  width: 100%;
+}
+/* A title placed directly in the body (the card title rule above already covers it in the card). */
+.elb-card__body--list-1>:is(.wp-block-elb-event-title, .elb-event-title) {
+  align-self: stretch;
+  margin-left: 0;
+  margin-right: 0;
+}
+/* Magazine date is a column: textAlign = horizontal (align-items),
+   verticalAlign = vertical (justify-content). Generic .elb-text-align-*
+   justify-content would pin the badge in the middle and block Top. */
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) :is(.wp-block-elb-event-date, .elb-event-date).elb-text-align-left {
+  align-items: flex-start !important;
+}
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) :is(.wp-block-elb-event-date, .elb-event-date).elb-text-align-center {
+  align-items: center !important;
+}
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) :is(.wp-block-elb-event-date, .elb-event-date).elb-text-align-right {
+  align-items: flex-end !important;
+}
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) :is(.wp-block-elb-event-date, .elb-event-date).elb-date-valign-top,
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) :is(.wp-block-elb-event-date, .elb-event-date):not(.elb-date-valign-center):not(.elb-date-valign-bottom) {
+  justify-content: flex-start !important;
+}
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) :is(.wp-block-elb-event-date, .elb-event-date).elb-date-valign-center {
+  justify-content: center !important;
+}
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) :is(.wp-block-elb-event-date, .elb-event-date).elb-date-valign-bottom {
+  justify-content: flex-end !important;
+}
+@media (hover: hover) and (pointer: fine) {
+.elb-loop-output .elb-card--horizontal-magazine:hover .elb-card__media-col img,
+.elb-loop-output .wp-block-elb-flex-container:has(> .elb-card__media-col):hover .elb-card__media-col img,
+.elb-loop-output .wp-block-elb-flex-container:has(> .elb-flex-container-inner-blocks-wrap > .elb-card__media-col):hover .elb-card__media-col img {
+    transform: scale(1.04);
+  }
+}
+@media (max-width: 1024px) {
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine),
+.elb-loop-output .wp-block-elb-flex-container.elb-card--list-1,
+.elb-loop-output .wp-block-elb-flex-container.elb-card--horizontal-magazine,
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine)>.elb-flex-container-inner-blocks-wrap,
+.elb-loop-output .wp-block-elb-flex-container.elb-card--list-1>.elb-flex-container-inner-blocks-wrap,
+.elb-loop-output .wp-block-elb-flex-container.elb-card--horizontal-magazine>.elb-flex-container-inner-blocks-wrap {
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+  }
+.elb-loop-output .elb-card--list-1 .elb-card__body,
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__body--list-1,
+.elb-loop-output .wp-block-elb-flex-container.elb-card__body--list-1 {
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .wp-block-elb-event-title,
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .wp-block-elb-event-excerpt {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    max-width: 100%;
+  }
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__media-col,
+.elb-loop-output .wp-block-elb-flex-container.elb-card__media-col {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    align-self: stretch !important;
+  }
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__media-col img,
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__media-col .elb-event-img {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+/* Keep date | details as a horizontal row inside the stacked card. */
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__body--list-1,
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__body--list-1>.elb-flex-container-inner-blocks-wrap {
+    flex-direction: row !important;
+    align-items: stretch !important;
+  }
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__details-col {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+}
+@media (max-width: 600px) {
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__body--list-1 {
+    padding: 16px;
+    column-gap: 12px !important;
+  }
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) :is(.wp-block-elb-event-date, .elb-event-date) {
+    padding: 0 12px 0 0 !important;
+  }
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-date-badge--classic .elb-date-badge__day {
+    font-size: 28px !important;
+  }
+	.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-card__body--list-1>.elb-flex-container-inner-blocks-wrap {
+    column-gap: 12px !important;
+  }
+}
+/* Horizontal Magazine — only restyle classic; other date presets must keep their looks */
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-date-badge--classic,
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-date-badge--classic {
+  display: inline-flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  background: var(--elb-field-bg, transparent) !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: var(--elb-field-padding, 0) !important;
+  color: var(--elb-field-color, var(--elb-container-color, var(--elb-blue-700))) !important;
+  min-width: 0 !important;
+  width: auto !important;
+  height: auto !important;
+}
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-date-badge--classic .elb-date-badge__day,
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-date-badge--classic .elb-date-badge__day {
+  order: -1 !important;
+  font-size: 36px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  color: var(--elb-field-color, var(--elb-container-color, var(--elb-blue-700))) !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-date-badge--classic .elb-date-badge__month,
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine) .elb-date-badge--classic .elb-date-badge__month {
+  order: 1 !important;
+  font-size: var(--elb-fs-sm) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: var(--elb-field-color, var(--elb-container-color, #3b82f6)) !important;
+  opacity: 1 !important;
+  margin: 4px 0 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+/* Layout-file rules. */
+:where(.elb-card--list-1, .elb-card--horizontal-magazine) {
+  background: var(--elb-white);
+  padding: 0;
+  border: 1px solid var(--elb-border);
+  border-radius: var(--elb-radius-lg);
+/* Default gap — Container → Layout → Gap must be able to override (editor matches). */
+  gap: 0;
+}
+:where(.elb-card--list-1 .elb-card__body),
+:where(.elb-card--list-1 .elb-card__body--list-1),
+:where(.elb-card--horizontal-magazine .elb-card__body--list-1) {
+  flex-direction: column;
+}

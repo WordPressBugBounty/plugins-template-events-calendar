@@ -1,0 +1,238 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "elb/event-time",
+  "textdomain": "template-events-calendar",
+  "title": "Event Time",
+  "icon": "clock",
+  "category": "widgets",
+  "keywords": [
+    "time",
+    "event time",
+    "clock",
+    "hours"
+  ],
+  "editorScript": "elb-editor",
+  "usesContext": [
+    "elb/postId"
+  ],
+  "attributes": {
+    "sourceField": {
+      "type": "string",
+      "default": "time"
+    },
+    "showTime": {
+      "type": "boolean",
+      "default": true
+    },
+    "timeStyle": {
+      "type": "string"
+    },
+    "timeFormat": {
+      "type": "string"
+    },
+    "timeFormatCustom": {
+      "type": "string"
+    },
+    "timeShow": {
+      "type": "string"
+    },
+    "allDayLabel": {
+      "type": "string"
+    },
+    "textColor": {
+      "type": "string",
+      "default": ""
+    },
+    "hoverTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "hoverBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "textAlign": {
+      "type": "string",
+      "default": "left"
+    },
+    "paddingTop": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingRight": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingBottom": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingUnit": {
+      "type": "string",
+      "default": "PX"
+    },
+    "borderStyle": {
+      "type": "string",
+      "default": "none"
+    },
+    "borderRadiusTopLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusTopRight": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusBottomRight": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusBottomLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "marginTop": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginRight": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginBottom": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginLeft": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginUnit": {
+      "type": "string",
+      "default": "PX"
+    },
+    "fontFamily": {
+      "type": "string",
+      "default": ""
+    },
+    "fontSize": {
+      "type": "string",
+      "default": ""
+    },
+    "fontSizeUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "fontWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "lineHeight": {
+      "type": "string",
+      "default": ""
+    },
+    "lineHeightUnit": {
+      "type": "string",
+      "default": "em"
+    },
+    "letterSpacing": {
+      "type": "string",
+      "default": ""
+    },
+    "letterSpacingUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "textTransform": {
+      "type": "string",
+      "default": ""
+    },
+    "fontStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "textDecoration": {
+      "type": "string",
+      "default": ""
+    },
+    "flexDirection": {
+      "type": "string",
+      "default": ""
+    },
+    "justifyContent": {
+      "type": "string",
+      "default": ""
+    },
+    "alignItems": {
+      "type": "string",
+      "default": ""
+    },
+    "flexWrap": {
+      "type": "string",
+      "default": ""
+    },
+    "flexGap": {
+      "type": "string",
+      "default": ""
+    },
+    "borderWidth": {
+      "type": "string",
+      "default": ""
+    },
+    "borderColor": {
+      "type": "string",
+      "default": ""
+    },
+    "showBlockIcon": {
+      "type": "boolean",
+      "default": true
+    },
+    "blockIcon": {
+      "type": "string",
+      "default": ""
+    },
+    "blockIconSize": {
+      "type": "number",
+      "default": 18
+    },
+    "blockIconPos": {
+      "type": "string",
+      "default": "left"
+    },
+    "blockIconPlacement": {
+      "type": "string",
+      "default": "outside"
+    },
+    "blockIconColor": {
+      "type": "string",
+      "default": ""
+    },
+    "borderColorHover": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "customClassName": true
+  },
+  "render": "file:./render.php",
+  "description": "Show the event start and end time.",
+  "ancestor": [
+    "elb/loop-builder"
+  ]
+}

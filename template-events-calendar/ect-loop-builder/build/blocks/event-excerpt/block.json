@@ -1,0 +1,227 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "elb/event-excerpt",
+  "textdomain": "template-events-calendar",
+  "title": "Event Description",
+  "icon": "editor-paragraph",
+  "category": "widgets",
+  "keywords": [
+    "excerpt",
+    "event description",
+    "summary",
+    "description"
+  ],
+  "editorScript": "elb-editor",
+  "usesContext": [
+    "elb/postId"
+  ],
+  "attributes": {
+    "sourceField": {
+      "type": "string",
+      "default": "excerpt"
+    },
+    "wordCount": {
+      "type": "number",
+      "default": 20
+    },
+    "lengthMode": {
+      "type": "string",
+      "default": "words"
+    },
+    "textAlign": {
+      "type": "string",
+      "default": "left"
+    },
+    "textColor": {
+      "type": "string",
+      "default": ""
+    },
+    "hoverTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "hoverBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingTop": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingRight": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingBottom": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingUnit": {
+      "type": "string",
+      "default": "PX"
+    },
+    "borderStyle": {
+      "type": "string",
+      "default": "none"
+    },
+    "borderWidth": {
+      "type": "string",
+      "default": ""
+    },
+    "borderColor": {
+      "type": "string",
+      "default": ""
+    },
+    "flexDirection": {
+      "type": "string",
+      "default": ""
+    },
+    "justifyContent": {
+      "type": "string",
+      "default": ""
+    },
+    "alignItems": {
+      "type": "string",
+      "default": ""
+    },
+    "flexWrap": {
+      "type": "string",
+      "default": ""
+    },
+    "flexGap": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusTopLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusTopRight": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusBottomRight": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusBottomLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "marginTop": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginRight": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginBottom": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginLeft": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginUnit": {
+      "type": "string",
+      "default": "PX"
+    },
+    "fontFamily": {
+      "type": "string",
+      "default": ""
+    },
+    "fontSize": {
+      "type": "string",
+      "default": ""
+    },
+    "fontSizeUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "fontWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "lineHeight": {
+      "type": "string",
+      "default": ""
+    },
+    "lineHeightUnit": {
+      "type": "string",
+      "default": "em"
+    },
+    "letterSpacing": {
+      "type": "string",
+      "default": ""
+    },
+    "letterSpacingUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "textTransform": {
+      "type": "string",
+      "default": ""
+    },
+    "fontStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "textDecoration": {
+      "type": "string",
+      "default": ""
+    },
+    "showBlockIcon": {
+      "type": "boolean",
+      "default": false
+    },
+    "blockIcon": {
+      "type": "string",
+      "default": ""
+    },
+    "blockIconSize": {
+      "type": "number",
+      "default": 18
+    },
+    "blockIconPos": {
+      "type": "string",
+      "default": "left"
+    },
+    "blockIconPlacement": {
+      "type": "string",
+      "default": "outside"
+    },
+    "blockIconColor": {
+      "type": "string",
+      "default": ""
+    },
+    "borderColorHover": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "customClassName": true
+  },
+  "render": "file:./render.php",
+  "description": "Show the event's description, as a short excerpt or the full text.",
+  "ancestor": [
+    "elb/loop-builder"
+  ]
+}

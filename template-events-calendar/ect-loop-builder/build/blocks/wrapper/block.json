@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "elb/wrapper",
+  "title": "Wrapper",
+  "category": "elb-blocks",
+  "description": "Events Loop Builder wrapper block with spacing settings.",
+  "keywords": [
+    "wrapper",
+    "events loop builder wrapper",
+    "elb",
+    "eclb"
+  ],
+  "textdomain": "template-events-calendar",
+  "supports": {
+    "anchor": true,
+    "html": false,
+    "reusable": false,
+    "inserter": false
+  },
+  "usesContext": [
+    "elb/postId",
+    "elb/postType"
+  ],
+  "editorScript": "elb-layout-blocks-editor",
+  "attributes": {
+    "block_id": {
+      "type": "string"
+    },
+    "columnGap": {
+      "type": "number",
+      "default": 10
+    },
+    "columnGapType": {
+      "type": "string",
+      "default": "px"
+    },
+    "rowGap": {
+      "type": "number",
+      "default": 10
+    },
+    "rowGapType": {
+      "type": "string",
+      "default": "px"
+    }
+  }
+}

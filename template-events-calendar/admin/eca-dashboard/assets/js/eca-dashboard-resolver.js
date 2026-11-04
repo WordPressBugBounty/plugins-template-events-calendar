@@ -243,7 +243,7 @@
         icon: cfg.icon, tabDesc: cfg.tabDesc, description: cfg.description,
         driver: cfg.driver, proBadge: (cap === 'pro' && mode === 'PROMO_PRO'),
         mode: mode,
-        video: { youtubeId: driver.videoId, thumb: thumb(driver.videoId) },
+        video: { youtubeId: cfg.videoId || driver.videoId, thumb: thumb(cfg.videoId || driver.videoId) },
         steps: steps, install: install, note: note, ownedNote: ownedNote, actions: actions
       };
     }

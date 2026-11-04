@@ -91,7 +91,11 @@ if ( ! class_exists( 'ECT_Onboarding_Draft_Page' ) ) {
 			}
 
 			if ( 'elementor' === $content_plan['format'] ) {
-				self::apply_elementor_shortcode_page( $post_id, $shortcode );
+				$result = self::apply_elementor_shortcode_page( $post_id, $shortcode );
+
+				if ( is_wp_error( $result ) ) {
+					return $result;
+				}
 				$edit_url = admin_url( 'post.php?post=' . $post_id . '&action=elementor' );
 			} elseif ( in_array( $content_plan['format'], array( 'divi-4', 'divi-5' ), true ) ) {
 				self::apply_divi_builder_meta( $post_id );
@@ -132,7 +136,7 @@ if ( ! class_exists( 'ECT_Onboarding_Draft_Page' ) ) {
 		 * Decide post_content + format from method + selected editor.
 		 *
 		 * Isolated branches (order matters; earlier wins):
-		 * - method=block → ebec/event-list
+		 * - method=block → elb/loop-builder when Event Loop Builder is active, else shortcode
 		 * - editor=elementor → Elementor Shortcode widget
 		 * - editor=divi → Divi 4 shortcodes or Divi 5 blocks
 		 * - editor=bricks → native ect-bricks-events-loop element in _bricks_page_content_2
@@ -147,11 +151,11 @@ if ( ! class_exists( 'ECT_Onboarding_Draft_Page' ) ) {
 		 * @return array{format:string,content:string}
 		 */
 		private static function resolve_content_plan( $method, $editor, $selections, $shortcode ) {
-			// Native Gutenberg Events Block (ebec).
-			if ( 'block' === $method ) {
+			// Native Gutenberg Loop Builder. If it is unavailable, fall through to shortcode.
+			if ( 'block' === $method && class_exists( 'ELB_Plugin', false ) ) {
 				return array(
-					'format'  => 'ebec',
-					'content' => self::build_ebec_block_content( $selections ),
+					'format'  => 'elb',
+					'content' => self::build_elb_block_content( $selections ),
 				);
 			}
 
@@ -872,12 +876,12 @@ if ( ! class_exists( 'ECT_Onboarding_Draft_Page' ) ) {
 		}
 
 		/**
-		 * Build an `ebec/event-list` block (Events Block) from wizard state.
+		 * Build an `elb/loop-builder` block from wizard state.
 		 *
 		 * @param array<string,mixed> $selections Wizard selections.
 		 * @return string
 		 */
-		private static function build_ebec_block_content( $selections ) {
+		private static function build_elb_block_content( $selections ) {
 			$category_raw = isset( $selections['category'] ) ? (string) $selections['category'] : 'all';
 			$categories   = array_values(
 				array_filter(
@@ -894,12 +898,53 @@ if ( ! class_exists( 'ECT_Onboarding_Draft_Page' ) ) {
 				'past'     => 'past',
 				'both'     => 'all',
 			);
-			$ebec_type  = isset( $time_map[ $time_value ] ) ? $time_map[ $time_value ] : 'future';
+			$legacy_type  = isset( $time_map[ $time_value ] ) ? $time_map[ $time_value ] : 'future';
+			$legacy_date  = self::wizard_to_elb_date_format( $selections );
+			$layout_style = self::wizard_to_elb_layout_style( $selections );
+			$mapper_dates = array( 'default', 'MD,Y', 'MD,YT', 'FD,Y', 'DM', 'DML', 'DF', 'MD', 'd.FY', 'd.F', 'ldF', 'Mdl', 'd.Ml', 'dMY', 'full', 'dFT' );
+			$mapper_date  = in_array( $legacy_date, $mapper_dates, true ) ? $legacy_date : 'MD,Y';
 
+			$attrs = array(
+				'ebec_ev_category'         => $categories,
+				'ebec_max_events'          => '10',
+				'ebec_block_id'            => 'ect' . wp_generate_password( 8, false, false ),
+				'ebec_venue'               => 'no',
+				'ebec_display_cate'        => 'yes',
+				'ebec_display_desc'        => 'yes',
+				'ebec_type'                => $legacy_type,
+				'ebec_hide_read_more_link' => 'yes',
+				'ebec_date_formats'        => $mapper_date,
+				'ebec_order'               => 'ASC',
+				'event_layout'             => 'list-4' === $layout_style ? 'minimal' : 'default',
+			);
+
+			$mapped     = class_exists( 'ECT_Block_Attribute_Mapper' ) ? ECT_Block_Attribute_Mapper::map( $attrs ) : array();
+			$loop_attrs = ( ! empty( $mapped['supported'] ) && is_array( $mapped['attributes'] ) ) ? $mapped['attributes'] : array(
+				'postType'   => 'tribe_events',
+				'perPage'    => 10,
+				'isSetup'    => true,
+				'showEvents' => 'upcoming',
+			);
+
+			require_once __DIR__ . '/class-ect-onboarding-elb-layout.php';
+			return ECT_Onboarding_Elb_Layout::serialize( $layout_style, $loop_attrs, $legacy_date );
+		}
+
+		/**
+		 * Wizard date-format value → Event Loop Builder date key.
+		 *
+		 * @param array<string,mixed> $selections Wizard selections.
+		 * @return string
+		 */
+		private static function wizard_to_elb_date_format( $selections ) {
 			$date_format_value = isset( $selections['dateFormatValue'] )
 				? sanitize_text_field( (string) $selections['dateFormatValue'] )
-				: 'default';
-			$date_format_map   = array(
+				: 'MD,Y';
+			$elb_keys = array( 'default', 'MD,Y', 'FD,Y', 'DM', 'DML', 'DF', 'MD', 'd.FY', 'd.F', 'ldF', 'Mdl', 'd.Ml', 'dMY', 'MD,YT', 'mdyt', 'full' );
+			if ( in_array( $date_format_value, $elb_keys, true ) ) {
+				return $date_format_value;
+			}
+			$date_format_map = array(
 				'default' => 'default',
 				'md-y'    => 'MD,Y',
 				'fd-y'    => 'FD,Y',
@@ -918,54 +963,32 @@ if ( ! class_exists( 'ECT_Onboarding_Draft_Page' ) ) {
 				'd-ml'    => 'd.Ml',
 				'dft'     => 'dFT',
 			);
-			$ebec_date = isset( $date_format_map[ $date_format_value ] )
-				? $date_format_map[ $date_format_value ]
-				: 'MD,YT';
-
-			$layout_raw     = self::selection_value( $selections, 'layout', 'default' );
-			$event_layout   = self::wizard_layout_to_ebec_event_layout( $layout_raw );
-
-			$attrs = array(
-				'ebec_ev_category'         => $categories,
-				'ebec_max_events'          => '10',
-				'ebec_block_id'            => 'ect' . wp_generate_password( 8, false, false ),
-				'ebec_venue'               => 'no',
-				'ebec_display_cate'        => 'yes',
-				'ebec_display_desc'        => 'yes',
-				'ebec_type'                => $ebec_type,
-				'ebec_hide_read_more_link' => 'yes',
-				'ebec_date_formats'        => $ebec_date,
-				'ebec_order'               => 'ASC',
-				'event_layout'             => $event_layout,
-			);
-
-			if ( function_exists( 'serialize_block' ) ) {
-				return serialize_block(
-					array(
-						'blockName'    => 'ebec/event-list',
-						'attrs'        => $attrs,
-						'innerBlocks'  => array(),
-						'innerHTML'    => '',
-						'innerContent' => array(),
-					)
-				);
-			}
-
-			$json = wp_json_encode( $attrs );
-			return '<!-- wp:ebec/event-list ' . $json . ' /-->';
+			return isset( $date_format_map[ $date_format_value ] ) ? $date_format_map[ $date_format_value ] : 'MD,Y';
 		}
 
 		/**
-		 * Map wizard layout slug to ebec/event-list `event_layout` attribute.
+		 * Wizard layout + style → Event Loop Builder layoutStyle key.
 		 *
-		 * @param string $layout_raw Wizard layout value (shortcode or block slug).
-		 * @return string `default` or `minimal`
+		 * Free ships list-1, list-3, and list-4. Grid and list-2 stay Pro teasers.
+		 *
+		 * @param array<string,mixed> $selections Wizard selections.
+		 * @return string
 		 */
-		private static function wizard_layout_to_ebec_event_layout( $layout_raw ) {
-			if ( 'minimal' === $layout_raw || 'minimal-list' === $layout_raw ) {
-				return 'minimal';
+		private static function wizard_to_elb_layout_style( $selections ) {
+			$style   = self::selection_value( $selections, 'style', '' );
+			$layout  = self::selection_value( $selections, 'layout', 'list' );
+			$free    = array( 'list-1', 'list-3', 'list-4' );
+			$allowed = array( 'grid-1', 'grid-2', 'list-1', 'list-2', 'list-3', 'list-4' );
+			if ( in_array( $style, $free, true ) ) {
+				return $style;
 			}
-			return 'default';
+			if ( in_array( $style, $allowed, true ) ) {
+				return 'list-1';
+			}
+			if ( 'minimal' === $layout || 'minimal-list' === $layout ) {
+				return 'list-4';
+			}
+			return 'list-1';
 		}
 
 		/**

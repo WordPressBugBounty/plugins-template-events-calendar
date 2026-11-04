@@ -464,7 +464,7 @@ if (! class_exists('ECTSettings')) {
 								<div class="ect_step ect_col-rev">
 									<div class="ect_step-content">
 										<div class="ect_steps-title">
-											<h2>4. Events Block in (Gutenberg Editor)</h2>
+											<h2>4. Events Loop in Gutenberg Editor</h2>
 										</div>
 										<div class="ect_steps-list">
 											<ol>
@@ -475,12 +475,12 @@ if (! class_exists('ECTSettings')) {
 												<li class="ect_step-data">
 
 													<!-- <span class="ect_list-icon"><i class="fa fa-check" aria-hidden="true"></i></span> -->
-													<span class="ect_list-text">Search for <b>Events Block</b> in the block search box.
+													<span class="ect_list-text">Search for <b>Events Loop</b> in the block search box.
 													</span>
 												</li>
 												<li class="ect_step-data">
 													<!-- <span class="ect_list-icon"><i class="fa fa-check" aria-hidden="true"></i></span> -->
-													<span class="ect_list-text">Click on <b>Events block</b> to add the block to the page.</span>
+													<span class="ect_list-text">Click on <b>Events Loop</b> to add the block to the page.</span>
 												</li>
 												<li class="ect_step-data">
 													<!-- <span class="ect_list-icon"><i class="fa fa-check" aria-hidden="true"></i></span> -->
@@ -570,15 +570,15 @@ if (! class_exists('ECTSettings')) {
 										<tr>
 											<td style="border: 1px solid #8ad4f9;">
 												<ul class="p_feature-list">
-													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-grid/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Grid Layout</a> (<b>PRO</b>)</li>
-													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-masonry/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Masonry Layout</a> (<b>PRO</b>)</li>
-													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-carousel/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Carousel Layout</a> (<b>PRO</b>)</li>
-													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-slider/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Slider Layout</a> (<b>PRO</b>)</li>
-													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-accordion/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Accordion Layout</a> (<b>PRO</b>)</li>
-													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-highlighted-layout-demos/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Highlighted Layout</a> (<b>PRO</b>)</li>
-													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-calendar/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Calendar Layout</a> (<b>PRO</b>)</li>
-													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-by-organizer/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Events by Organizer</a> (<b>PRO</b>)</li>
-													<li>✅ <a href="https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-by-venue/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Events by Venue</a> (<b>PRO</b>)</li>
+													<li>✅ <a href="https://eventscalendaraddons.com/shortcode/events-grid/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Grid Layout</a> (<b>PRO</b>)</li>
+													<li>✅ <a href="https://eventscalendaraddons.com/shortcode/events-masonry/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Masonry Layout</a> (<b>PRO</b>)</li>
+													<li>✅ <a href="https://eventscalendaraddons.com/shortcode/events-carousel/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Carousel Layout</a> (<b>PRO</b>)</li>
+													<li>✅ <a href="https://eventscalendaraddons.com/shortcode/events-slider/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Slider Layout</a> (<b>PRO</b>)</li>
+													<li>✅ <a href="https://eventscalendaraddons.com/shortcode/events-accordion/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Accordion Layout</a> (<b>PRO</b>)</li>
+													<li>✅ <a href="https://eventscalendaraddons.com/shortcode/events-highlighted-layout/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Highlighted Layout</a> (<b>PRO</b>)</li>
+													<li>✅ <a href="https://eventscalendaraddons.com/shortcode/calendar/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Calendar Layout</a> (<b>PRO</b>)</li>
+													<li>✅ <a href="https://eventscalendaraddons.com/shortcode/events-by-organizer/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Events by Organizer</a> (<b>PRO</b>)</li>
+													<li>✅ <a href="https://eventscalendaraddons.com/shortcode/events-by-venue/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=buy_pro_tab" target="_blank">Events by Venue</a> (<b>PRO</b>)</li>
 													<li>✅ Events Category Filters Inside Masonry (<b>PRO</b>)</li>
 													<li>✅ Show Only Featured Events (<b>PRO</b>)</li>
 													<li>✅ Events Schema SEO Support (<b>PRO</b>)</li>
@@ -676,12 +676,12 @@ function ect_shortcode_attr() {
                     <li><strong>default</strong></li>
                     <li><strong>timeline-view</strong></li>
                     <li><strong>minimal-list</strong></li>
-                    <li><strong>grid-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-grid/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
-                    <li><strong>carousel-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-carousel/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
-                    <li><strong>slider-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-slider/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
-                    <li><strong>accordion-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-accordion/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
-                    <li><strong>masonry-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-masonry/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
-                    <li><strong>highlighted-layout</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-highlighted-layout-demos/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
+                    <li><strong>grid-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/shortcode/events-grid/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
+                    <li><strong>carousel-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/shortcode/events-carousel/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
+                    <li><strong>slider-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/shortcode/events-slider/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
+                    <li><strong>accordion-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/shortcode/events-accordion/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
+                    <li><strong>masonry-view</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/shortcode/events-masonry/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
+                    <li><strong>highlighted-layout</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/shortcode/events-highlighted-layout/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
                 </ul>
             </td>
         </tr>
@@ -693,7 +693,7 @@ function ect_shortcode_attr() {
                     <li><strong>style-1</strong></li>
                     <li><strong>style-2</strong></li>
                     <li><strong>style-3</strong></li>
-                    <li><strong>style-4</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/demos/events-shortcodes-pro/events-list/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=style_shortcode_attributes#list-style-4'); ?>" target="_blank">Pro Version</a>)</li>
+                    <li><strong>style-4</strong> (<a href="<?php echo esc_url('https://eventscalendaraddons.com/shortcode/events-list/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=demo&utm_content=style_shortcode_attributes'); ?>" target="_blank">Pro Version</a>)</li>
                 </ul>
             </td>
         </tr>

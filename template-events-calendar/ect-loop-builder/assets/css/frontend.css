@@ -1,0 +1,1158 @@
+/* ============================================================
+   Events Loop Builder — Frontend CSS
+   Covers: container, all 4 card templates
+   ============================================================ */
+
+/* Shared colours (used throughout this file). */
+:root {
+  --elb-blue-600: #2563eb;
+  --elb-white: #fff;
+  --elb-ink: #111827;
+  --elb-black: #111;
+  --elb-blue-700: #1d4ed8;
+  --elb-gray-500: #6b7280;
+  --elb-slate-500: #64748b;
+  --elb-gray-700: #374151;
+  --elb-border: #e2e8f0;
+  --elb-border-light: #d1d5db;
+  --elb-slate-400: #94a3b8;
+  --elb-purple: #6c35de;
+  --elb-slate-900: #0f172a;
+  --elb-teal: #0e4d5f;
+  --elb-card-radius: 12px;
+  --elb-card-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+  --elb-card-shadow-hover: 0 12px 28px rgba(15, 23, 42, 0.14);
+  --elb-gray-400: #9ca3af;
+  --elb-gray-800: #1f2937;
+  --elb-slate-600: #475569;
+  --elb-muted: #888;
+  --elb-badge-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  /* Type scale */
+  --elb-fs-xs: 11px;
+  --elb-fs-sm: 12px;
+  --elb-fs-md: 13px;
+  --elb-fs-base: 14px;
+  --elb-fs-lg: 15px;
+  /* Transitions */
+  --elb-card-transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  --elb-img-zoom-transition: transform 0.35s ease;
+  /* Radii (next to --elb-card-radius) */
+  --elb-radius-sm: 6px;
+  --elb-radius-md: 8px;
+  --elb-radius-lg: 10px;
+  --elb-radius-pill: 999px;
+  /* Facebook-brand blue fallback for the share button (single source of truth). */
+  --elb-fb-blue: #1877f2;
+}
+
+/*
+ * Container text color uses !important so it can replace template defaults.
+ * A field that sets --elb-field-color (its own Text Color)
+ * must still win, including against older container CSS.
+ */
+.elb-loop-output .wp-block-elb-flex-container.wp-block-elb-flex-container [style*="--elb-field-color"],
+.elb-loop-output .wp-block-elb-flex-container.wp-block-elb-flex-container [style*="--elb-field-color"] a,
+.elb-loop-output .wp-block-elb-flex-container.wp-block-elb-flex-container .elb-has-field-color,
+.elb-loop-output .wp-block-elb-flex-container.wp-block-elb-flex-container .elb-has-field-color a,
+.editor-styles-wrapper .wp-block-elb-flex-container [style*="--elb-field-color"],
+.editor-styles-wrapper .wp-block-elb-flex-container [style*="--elb-field-color"] a {
+  color: var(--elb-field-color) !important;
+}
+
+/* ── Shared card base ────────────────────────────────────── */
+
+.elb-card__meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: .8125rem;
+  color: var(--elb-gray-500);
+  margin: 4px 0;
+}
+
+.elb-card__meta-row span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ── Utility ─────────────────────────────────────────────── */
+.elb-no-results {
+  text-align: center;
+  color: var(--elb-gray-500);
+  padding: 40px 0;
+}
+
+/* ============================================================
+   List Style 1 — Horizontal Magazine (reference match)
+   ============================================================ */
+/* No container query on the card. A narrower parent (e.g. 46%) must keep
+   image | content side by side, the same as the editor. Viewport rules below
+   still stack real small screens. */
+
+/* Highlight / padded-bg presets: shrink-wrap like the preset tile (layout forces width:100%). */
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .wp-block-elb-event-title[style*="--elb-field-bg"],
+.elb-editor-loop-card .wp-block-elb-event-title[style*="--elb-field-bg"],
+.elb-loop-output .wp-block-elb-event-title[style*="--elb-field-bg"],
+:is(.elb-card--list-1, .elb-card--horizontal-magazine) .wp-block-elb-event-title.elb-has-field-bg,
+.elb-loop-output .wp-block-elb-event-title.elb-has-field-bg {
+  width: auto;
+  max-width: 100%;
+  display: inline-block;
+  box-sizing: border-box;
+  padding: var(--elb-field-padding, 8px 18px);
+}
+
+.elb-editor-loop-card .wp-block-elb-event-title[style*="--elb-field-bg"][style*="text-align:center"],
+.elb-loop-output .wp-block-elb-event-title[style*="--elb-field-bg"][style*="text-align:center"],
+.elb-loop-output .wp-block-elb-event-title.elb-has-field-bg.elb-ta-center {
+  align-self: center;
+}
+
+.elb-editor-loop-card .wp-block-elb-event-title[style*="--elb-field-bg"][style*="text-align:right"],
+.elb-loop-output .wp-block-elb-event-title[style*="--elb-field-bg"][style*="text-align:right"],
+.elb-loop-output .wp-block-elb-event-title.elb-has-field-bg.elb-ta-right {
+  align-self: flex-end;
+}
+
+/* Human-readable date label */
+.elb-date-human__label {
+  font-size: var(--elb-fs-base);
+  text-decoration: underline;
+}
+
+/* Date badge stays compact beside title in header rows; textAlign uses
+   elb-text-align-* + align-self so column stacks (Info Card) can center/right. */
+.wp-block-elb-event-date {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 100%;
+}
+
+.wp-block-elb-event-date.elb-text-align-left {
+  align-self: flex-start;
+}
+
+.wp-block-elb-event-date.elb-text-align-center {
+  align-self: center;
+  margin-inline: auto !important;
+}
+
+.wp-block-elb-event-date.elb-text-align-right {
+  align-self: flex-end;
+  margin-left: auto !important;
+  margin-inline-start: auto !important;
+}
+
+.wp-block-elb-event-date.elb-text-align-justify,
+.elb-loop-output .wp-block-elb-flex-container:has(> .wp-block-elb-event-image)>.wp-block-elb-flex-container:has(.wp-block-elb-event-title) :is(.wp-block-elb-event-title, .wp-block-elb-event-excerpt, .wp-block-elb-event-meta, .wp-block-elb-event-read-more, .elb-event-title, .elb-event-excerpt, .elb-event-meta),
+.elb-loop-output .wp-block-elb-flex-container:has(> .elb-flex-container-inner-blocks-wrap > .wp-block-elb-event-image)>.elb-flex-container-inner-blocks-wrap>.wp-block-elb-flex-container:has(.wp-block-elb-event-title) :is(.wp-block-elb-event-title, .wp-block-elb-event-excerpt, .wp-block-elb-event-meta, .wp-block-elb-event-read-more, .elb-event-title, .elb-event-excerpt, .elb-event-meta) {
+  align-self: stretch;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/*
+ * Featured-image permalinks use z-index:11 (flex-container field links).
+ * Trap that stacking context so the category overlay (z-index 10)
+ * paint in front — matching the editor, where the image is not wrapped in <a>.
+ */
+.wp-block-elb-flex-container:has(.elb-meta--on-image)>.wp-block-elb-event-image,
+.wp-block-elb-flex-container:has(.elb-meta--on-image)>.elb-flex-container-inner-blocks-wrap>.wp-block-elb-event-image {
+  position: relative;
+  z-index: 1;
+}
+
+/* Date + text column (Info Card header). Siblings live in the inner wrap. */
+.wp-block-elb-event-date+.wp-block-elb-flex-container {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 100%;
+  width: auto;
+}
+
+.wp-block-elb-event-date+.wp-block-elb-flex-container>.elb-flex-container-inner-blocks-wrap {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.wp-block-elb-event-date+.wp-block-elb-flex-container .wp-block-elb-event-meta,
+.wp-block-elb-event-date+.wp-block-elb-flex-container .wp-block-elb-event-time,
+.wp-block-elb-event-date+.wp-block-elb-flex-container .elb-event-meta,
+.wp-block-elb-event-date+.wp-block-elb-flex-container :is(.wp-block-elb-event-title, .elb-event-title) {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/*
+ * Additional field blocks sitting as siblings of the card image (e.g. excerpt
+ * / cost / share between image + footer) get the same card gutter as the
+ * padded header/footer. Inspector padding is applied via --elb-field-padding.
+ * The doubled date class keeps the :is() specificity (0,2,0).
+ */
+.wp-block-elb-flex-container:has(> .wp-block-elb-event-image)> :is(.wp-block-elb-event-excerpt, .wp-block-elb-event-title, .wp-block-elb-event-meta, .wp-block-elb-event-time, .wp-block-elb-event-date.wp-block-elb-event-date, .wp-block-elb-event-read-more, .wp-block-elb-event-share),
+.wp-block-elb-flex-container:has(> .elb-flex-container-inner-blocks-wrap > .wp-block-elb-event-image)>.elb-flex-container-inner-blocks-wrap> :is(.wp-block-elb-event-excerpt, .wp-block-elb-event-title, .wp-block-elb-event-meta, .wp-block-elb-event-time, .wp-block-elb-event-date.wp-block-elb-event-date, .wp-block-elb-event-read-more, .wp-block-elb-event-share) {
+  padding: var(--elb-field-padding, 12px 20px);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* Alignment uses flex justify on the full-width wrapper (badge stays compact). */
+
+/* Loop field blocks — list-1 shared */
+.elb-event-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.elb-event-meta__time {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: inherit;
+  color: var(--elb-field-color, inherit);
+  background-color: var(--elb-field-bg, transparent);
+}
+
+.elb-event-meta__time[style*="--elb-field-bg"] {
+  background-color: var(--elb-field-bg) !important;
+}
+
+/* Chip chrome for a plain time with a background — Time style presets keep their own shape. */
+.elb-event-meta__time:not(.elb-time-style)[style*="--elb-field-bg"] {
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+/* Time style presets — the element's own inline style (Style tab colors/typography/border) is
+   applied directly on this same element, so it already wins over these var() fallbacks without
+   needing !important; only when a var isn't set inline does the preset's own default show. */
+.elb-time-style__value {
+  line-height: 1.3;
+}
+
+.elb-time-style--pill {
+  background-color: #eef2ff;
+  color: #4338ca;
+  border-radius: var(--elb-radius-pill);
+  padding: 4px 12px;
+}
+
+.elb-event-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+/* Inline justify-content from Alignment setting wins over the default above. */
+.elb-ticket-btn {
+  /* Button accent (Subtle/Expandable label, border, tints): the published fill or the default blue. */
+  --elb-btn-accent: var(--elb-btn-bg, var(--elb-blue-600));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35em;
+  background: var(--elb-btn-accent);
+  color: var(--elb-btn-color, var(--elb-white));
+  padding: 8px 18px;
+  border-radius: var(--elb-radius-sm);
+  font-weight: 600;
+  font-size: var(--elb-fs-base);
+  text-decoration: none;
+}
+
+/* "Look" presets (Subtle / Expandable) — the inline style sets background/color/radius directly on
+   the element, so these overrides need !important to win over it. "Primary" needs no override:
+   it's the original, un-suffixed `.elb-ticket-btn` look, kept exactly as it always rendered. */
+.elb-ticket-btn--subtle {
+  background-color: transparent !important;
+  color: var(--elb-btn-accent) !important;
+  -webkit-text-fill-color: var(--elb-btn-accent) !important;
+  background-image: none !important;
+}
+
+.elb-ticket-btn--subtle:not(.elb-ticket-btn--user-border) {
+  border: 2px solid var(--elb-btn-accent) !important;
+}
+
+/* Text link format — keep editor look; beat theme global `a` styles */
+a.elb-ticket-link,
+.elb-ticket-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  color: var(--elb-blue-600);
+  font-size: var(--elb-fs-lg);
+  font-weight: 600;
+  text-decoration: none;
+  background-color: transparent;
+  background-image: none;
+}
+
+/* Theme links often force underline — only show decoration when user sets it */
+.wp-block-elb-event-read-more:not(.elb-typo-decoration) :is(.elb-ticket-link, .elb-ticket-btn) {
+  text-decoration: none;
+}
+
+.wp-block-elb-event-read-more.elb-typo-decoration :is(.elb-ticket-link, .elb-ticket-btn) {
+  text-decoration: var(--elb-field-text-decoration);
+}
+
+.elb-block-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Alignment classes (editor + frontend parity) */
+.elb-text-align-left {
+  justify-content: flex-start !important;
+}
+
+.elb-text-align-center {
+  justify-content: center !important;
+}
+
+.elb-text-align-right {
+  justify-content: flex-end !important;
+}
+
+.elb-text-align-justify {
+  justify-content: space-between !important;
+}
+
+.wp-block-elb-event-read-more.elb-text-align-left,
+.wp-block-elb-event-read-more.elb-text-align-center,
+.wp-block-elb-event-read-more.elb-text-align-right,
+.wp-block-elb-event-read-more.elb-text-align-justify,
+.elb-event-read-more.elb-text-align-left,
+.elb-event-read-more.elb-text-align-center,
+.elb-event-read-more.elb-text-align-right,
+.elb-event-read-more.elb-text-align-justify {
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.elb-event-info-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 32px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.elb-meta--align-left {
+  justify-content: flex-start !important;
+  text-align: left;
+}
+
+.elb-meta--align-center {
+  justify-content: center !important;
+  text-align: center;
+}
+
+.elb-meta--align-right {
+  justify-content: flex-end !important;
+  text-align: right;
+}
+
+.elb-meta__icon svg {
+  width: var(--elb-meta-icon-size, 18px);
+  height: var(--elb-meta-icon-size, 18px);
+  fill: currentColor;
+}
+
+.elb-loop-output .elb-event-info-row:not(.elb-has-layout),
+.elb-loop-output .wp-block-elb-event-info-row:not(.elb-has-layout) {
+  display: flex !important;
+  justify-content: flex-start !important;
+}
+
+.elb-event-info-row.elb-text-align-justify:not(.elb-has-layout),
+.wp-block-elb-event-info-row.elb-text-align-justify:not(.elb-has-layout),
+.elb-loop-output .elb-event-info-row.elb-text-align-justify:not(.elb-has-layout),
+.elb-loop-output .wp-block-elb-event-info-row.elb-text-align-justify:not(.elb-has-layout) {
+  justify-content: flex-start !important;
+}
+
+.elb-event-info-row .elb-info-row__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.elb-event-info-row .elb-info-row__icon * {
+  color: var(--elb-icon-color, var(--elb-container-color, var(--elb-blue-600))) !important;
+  fill: currentColor;
+}
+
+.elb-event-info-row .elb-info-row__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--elb-icon-bg, #eff6ff);
+  color: var(--elb-icon-color, var(--elb-container-color, var(--elb-blue-600))) !important;
+  fill: currentColor;
+}
+
+.elb-event-info-row .elb-info-row__icon .elb-block-icon,
+.elb-event-info-row .elb-info-row__icon svg {
+  width: var(--elb-icon-size, 18px);
+  height: var(--elb-icon-size, 18px);
+}
+
+.elb-event-info-row .elb-info-row__text {
+  color: var(--elb-field-color, var(--elb-container-color, var(--elb-slate-500)));
+  font-size: var(--elb-fs-base);
+  line-height: 1.4;
+}
+
+/* Nestable list cards without refreshed className — content col next to image */
+.wp-block-elb-flex-container:has(> .wp-block-elb-flex-container .wp-block-elb-event-image):has(> .wp-block-elb-flex-container > .wp-block-elb-event-meta)>.wp-block-elb-flex-container:has(> .wp-block-elb-event-meta):has(> .wp-block-elb-event-title),
+.wp-block-elb-flex-container:has(> .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-elb-flex-container .wp-block-elb-event-image):has(> .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block-elb-flex-container .wp-block-elb-event-meta)>.block-editor-inner-blocks>.block-editor-block-list__layout>.wp-block-elb-flex-container:has(.wp-block-elb-event-meta):has(.wp-block-elb-event-title) {
+  align-items: flex-start;
+}
+
+.wp-block-elb-flex-container:has(> .wp-block-elb-flex-container .wp-block-elb-event-image)>.wp-block-elb-flex-container:has(> .wp-block-elb-event-meta)>.wp-block-elb-event-meta,
+.wp-block-elb-flex-container:has(> .wp-block-elb-flex-container .wp-block-elb-event-image)>.wp-block-elb-flex-container:has(> .wp-block-elb-event-title)>.wp-block-elb-event-title {
+  align-self: stretch;
+  width: 100%;
+  max-width: 100%;
+}
+
+/*
+ * Nestable list cards — class-based only.
+ * Do NOT use broad :has() row/flex rules here. Matching the loop section/wrap
+ * (parent of many cards) used to force flex-direction:row on that parent and
+ * flex:1 1 0 on every card, which collapsed each card into a thin line on the
+ * frontend while the editor (different DOM) still looked fine.
+ */
+.elb-loop-output :where(.wp-block-elb-flex-container.elb-card__media-col) {
+  flex: 0 1 auto;
+  width: auto;
+  min-width: 0;
+  margin: 0;
+  align-items: stretch;
+  align-self: stretch;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Image fills media column (aspect-ratio on wrapper; avoid height % cycles) */
+.elb-loop-output .elb-card__media-col :is(.wp-block-elb-event-image, .elb-event-image) {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.elb-loop-output .elb-card__media-col :is(.wp-block-elb-event-image, .elb-event-image)>a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.elb-loop-output .elb-card__media-col :is(.wp-block-elb-event-image, .elb-event-image) img,
+.elb-loop-output .elb-card__media-col .elb-event-img {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  display: block;
+  margin: 0;
+  object-fit: cover;
+  object-position: center;
+  transition: var(--elb-img-zoom-transition);
+}
+
+/*
+ * Horizontal Magazine (list-1):
+ * list layouts skip the grid wrapper, so the grid-card hover never runs.
+ * Outer overflow must stay visible so the lift shadow is not clipped;
+ * image columns already overflow:hidden for the zoom.
+ */
+.elb-loop-output .wp-block-elb-flex-container:has(> .elb-card__media-col),
+.elb-loop-output .wp-block-elb-flex-container:has(> .elb-flex-container-inner-blocks-wrap > .elb-card__media-col) {
+  overflow: visible;
+  transition: var(--elb-card-transition);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .elb-loop-output .wp-block-elb-flex-container:has(> .elb-card__media-col):hover,
+.elb-loop-output .wp-block-elb-flex-container:has(> .elb-flex-container-inner-blocks-wrap > .elb-card__media-col):hover,
+.elb-loop-output :is(.elb-card--list-1, .elb-card--horizontal-magazine):hover {
+    transform: translateY(-3px);
+    box-shadow: var(--elb-card-shadow-hover);
+  }
+
+  
+}
+
+/* Default placeholder images share the same box model as real photos */
+.elb-loop-output .elb-event-img--default {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  background: #e8eef7;
+}
+
+/* Editor loop preview cards (frontend.css is enqueued in the canvas). */
+.elb-editor-loop-card .wp-block-elb-flex-container:has(.wp-block-elb-event-image):has(.wp-block-elb-event-title) {
+  min-width: 0;
+  max-width: 100%;
+  overflow: visible;
+  box-sizing: border-box;
+  transition: box-shadow 0.25s ease;
+}
+
+/* Low-specificity fallback so per-container radius settings can override it. */
+.elb-editor-loop-card .wp-block-elb-flex-container:has(.wp-block-elb-event-image):has(.wp-block-elb-event-title) {
+  border-radius: var(--elb-card-radius);
+}
+
+/* Editor preview uses the same card chrome (frontend.css is enqueued in the canvas). */
+
+.elb-editor-loop-card .wp-block-elb-event-title :is(h1, h2, h3, h4, h5, h6) {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+@media (max-width: 782px) {
+  .elb-event-info-row {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .elb-event-info-row {
+    gap: 20px;
+  }
+}
+
+/* ── Block icon ─────────────────────────────────────────────────────────── */
+.elb-block-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  line-height: 0;
+  align-items: center;
+  color: inherit;
+}
+
+.elb-block-icon svg {
+  fill: currentColor;
+}
+
+.elb-block-icon svg [fill="none"] {
+  fill: none;
+}
+
+.elb-block-icon svg [stroke]:not([stroke="none"]) {
+  stroke: currentColor;
+}
+
+.elb-date-mdyt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.4em;
+  row-gap: 0.1em;
+}
+
+.elb-date-mdyt__date {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  white-space: nowrap;
+}
+
+.elb-date-mdyt__time {
+  white-space: nowrap;
+}
+
+.elb-date-time-icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: 1em;
+  height: 1em;
+}
+
+.elb-date-time-icon svg {
+  display: block;
+  width: 1em;
+  height: 1em;
+}
+
+/* ── Date presets (frontend parity with editor) ──────────── */
+.elb-date-badge,
+.elb-date-preset__text,
+.elb-date-badge__month,
+.elb-date-badge__day,
+.elb-date-badge__text {
+  font-family: var(--elb-field-font-family, inherit);
+}
+
+/* Date text colour chains, resolved once (the field colour comes from the block wrapper). */
+.elb-date-badge,
+.elb-date-badge * {
+  --elb-date-fg: var(--elb-field-color, var(--elb-ink));
+  --elb-date-fg-strong: var(--elb-field-color, var(--elb-black));
+}
+
+.elb-date-badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  background: var(--elb-field-bg, var(--elb-blue-600));
+  color: var(--elb-field-color, var(--elb-white));
+  border-radius: var(--elb-radius-md);
+  padding: var(--elb-field-padding, 6px 14px 8px);
+  box-shadow: var(--elb-field-box-shadow, none);
+  text-decoration: var(--elb-field-text-decoration, none);
+}
+
+.elb-date-badge__month {
+  display: block;
+  font-size: var(--elb-fs-xs);
+  font-weight: var(--elb-field-font-weight, 700);
+  letter-spacing: var(--elb-field-letter-spacing, 1.5px);
+  text-transform: var(--elb-field-text-transform, uppercase);
+  font-style: var(--elb-field-font-style, inherit);
+  text-decoration: var(--elb-field-text-decoration, inherit);
+  opacity: 0.85;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  color: inherit;
+}
+
+.elb-date-badge__day {
+  display: block;
+  font-size: 28px;
+  font-weight: var(--elb-field-font-weight, 800);
+  font-style: var(--elb-field-font-style, inherit);
+  text-decoration: var(--elb-field-text-decoration, inherit);
+  line-height: 1;
+  color: inherit;
+}
+
+.elb-date-badge--text {
+  flex-direction: row;
+  padding: 6px 14px;
+}
+
+.elb-date-badge--text .elb-date-badge__text {
+  font-size: var(--elb-field-font-size, 13px);
+  font-weight: var(--elb-field-font-weight, 700);
+  text-decoration: var(--elb-field-text-decoration, inherit);
+  color: inherit;
+  letter-spacing: 0.3px;
+}
+
+.elb-date-badge--minimal.elb-date-badge--text {
+  background: var(--elb-field-bg, transparent);
+  color: var(--elb-field-color, var(--elb-blue-600));
+  padding: 0;
+  box-shadow: none;
+}
+
+.elb-date-badge--minimal.elb-date-badge--text .elb-date-badge__text {
+  font-size: var(--elb-field-font-size, 14px);
+  font-weight: var(--elb-field-font-weight, 600);
+}
+
+.elb-date-badge--minimal {
+  background: var(--elb-field-bg, transparent);
+  color: var(--elb-date-fg);
+  gap: 2px;
+  padding: 0;
+  box-shadow: var(--elb-field-box-shadow, none);
+}
+
+.elb-date-badge--minimal .elb-date-badge__month {
+  color: var(--elb-field-color, var(--elb-blue-600));
+  opacity: 1;
+}
+
+.elb-date-badge--minimal .elb-date-badge__day {
+  color: var(--elb-date-fg);
+  font-weight: var(--elb-field-font-weight, 900);
+}
+
+/* User typography overrides (beat preset CSS + inline preview styles) */
+.elb-typo-family,
+.elb-typo-family * {
+  font-family: var(--elb-field-font-family);
+}
+
+.elb-typo-weight,
+.elb-typo-weight * {
+  font-weight: var(--elb-field-font-weight);
+}
+
+.elb-typo-style,
+.elb-typo-style * {
+  font-style: var(--elb-field-font-style);
+}
+
+.elb-typo-decoration,
+.elb-typo-decoration * {
+  text-decoration: var(--elb-field-text-decoration);
+}
+
+.elb-typo-transform {
+  text-transform: var(--elb-field-text-transform);
+}
+
+.elb-typo-tracking {
+  letter-spacing: var(--elb-field-letter-spacing);
+}
+
+:is(.editor-styles-wrapper, .elb-loop-output) .wp-block-elb-event-date.elb-date-preset.elb-typo-size :is(.elb-date-badge__day, .elb-date-badge__text, .elb-date-preset__text, .elb-date-time-icon) {
+  font-size: var(--elb-field-font-size) !important;
+}
+
+:is(.editor-styles-wrapper, .elb-loop-output) .wp-block-elb-event-date.elb-date-preset.elb-typo-tracking * {
+  letter-spacing: var(--elb-field-letter-spacing) !important;
+}
+
+:is(.editor-styles-wrapper, .elb-loop-output) .wp-block-elb-event-date.elb-date-preset.elb-typo-transform * {
+  text-transform: var(--elb-field-text-transform) !important;
+}
+
+/* Optional Event Date icon placed within the preset's own visual container. */
+.elb-date-preset__has-icon,
+.elb-date-icon-wrap {
+  display: inline-flex;
+  gap: 6px;
+}
+
+:is(.elb-date-preset__has-icon, .elb-date-icon-wrap):is(.elb-date-icon--left, .elb-date-icon--right) {
+  flex-direction: row !important;
+  align-items: center;
+}
+
+:is(.elb-date-preset__has-icon, .elb-date-icon-wrap):is(.elb-date-icon--top, .elb-date-icon--bottom) {
+  flex-direction: column !important;
+  align-items: center;
+}
+
+.elb-date-preset__icon-content {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: inherit;
+  justify-content: inherit;
+  min-width: 0;
+}
+
+/* ── Event share ─────────────────────────────────────────── */
+.elb-share-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+/* Zero specificity on purpose: a theme's `button { display: ... }` reset (e.g. hello-biz) keeps winning on the
+   copy button however late this file prints, as it did when it printed in the head; without one, inline-flex applies. */
+:where(.elb-share__btn) {
+  display: inline-flex;
+}
+
+.elb-share__btn {
+  font-family: inherit;
+  font-style: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--elb-share-color, var(--elb-fb-blue));
+  color: var(--elb-white);
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+/* Theme content links (e.g. `.entry-content a`) underline the labels — the editor shows none. */
+.elb-share-wrap:not(.elb-typo-decoration) a.elb-share__btn,
+.elb-share-wrap:not(.elb-typo-decoration) a.elb-share__btn:hover,
+.elb-share-wrap:not(.elb-typo-decoration) a.elb-share__btn:focus,
+.elb-share-wrap:not(.elb-typo-decoration) a.elb-share__btn .elb-share__label {
+  text-decoration: none !important;
+}
+
+.elb-share-wrap.elb-typo-decoration .elb-share__btn,
+.elb-share-wrap.elb-typo-decoration .elb-share__label {
+  text-decoration: var(--elb-field-text-decoration) !important;
+}
+
+.elb-share__btn.is-copied {
+  background: #059669;
+}
+
+.elb-share--flat .elb-share__btn {
+  background: var(--elb-purple);
+  color: var(--elb-white);
+}
+
+.elb-share__label {
+  font-size: var(--elb-field-font-size, var(--elb-fs-xs));
+  font-weight: var(--elb-field-font-weight, 700);
+  white-space: nowrap;
+}
+
+/* The label wrap is inline-flex (atomic), so the anchor's Text decoration would not reach the label. */
+:is(.elb-ticket-btn, .elb-ticket-link) > .elb-block-icon-wrap {
+  text-decoration: inherit;
+}
+
+/* ── Field block hover (frontend) ─────────────────────────── */
+/* Inline text/bg colors beat a normal :hover — use !important like cat/btn. */
+.wp-block-elb-event-title:hover {
+  color: var(--elb-title-hover-color) !important;
+  background-color: var(--elb-title-hover-bg) !important;
+}
+
+.wp-block-elb-event-title:hover a {
+  color: var(--elb-title-hover-color) !important;
+}
+/* …and over the field-colour rule (.elb-has-field-color a) when the title has a Text colour. */
+.elb-loop-output .wp-block-elb-flex-container.wp-block-elb-flex-container .wp-block-elb-event-title.elb-has-field-color:hover,
+.elb-loop-output .wp-block-elb-flex-container.wp-block-elb-flex-container .wp-block-elb-event-title.elb-has-field-color:hover a,
+.editor-styles-wrapper .wp-block-elb-flex-container .wp-block-elb-event-title[style*="--elb-field-color"]:hover,
+.editor-styles-wrapper .wp-block-elb-flex-container .wp-block-elb-event-title[style*="--elb-field-color"]:hover a {
+  color: var(--elb-title-hover-color, var(--elb-field-color)) !important;
+}
+
+.wp-block-elb-event-excerpt:hover {
+  color: var(--elb-exc-hover-color) !important;
+  background-color: var(--elb-exc-hover-bg) !important;
+}
+
+.wp-block-elb-event-date:hover {
+  color: var(--elb-f-hover-color) !important;
+  background-color: var(--elb-f-hover-bg) !important;
+}
+
+.elb-event-meta__time:hover,
+.wp-block-elb-event-time:hover .elb-event-meta__time,
+.wp-block-elb-event-meta:hover .elb-event-meta__time {
+  color: var(--elb-f-hover-color, var(--elb-field-color, inherit)) !important;
+}
+
+.elb-event-meta__time[style*="--elb-f-hover-bg"]:hover,
+.wp-block-elb-event-time:hover .elb-event-meta__time[style*="--elb-f-hover-bg"],
+.wp-block-elb-event-meta:hover .elb-event-meta__time[style*="--elb-f-hover-bg"] {
+  background-color: var(--elb-f-hover-bg) !important;
+}
+
+/* Category: no default hover color/bg — only when Style → Category hover is set. */
+
+:is(.wp-block-elb-event-image, .elb-event-image):hover img,
+.elb-event-img:hover {
+  border-color: var(--elb-img-border-hover) !important;
+}
+
+/* Full-width Get Tickets / Read More rows must never pick up a hover fill. */
+.wp-block-elb-event-read-more:hover,
+.elb-event-price-row:hover {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Text links: no theme a:hover fill unless user set a hover background. */
+.elb-ticket-link:hover,
+a.elb-ticket-link:hover {
+  color: var(--elb-btn-hover-color, inherit) !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+.elb-ticket-link[style*="--elb-btn-hover-bg"]:hover,
+a.elb-ticket-link[style*="--elb-btn-hover-bg"]:hover {
+  background-color: var(--elb-btn-hover-bg) !important;
+}
+
+/* Filled buttons: hover on the control only. */
+.elb-ticket-btn:hover {
+  color: var(--elb-btn-hover-color, var(--elb-btn-color, var(--elb-white))) !important;
+  background-color: var(--elb-btn-hover-bg, var(--elb-btn-bg, var(--elb-blue-700))) !important;
+}
+
+/* Subtle hover: same equal-specificity + !important trick, so this must come after the generic
+   rule above to win the cascade — a solid hover fill would break its whole look. */
+.elb-ticket-btn--subtle:hover {
+  color: var(--elb-btn-hover-color, var(--elb-btn-accent)) !important;
+  -webkit-text-fill-color: var(--elb-btn-hover-color, var(--elb-btn-accent)) !important;
+  background-color: color-mix(in srgb, var(--elb-btn-accent) 8%, transparent) !important;
+}
+
+/* ── Event Meta (flexible items): <ul class="elb-meta"> ─────────────────────────── */
+.elb-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--elb-meta-gap, 8px);
+  margin-block: 0;
+  margin-inline: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.elb-meta__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+}
+
+.elb-meta__item time {
+  font-variant-numeric: tabular-nums;
+}
+
+.elb-meta__item a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.elb-meta__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  line-height: 0;
+  color: var(--elb-meta-icon-color, currentColor);
+}
+
+.elb-meta__icon svg[stroke] {
+  fill: none;
+}
+
+.elb-meta__prefix {
+  opacity: 0.75;
+}
+
+.elb-meta__clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--elb-meta-clamp, 2);
+  overflow: hidden;
+}
+
+/* Separator drawn in CSS between visible items (never leaves a stray one for hidden / empty items). */
+.elb-meta--sep-dot {
+  --elb-meta-sep: "\2022";
+}
+
+.elb-meta[class*="elb-meta--sep-"] .elb-meta__item+.elb-meta__item::before {
+  content: var(--elb-meta-sep);
+  margin-right: var(--elb-meta-gap, 8px);
+  color: var(--elb-meta-sep-color, currentColor);
+  opacity: 0.6;
+}
+
+.elb-meta--sep-none .elb-meta__item+.elb-meta__item::before {
+  content: none;
+}
+
+/* Category badge styles (Free: Solid; Plain renders no badge). Every fallback below always resolves,
+   so hover never blanks a badge. The block-wide Badges → Background is the accent Solid fills with;
+   only an item's own Custom colors (--elb-meta-badge-bg) force a flat fill. */
+.elb-meta__badge {
+  --_c: var(--elb-meta-badge-accent, var(--elb-meta-badge-color, var(--elb-blue-600)));
+  --_bg0: color-mix(in srgb, var(--_c) 14%, transparent);
+  --_fg0: var(--_c);
+  --_bg: var(--elb-meta-badge-bg, var(--_bg0));
+  --_fg: var(--elb-meta-badge-fg, var(--_fg0));
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--elb-meta-badge-padding, 2px 10px);
+  border-radius: var(--elb-meta-badge-radius, var(--elb-radius-pill));
+  background: var(--_bg);
+  color: var(--_fg);
+  font-size: 0.85em;
+  font-weight: var(--elb-field-font-weight, 600);
+  line-height: 1.6;
+  text-decoration: none;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.elb-meta__badge--solid {
+  --_bg0: var(--_c);
+  --_fg0: var(--elb-white);
+}
+
+/* Hover applies only to linked badges */
+a.elb-meta__badge:hover,
+ul.elb-meta .elb-meta__item a.elb-meta__badge:hover {
+  background: var(--elb-meta-badge-hover-bg, var(--_bg));
+  color: var(--elb-meta-badge-hover-fg, var(--_fg));
+  text-decoration: none;
+}
+
+/* Linked items on the frontend: theme link rules (e.g. Astra `.entry-content a` underline) and
+   theme-compat `.elb-loop-output a { background:none; box-shadow:none }` outrank the single-class
+   badge rules above, so re-assert them at higher specificity to match the editor. */
+ul.elb-meta .elb-meta__item a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 0;
+}
+
+ul.elb-meta .elb-meta__item a:hover {
+  text-decoration: underline;
+}
+
+ul.elb-meta .elb-meta__item a.elb-meta__badge,
+ul.elb-meta .elb-meta__item a.elb-meta__badge:visited,
+ul.elb-meta .elb-meta__item a.elb-meta__badge:focus {
+  background: var(--_bg);
+  color: var(--_fg);
+  text-decoration: none;
+}
+
+/* ============================================================
+   List Style 3 — Monthly Agenda (month heading · date column ·
+   divider · content · image right). Colours, spacing and type
+   come from block attrs; these are soft layout defaults only.
+   ============================================================ */
+.elb-month-heading {
+  display: flex;
+  align-items: center;
+  /* --elb-mh-* come from the Events Loop Style tab (Monthly Agenda); fallbacks = stock look. */
+  gap: var(--elb-mh-gap, 12px);
+  flex: 0 0 100%;
+  grid-column: 1 / -1;
+  width: 100%;
+  margin: 8px 0 var(--elb-mh-mb, 20px);
+  color: var(--elb-mh-color, var(--elb-teal));
+  font-size: var(--elb-mh-size, 1rem);
+  font-weight: var(--elb-mh-weight, 700);
+  line-height: 1.3;
+}
+
+.elb-month-heading::after {
+  content: "";
+  display: var(--elb-mh-line, block);
+  flex: 1 1 auto;
+  height: 0;
+  border-top: var(--elb-mh-line-w, 2px) var(--elb-mh-line-style, solid) var(--elb-mh-line-color, var(--elb-teal));
+}
+
+.elb-month-heading__label {
+  flex: 0 0 auto;
+}
+
+/* ============================================================
+   List Style 4 — Minimal (tinted date block · date & time ·
+   title · link). Default colours come from the Date column's
+   background / border controls; an event category colour
+   (ELB_Loop → .elb-event-color-scope) overrides them per event.
+   ============================================================ */
+.elb-event-color-scope {
+  display: contents;
+}
+
+/* Event Meta item icon Position "After text": icon inside a preset badge moves to the end. */
+.elb-meta__item--icon-after .elb-meta__badge > .elb-meta__icon {
+  order: 99;
+}
+
+/* ── Shared layout rules (moved from layouts/*.css so each lives once) ── */
+/* List 1-4 body column always fills the rest of the row (as in the editor), whatever blocks it
+   holds: the generated % width is only a max-width over a content-sized column, so short content
+   (e.g. a 5-word description) left empty space that justify-content then distributed.
+   Column direction / stacked breakpoints use !important rules and still win. */
+.elb-loop-output .wp-block-elb-flex-container:is(.elb-card--list-1, .elb-card--list-3, .elb-card--list-4) > .wp-block-elb-flex-container.elb-card__body:not(.elb-user-width),
+.elb-loop-output .wp-block-elb-flex-container:is(.elb-card--list-1, .elb-card--list-3, .elb-card--list-4) > .elb-flex-container-inner-blocks-wrap > .wp-block-elb-flex-container.elb-card__body:not(.elb-user-width) {
+  flex-grow: 1;
+  flex-basis: 0;
+  max-width: none;
+  min-width: 0;
+}
+.elb-loop-output .wp-block-elb-flex-container:is(.elb-card--list-1, .elb-card--list-3, .elb-card--list-4) {
+  align-self: stretch;
+}
+
+/* User Width on a list card body (.elb-user-width): the row starts left, as in the editor. */
+.elb-loop-output .wp-block-elb-flex-container:has(> .elb-card__body.elb-user-width) {
+  justify-content: flex-start !important;
+}
+
+:is(.elb-card--list-3, .elb-card--list-4),
+:is(.elb-card--list-3, .elb-card--list-4) > .elb-flex-container-inner-blocks-wrap {
+  align-items: stretch;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+:where(.elb-card--list-3, .elb-card--list-4) .elb-date-badge--minimal {
+  align-items: center;
+  text-align: center;
+}
+:where(.elb-card--list-3, .elb-card--list-4) .elb-date-badge--minimal .elb-date-badge__month {
+  font-size: var(--elb-fs-lg);
+  font-weight: var(--elb-mini-month-weight, 600);
+  letter-spacing: 0.02em;
+}
+:where(.elb-card--list-3, .elb-card--list-4) .elb-date-badge--minimal .elb-date-badge__day {
+  font-size: var(--elb-field-font-size, var(--elb-mini-day-size, 28px));
+  font-weight: var(--elb-field-font-weight, var(--elb-mini-day-weight, 700));
+}
+/* Migrated legacy Event Block date badge (List 3 / List 4): month and day sizes of the old block. */
+.ect-migrated-legacy-date-badge .elb-date-badge__month {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  line-height: normal !important;
+  letter-spacing: 0 !important;
+}
+.ect-migrated-legacy-date-badge .elb-date-badge__day {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  line-height: normal !important;
+}
+/* List-3/4 "Find out More": a text link whose button fill was auto-restored to Primary blue
+   (no button colours set) renders as the plain coloured link the editor shows.
+   Each layout file sets --elb-rm-link-fallback and its own hover colour. */
+.elb-loop-output :is(.elb-card--list-3, .elb-card--list-4) .wp-block-elb-event-read-more:not(.elb-rm-user-colors) a.elb-ticket-link--auto-primary,
+.elb-loop-output :is(.elb-card--list-3, .elb-card--list-4) .wp-block-elb-event-read-more:not(.elb-rm-user-colors) a.elb-ticket-link[style*="background-color:#2563eb"] {
+  background-color: transparent !important;
+  color: var(--elb-field-color, var(--elb-rm-link-fallback)) !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}

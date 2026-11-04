@@ -1336,6 +1336,9 @@ body[data-preview-state="all-installed"] .ect-editor-option[data-conditional="wp
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.75rem;
 }
+.ect-style-row--elb {
+  grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr));
+}
 .ect-style-card {
   position: relative;
   padding: 0.6875rem 0.875rem;
@@ -2054,7 +2057,7 @@ body[data-page-created="true"] [data-page-cta="pre"]  { display: none !important
 body[data-page-created="true"] [data-page-cta="post"] { display: inline-flex !important; }
 
 /* Small builder-aware hint to the left of the Step 3 primary CTA when
-   Block or Bricks is picked. Reads like "Insert Events Block in Block Editor". */
+   Block or Bricks is picked. Reads like "Insert Events Loop in Block Editor". */
 .ect-wizard-card__nav-hint {
   font-size: 0.75rem;
   color: var(--ect-text-muted);

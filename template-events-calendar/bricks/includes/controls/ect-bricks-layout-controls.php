@@ -263,7 +263,7 @@ if ( ! class_exists( 'ECT_Bricks_Layout_Controls', false ) ) {
 					array(
 						'label'   => esc_html__( 'Alignment', 'template-events-calendar' ),
 						'type'    => 'justify-content',
-						'exclude' => 'space',
+						'exclude' => 'space', // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- Bricks control option, not a WP_Query arg.
 						'inline'  => true,
 						'default' => 'center',
 					)

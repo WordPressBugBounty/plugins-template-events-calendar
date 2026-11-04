@@ -3,8 +3,8 @@
 Plugin Name:Events Shortcodes For The Events Calendar
 Plugin URI:https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=get_pro&utm_content=plugin_uri
 Description:<a href="http://wordpress.org/plugins/the-events-calendar/">📅 The Events Calendar Addon</a> - Shortcodes to show The Events Calendar plugin events list on any page or post in different layouts.
-Version:2.8.4
-Requires PHP:7.2
+Version: 3.0.0
+Requires PHP:7.4
 Author:Cool Plugins
 Author URI: https://coolplugins.net/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=author_page&utm_content=plugins_list
 License: GPLv2 or later
@@ -20,7 +20,7 @@ if (! defined('ABSPATH')) {
 	exit();
 }
 if (! defined('ECT_VERSION')) {
-	define('ECT_VERSION', '2.8.4');//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+	define('ECT_VERSION', '3.0.0');//phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
 }
 
 /*** Defined constent for later use */
@@ -614,10 +614,18 @@ if (! class_exists('EventsCalendarTemplates')) {
 				if (defined('WPB_VC_VERSION')) {
 					require_once ECT_PLUGIN_DIR . 'admin/visual-composer/ect-class-vc.php';
 				}
-				include_once ABSPATH . 'wp-admin/includes/plugin.php';
-				if (! is_plugin_active('events-block-for-the-events-calendar/events-block-for-the-event-calender.php')) {
-					require ECT_PLUGIN_DIR . '/includes/events-shortcode-block/includes/ebec-functions.php';
-					require ECT_PLUGIN_DIR . '/includes/events-shortcode-block/includes/ebec-block.php';
+				require_once ECT_PLUGIN_DIR . 'ect-loop-builder/class-ect-elb-bootstrap.php';
+				if ( class_exists( 'ECT_ELB_Bootstrap' ) ) {
+					ECT_ELB_Bootstrap::boot();
+				}
+				require_once ECT_PLUGIN_DIR . 'includes/ect-block-migration/class-ect-block-migration.php';
+				if ( class_exists( 'ECT_Block_Migration' ) ) {
+					if ( method_exists( 'ECT_Block_Migration', 'boot_frontend_compat' ) ) {
+						ECT_Block_Migration::boot_frontend_compat();
+					}
+					if ( ECT_Block_Migration::is_needed() ) {
+						ECT_Block_Migration::get_instance();
+					}
 				}
 			}
 
@@ -700,7 +708,7 @@ if (! class_exists('EventsCalendarTemplates')) {
 		{
 			if (strpos($file, basename(__FILE__))) {
 				$ectanchor   = esc_html__('Video Tutorials', 'template-events-calendar');
-				$ectvideourl = 'https://eventscalendaraddons.com/go/ect-video-tutorial/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=video_tutorial&utm_content=plugins_list';
+				$ectvideourl = 'https://eventscalendaraddons.com/doc/events-shortcodes-video-tutorials/?utm_source=ect_plugin&utm_medium=inside&utm_campaign=video_tutorial&utm_content=plugins_list';
 				$links[]     = '<a href="' . esc_url($ectvideourl) . '" target="_blank">' . $ectanchor . '</a>';
 			}
 
@@ -717,6 +725,16 @@ if (! class_exists('EventsCalendarTemplates')) {
 			if ( class_exists( 'ECT_Onboarding_Page' ) ) {
 				ECT_Onboarding_Page::maybe_schedule_redirect();
 			}
+
+			$is_fresh_install = ( false === get_option( 'ect-install-date', false ) )
+				&& ( false === get_option( 'ect-v', false ) );
+			$has_event_block  = false;
+			if ( ! $is_fresh_install ) {
+				require_once ECT_PLUGIN_DIR . 'includes/ect-block-migration/class-ect-block-migration.php';
+				$has_event_block = class_exists( 'ECT_Block_Migration' ) && ECT_Block_Migration::has_legacy_event_block();
+			}
+			update_option( 'ect_elb_block_migration_needed', $has_event_block ? 'yes' : 'no', false );
+			update_option( 'ect_elb_legacy_event_block_found', $has_event_block ? 'yes' : 'no', false );
 
 			update_option('ect-v', ECT_VERSION);
 			update_option('ect-type', 'FREE');

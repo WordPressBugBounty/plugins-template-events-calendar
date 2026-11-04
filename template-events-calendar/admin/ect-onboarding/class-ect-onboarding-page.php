@@ -558,8 +558,8 @@ if ( ! class_exists( 'ECT_Onboarding_Page' ) ) {
 				if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
 					foreach ( $terms as $term ) {
 						$options[] = array(
-							'value' => $term->slug,
-							'label' => $term->name,
+							'value' => sanitize_title( $term->slug ),
+							'label' => self::sanitize_category_option_label( $term->name ),
 						);
 					}
 				}
@@ -578,6 +578,19 @@ if ( ! class_exists( 'ECT_Onboarding_Page' ) ) {
 			}
 
 			return $html;
+		}
+
+		/**
+		 * Plain-text category label for the onboarding multiselect.
+		 * Decodes entities first so encoded markup like &lt;img onerror=...&gt; cannot
+		 * survive esc_html() and later get executed via JS innerHTML.
+		 *
+		 * @param string $name Term name from get_terms().
+		 */
+		private static function sanitize_category_option_label( $name ): string {
+			$name = wp_specialchars_decode( (string) $name, ENT_QUOTES );
+			$name = wp_strip_all_tags( $name, true );
+			return sanitize_text_field( $name );
 		}
 
 		/**

@@ -64,11 +64,11 @@ if ( ! defined( 'ABSPATH' ) ) {
           <!-- Left: editor options grid (anchors — not overridable button styles) -->
           <div class="ect-editor-selector__options" data-required-selection="editor">
 
-            <a href="#" role="button" class="ect-editor-option" data-value="block" data-video-label="Events Block" data-youtube-id="uL3ToWGncbM">
+            <a href="#" role="button" class="ect-editor-option" data-value="block" data-video-label="Events Loop (Loop Builder)" data-youtube-id="53a8fLTC1bY">
               <img src="<?php echo esc_url( $editor_icons['block'] ); ?>" alt="" class="ect-editor-option__icon">
               <span class="ect-editor-option__text">
-                <span class="ect-editor-option__name">Block Editor</span>
-                <span class="ect-editor-option__sub">Use the native Gutenberg block to create events listing.</span>
+                <span class="ect-editor-option__name">Events Block (Loop Builder)</span>
+                <span class="ect-editor-option__sub">Use Events Block in the block editor to create events listing.</span>
               </span>
               <span class="ect-editor-option__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
             </a>
@@ -259,16 +259,17 @@ if ( ! defined( 'ABSPATH' ) ) {
                 </a>
               </div>
 
-              <!-- Block layouts (ebec/event-list: default | minimal) -->
+              <!-- Event Loop Builder layouts: List (free) | Grid (Pro) -->
               <div class="ect-layout-grid ect-layout-grid--2col" data-editor-only="block" data-required-selection="layout" hidden>
-                <a href="#" role="button" class="ect-layout-card" data-value="default">
+                <a href="#" role="button" class="ect-layout-card" data-value="list">
                   <span class="ect-layout-card__icon" aria-hidden="true"><span class="dashicons dashicons-list-view"></span></span>
-                  <span class="ect-layout-card__name">Default (List)</span>
+                  <span class="ect-layout-card__name">List</span>
                   <span class="ect-layout-card__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
                 </a>
-                <a href="#" role="button" class="ect-layout-card" data-value="minimal">
-                  <span class="ect-layout-card__icon" aria-hidden="true"><span class="dashicons dashicons-menu-alt3"></span></span>
-                  <span class="ect-layout-card__name">Minimal</span>
+                <a href="#" role="button" class="ect-layout-card" data-value="grid" data-pro="true">
+                  <span class="ect-layout-card__pro">Pro</span>
+                  <span class="ect-layout-card__icon" aria-hidden="true"><span class="dashicons dashicons-grid-view"></span></span>
+                  <span class="ect-layout-card__name">Grid</span>
                   <span class="ect-layout-card__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
                 </a>
               </div>
@@ -285,6 +286,50 @@ if ( ! defined( 'ABSPATH' ) ) {
                   <span class="ect-layout-card__icon" aria-hidden="true"><span class="dashicons dashicons-grid-view"></span></span>
                   <span class="ect-layout-card__name">Grid</span>
                   <span class="ect-layout-card__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- STYLE ROW (Event Loop Builder) ----------------------------- -->
+          <div class="ect-settings-row" data-section="style" data-editor-only="block" hidden>
+            <div class="ect-settings-row__info">
+              <span class="ect-settings-row__icon" aria-hidden="true">
+                <span class="dashicons dashicons-admin-appearance"></span>
+              </span>
+              <div class="ect-settings-row__meta">
+                <h3 class="ect-settings-row__title">Style</h3>
+                <p class="ect-settings-row__desc">Choose a design variation for the selected layout.</p>
+              </div>
+            </div>
+            <div class="ect-settings-row__body">
+              <div class="ect-style-row ect-style-row--elb" data-required-selection="style">
+                <a href="#" role="button" class="ect-style-card ect-style-card--elb" data-value="grid-1" data-elb-layouts="grid" data-elb-date-format="MD" data-pro="true">
+                  <span class="ect-style-card__pro">Pro</span>
+                  <span class="ect-style-card__name">Classic Card</span>
+                  <span class="ect-style-card__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
+                </a>
+                <a href="#" role="button" class="ect-style-card ect-style-card--elb" data-value="grid-2" data-elb-layouts="grid" data-elb-date-format="dMY" data-pro="true">
+                  <span class="ect-style-card__pro">Pro</span>
+                  <span class="ect-style-card__name">Modern Card</span>
+                  <span class="ect-style-card__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
+                </a>
+                <a href="#" role="button" class="ect-style-card ect-style-card--elb" data-value="list-1" data-elb-layouts="list" data-elb-date-format="MD">
+                  <span class="ect-style-card__name">Magazine</span>
+                  <span class="ect-style-card__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
+                </a>
+                <a href="#" role="button" class="ect-style-card ect-style-card--elb" data-value="list-2" data-elb-layouts="list" data-elb-date-format="MD" data-pro="true">
+                  <span class="ect-style-card__pro">Pro</span>
+                  <span class="ect-style-card__name">Modern List</span>
+                  <span class="ect-style-card__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
+                </a>
+                <a href="#" role="button" class="ect-style-card ect-style-card--elb" data-value="list-3" data-elb-layouts="list" data-elb-date-format="MD,Y">
+                  <span class="ect-style-card__name">Monthly Agenda</span>
+                  <span class="ect-style-card__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
+                </a>
+                <a href="#" role="button" class="ect-style-card ect-style-card--elb" data-value="list-4" data-elb-layouts="list" data-elb-date-format="MD,Y">
+                  <span class="ect-style-card__name">Minimal List</span>
+                  <span class="ect-style-card__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
                 </a>
               </div>
             </div>
@@ -372,7 +417,7 @@ if ( ! defined( 'ABSPATH' ) ) {
               </div>
             </div>
             <div class="ect-settings-row__body">
-              <select class="ect-date-format" data-wizard-input="date-format">
+              <select class="ect-date-format" data-wizard-input="date-format" data-editors-visible="shortcode bricks wpbakery" hidden>
                 <option value="default">Default (01 January 2026)</option>
                 <option value="md-y">Md,Y (Jan 01, 2026)</option>
                 <option value="fd-y">Fd,Y (January 01, 2026)</option>
@@ -390,6 +435,25 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <option value="mdl">Mdl (Jan 01 Monday)</option>
                 <option value="d-ml">d.Ml (01. Jan Monday)</option>
                 <option value="dft">dFT (01 January 8:00am-5:00pm)</option>
+              </select>
+              <?php $ect_elb_sample_year = esc_html( gmdate( 'Y' ) ); ?>
+              <select class="ect-date-format" data-wizard-input="date-format" data-editor-only="block" hidden>
+                <option value="default">Default (04 April <?php echo $ect_elb_sample_year; ?>)</option>
+                <option value="MD,Y">MD,Y (Apr 04, <?php echo $ect_elb_sample_year; ?>)</option>
+                <option value="FD,Y">FD,Y (April 04, <?php echo $ect_elb_sample_year; ?>)</option>
+                <option value="dMY">dMY (04 Apr <?php echo $ect_elb_sample_year; ?>)</option>
+                <option value="d.FY">d.FY (04. April <?php echo $ect_elb_sample_year; ?>)</option>
+                <option value="DM">DM (04 Apr)</option>
+                <option value="DF">DF (04 April)</option>
+                <option value="MD" selected>MD (Apr 04)</option>
+                <option value="d.F">d.F (04. April)</option>
+                <option value="DML">DML (04 Apr Saturday)</option>
+                <option value="Mdl">Mdl (Apr 04 Saturday)</option>
+                <option value="d.Ml">d.Ml (04. Apr Saturday)</option>
+                <option value="ldF">ldF (Saturday 04 April)</option>
+                <option value="MD,YT">MD,YT (Jan 01, <?php echo $ect_elb_sample_year; ?> 8:00am–5:00pm)</option>
+                <option value="mdyt">mdyt (Feb 16, <?php echo $ect_elb_sample_year; ?> date range / time)</option>
+                <option value="full">Full (01 January <?php echo $ect_elb_sample_year; ?> 8:00am–5:00pm)</option>
               </select>
             </div>
           </div>
@@ -517,7 +581,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                   <span class="ect-style-card__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
                 </a>
                 <a href="#" role="button" class="ect-style-card" data-value="both">
-                  <span class="ect-style-card__name">Both / Any</span>
+                  <span class="ect-style-card__name">All</span>
                   <span class="ect-style-card__check" aria-hidden="true"><span class="dashicons dashicons-yes"></span></span>
                 </a>
               </div>
@@ -698,7 +762,7 @@ if ( ! defined( 'ABSPATH' ) ) {
             <div class="ect-review-builder">
               <img class="ect-review-builder__logo" data-review-builder-logo src="<?php echo esc_url( $editor_icons['block'] ); ?>" alt="">
               <div>
-                <strong class="ect-review-builder__title" data-review-builder-title>Events block inserted in Block Editor</strong>
+                <strong class="ect-review-builder__title" data-review-builder-title>Events Loop inserted in Block Editor</strong>
                 <p class="ect-review-builder__desc" data-review-builder-desc>Preview or open the draft to fine-tune anything.</p>
               </div>
             </div>

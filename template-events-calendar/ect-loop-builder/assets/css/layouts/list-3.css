@@ -1,0 +1,189 @@
+/* Events Loop Builder — list-3 layout styles (loaded only when this layout is on the page). */
+/* Moved from frontend.css (original order kept; loads right after it). */
+.elb-card--list-3 .elb-card__media-col--list-3 img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+:where(.elb-card--list-3) {
+  --elb-mini-month-weight: 600;
+  --elb-mini-day-size: 28px;
+  --elb-mini-day-weight: 700;
+  background: transparent;
+}
+/* List-3 date column, Minimal badge: a readable centred stack (scoped; Minimal elsewhere unchanged).
+   Kept on purpose: the date column uses its own sizes (day 30px / 800) while a Minimal badge moved
+   out of the column uses the --elb-mini-* vars above (28px / 700). Some declarations repeat the base
+   .elb-date-badge rules so that theme CSS cannot override the badge inside this column. */
+.elb-card--list-3 .elb-card__date-col--list-3 .wp-block-elb-event-date {
+  /* stretch (not width:100%) so a Spacing > Margin on the block insets it instead of overflowing */
+  align-self: stretch;
+  width: auto;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+.elb-card--list-3 .elb-card__date-col--list-3 .elb-date-badge.elb-date-badge--minimal {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 2px;
+  width: auto;
+  min-width: 56px;
+  height: auto;
+  padding: 0;
+  border: 0;
+}
+.elb-card--list-3 .elb-card__date-col--list-3 .elb-date-badge.elb-date-badge--minimal .elb-date-badge__month {
+  font-size: var(--elb-fs-base);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.elb-card--list-3 .elb-card__date-col--list-3 .elb-date-badge.elb-date-badge--minimal .elb-date-badge__day {
+  font-size: var(--elb-field-font-size, 30px);
+  font-weight: var(--elb-field-font-weight, 800);
+  line-height: 1;
+  white-space: nowrap;
+}
+/* Monthly Agenda: space below month heading is controlled by --elb-mh-mb (Style tab).
+   Inside the flex container, row-gap is applied between all children; subtract --elb-row-gap
+   from the heading's bottom margin so the row-gap is not duplicated below the header. */
+.elb-loop-output .elb-month-heading {
+  margin-bottom: calc(var(--elb-mh-mb, 20px) - var(--elb-row-gap, 0px));
+}
+
+@media (min-width: 768px) {
+  .elb-loop-output .wp-block-elb-flex-container.elb-card--list-3 {
+    align-self: stretch;
+    margin-bottom: 0;
+  }
+  .elb-loop-output .wp-block-elb-flex-container.elb-card--list-3,
+  .elb-loop-output .wp-block-elb-flex-container.elb-card--list-3 > .elb-flex-container-inner-blocks-wrap {
+    justify-content: flex-start;
+  }
+	.elb-loop-output .wp-block-elb-flex-container.elb-card--list-3 > .wp-block-elb-flex-container.elb-card__date-col--list-3:not(.elb-user-width),
+  .elb-loop-output .wp-block-elb-flex-container.elb-card--list-3 > .elb-flex-container-inner-blocks-wrap > .wp-block-elb-flex-container.elb-card__date-col--list-3:not(.elb-user-width) {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 56px;
+  }
+	.elb-loop-output .wp-block-elb-flex-container.elb-card--list-3 > .wp-block-elb-flex-container.elb-card__body--list-3:not(.elb-user-width),
+  .elb-loop-output .wp-block-elb-flex-container.elb-card--list-3 > .elb-flex-container-inner-blocks-wrap > .wp-block-elb-flex-container.elb-card__body--list-3:not(.elb-user-width) {
+    flex: 1 1 0;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+  }
+	.elb-loop-output .wp-block-elb-flex-container.elb-card--list-3 > .wp-block-elb-flex-container.elb-card__media-col--list-3:not(.elb-user-width),
+  .elb-loop-output .wp-block-elb-flex-container.elb-card--list-3 > .elb-flex-container-inner-blocks-wrap > .wp-block-elb-flex-container.elb-card__media-col--list-3:not(.elb-user-width) {
+    flex: 0 0 34%;
+    width: 34%;
+    max-width: 320px;
+  }
+}
+/* List-3/4 "Find out More": a text link whose button fill was auto-restored to Primary blue
+   (no button colours set) renders as the plain coloured link the editor shows (list-4.css sets its colours). */
+.elb-card--list-3 {
+  --elb-rm-link-fallback: var(--elb-teal); /* shared List 3/4 link reset in frontend.css */
+}
+.elb-loop-output .elb-card--list-3 .wp-block-elb-event-read-more:not(.elb-rm-user-colors) a.elb-ticket-link--auto-primary:hover,
+.elb-loop-output .elb-card--list-3 .wp-block-elb-event-read-more:not(.elb-rm-user-colors) a.elb-ticket-link[style*="background-color:#2563eb"]:hover {
+  color: #0a3a48 !important;
+}
+@media (max-width: 767px) {
+  .elb-loop-output .elb-month-heading {
+    margin-bottom: calc(var(--elb-mh-mb, 14px) - var(--elb-row-gap, 0px));
+  }
+.elb-loop-output .elb-card--list-3 .elb-card__media-col--list-3:not(.elb-user-width) {
+    order: -1;
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+	.elb-loop-output .elb-card--list-3,
+  .elb-loop-output .elb-card--list-3 > .elb-flex-container-inner-blocks-wrap {
+    flex-wrap: wrap !important;
+    row-gap: 14px !important;
+    column-gap: 16px !important;
+  }
+	.elb-loop-output .elb-card--list-3 .elb-card__date-col--list-3:not(.elb-user-width) {
+    flex: 0 0 56px !important;
+    width: 56px !important;
+    min-width: 0 !important;
+  }
+	.elb-loop-output .elb-card--list-3 .elb-card__body--list-3:not(.elb-user-width) {
+    flex: 1 1 0 !important;
+    width: auto !important;
+  }
+}
+
+/* Layout-file rules. */
+.elb-card--list-3 .elb-card__date-col--list-3:not(.elb-user-width) {
+  flex: 0 1 12%;
+  max-width: 110px;
+  min-width: 56px;
+  justify-content: center;
+}
+.elb-card--list-3 .elb-card__body--list-3:not(.elb-user-width) {
+  flex: 1 1 54%;
+  min-width: 0;
+}
+.elb-card--list-3 .elb-card__media-col--list-3:not(.elb-user-width) {
+  flex: 0 1 34%;
+  max-width: 320px;
+  min-width: 0;
+  align-self: flex-start;
+}
+
+/*
+ * Migrated Monthly Agenda (single source of its geometry; the migrator writes none):
+ * match master Event Block spacing on both the
+ * editor clone (.elb-editor-loop-clone-preview) and the frontend (.elb-loop-output).
+ * Date tag padding 25px and details padding 30px come from ebec-style.css.
+ * Event Block cards use margin 5px / 20px so same-month events keep a gap
+ * (native list-3 zeros card margin and the migrated section row-gap is 0).
+ */
+.elb-loop-output .elb-card--list-3.ect-migrated-legacy-card,
+.elb-editor-loop-clone-preview .elb-card--list-3.ect-migrated-legacy-card {
+  margin: 5px auto 20px !important;
+}
+@media only screen and (min-width: 769px) {
+  .elb-loop-output .elb-card--list-3.ect-migrated-legacy-card .ect-migrated-legacy-date-col,
+  .elb-editor-loop-clone-preview .elb-card--list-3.ect-migrated-legacy-card .ect-migrated-legacy-date-col {
+    flex: 0 0 14% !important;
+    width: 14% !important;
+    max-width: 14% !important;
+    min-width: 0 !important;
+    padding: 25px !important;
+    justify-content: center !important;
+  }
+  .elb-loop-output .elb-card--list-3.ect-migrated-legacy-card .ect-migrated-legacy-body-col,
+  .elb-editor-loop-clone-preview .elb-card--list-3.ect-migrated-legacy-card .ect-migrated-legacy-body-col {
+    flex: 0 0 47.5% !important;
+    width: 47.5% !important;
+    max-width: 47.5% !important;
+    min-width: 0 !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+  }
+  .elb-loop-output .elb-card--list-3.ect-migrated-legacy-card .ect-migrated-legacy-image-col,
+  .elb-editor-loop-clone-preview .elb-card--list-3.ect-migrated-legacy-card .ect-migrated-legacy-image-col {
+    flex: 0 0 38.5% !important;
+    width: 38.5% !important;
+    max-width: 38.5% !important;
+    min-width: 0 !important;
+    align-self: flex-start !important;
+    justify-content: flex-start !important;
+  }
+}
+/* Keeps theme paragraph margins out of migrated excerpts (theme-compat's reset is weaker). */
+.elb-loop-output .ect-migrated-legacy-body-col .wp-block-elb-event-excerpt p,
+.elb-editor-loop-clone-preview .ect-migrated-legacy-body-col .wp-block-elb-event-excerpt p {
+  margin: 0;
+}

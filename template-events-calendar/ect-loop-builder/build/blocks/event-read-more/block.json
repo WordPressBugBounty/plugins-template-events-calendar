@@ -1,0 +1,291 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "elb/event-read-more",
+  "textdomain": "template-events-calendar",
+  "title": "Read More",
+  "icon": "button",
+  "category": "widgets",
+  "keywords": [
+    "read more",
+    "button",
+    "link",
+    "view event"
+  ],
+  "editorScript": "elb-editor",
+  "usesContext": [
+    "elb/postId"
+  ],
+  "attributes": {
+    "sourceField": {
+      "type": "string",
+      "default": "readmore"
+    },
+    "enableLink": {
+      "type": "boolean",
+      "default": true
+    },
+    "linkNewTab": {
+      "type": "boolean",
+      "default": false
+    },
+    "linkSource": {
+      "type": "string",
+      "default": "permalink"
+    },
+    "buttonLabel": {
+      "type": "string",
+      "default": ""
+    },
+    "showButton": {
+      "type": "boolean",
+      "default": true
+    },
+    "showPrice": {
+      "type": "boolean",
+      "default": false
+    },
+    "format": {
+      "type": "string",
+      "default": "link"
+    },
+    "buttonPreset": {
+      "type": "string",
+      "default": "primary"
+    },
+    "buttonBg": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonHoverBg": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonHoverTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonPaddingTop": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonPaddingRight": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonPaddingBottom": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonPaddingLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonPaddingUnit": {
+      "type": "string",
+      "default": "PX"
+    },
+    "buttonMarginTop": {
+      "type": "string",
+      "default": "0"
+    },
+    "buttonMarginRight": {
+      "type": "string",
+      "default": "0"
+    },
+    "buttonMarginBottom": {
+      "type": "string",
+      "default": "0"
+    },
+    "buttonMarginLeft": {
+      "type": "string",
+      "default": "0"
+    },
+    "buttonMarginUnit": {
+      "type": "string",
+      "default": "PX"
+    },
+    "textColor": {
+      "type": "string",
+      "default": ""
+    },
+    "hoverTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "hoverBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "textAlign": {
+      "type": "string",
+      "default": "left"
+    },
+    "paddingTop": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingRight": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingBottom": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingUnit": {
+      "type": "string",
+      "default": "PX"
+    },
+    "borderStyle": {
+      "type": "string",
+      "default": "none"
+    },
+    "borderRadiusTopLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusTopRight": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusBottomRight": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusBottomLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "borderWidth": {
+      "type": "string",
+      "default": ""
+    },
+    "borderColor": {
+      "type": "string",
+      "default": ""
+    },
+    "borderColorHover": {
+      "type": "string",
+      "default": ""
+    },
+    "marginTop": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginRight": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginBottom": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginLeft": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginUnit": {
+      "type": "string",
+      "default": "PX"
+    },
+    "fontFamily": {
+      "type": "string",
+      "default": ""
+    },
+    "fontSize": {
+      "type": "string",
+      "default": ""
+    },
+    "fontSizeUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "fontWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "lineHeight": {
+      "type": "string",
+      "default": ""
+    },
+    "lineHeightUnit": {
+      "type": "string",
+      "default": "em"
+    },
+    "letterSpacing": {
+      "type": "string",
+      "default": ""
+    },
+    "letterSpacingUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "textTransform": {
+      "type": "string",
+      "default": ""
+    },
+    "fontStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "textDecoration": {
+      "type": "string",
+      "default": ""
+    },
+    "showBlockIcon": {
+      "type": "boolean",
+      "default": true
+    },
+    "blockIcon": {
+      "type": "string",
+      "default": "arrowRight"
+    },
+    "blockIconSize": {
+      "type": "number",
+      "default": 18
+    },
+    "blockIconPos": {
+      "type": "string",
+      "default": "right"
+    },
+    "blockIconPlacement": {
+      "type": "string",
+      "default": "outside"
+    },
+    "blockIconColor": {
+      "type": "string",
+      "default": ""
+    },
+    "flexGap": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "customClassName": true
+  },
+  "render": "file:./render.php",
+  "description": "Show a \"Read more\" link or button that opens the event.",
+  "ancestor": [
+    "elb/loop-builder"
+  ]
+}

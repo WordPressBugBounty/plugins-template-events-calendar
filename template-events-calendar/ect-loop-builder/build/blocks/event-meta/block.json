@@ -1,0 +1,378 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "elb/event-meta",
+  "textdomain": "template-events-calendar",
+  "title": "Event Meta",
+  "icon": "tag",
+  "category": "widgets",
+  "description": "Show event details like category, date, time and venue in one row.",
+  "keywords": [
+    "event",
+    "meta",
+    "category",
+    "date",
+    "time",
+    "venue",
+    "organizer",
+    "price",
+    "details",
+    "elb"
+  ],
+  "editorScript": "elb-editor",
+  "usesContext": [
+    "elb/postId"
+  ],
+  "attributes": {
+    "sourceField": {
+      "type": "string",
+      "default": "time"
+    },
+    "showCategory": {
+      "type": "boolean",
+      "default": true
+    },
+    "showTime": {
+      "type": "boolean",
+      "default": true
+    },
+    "textColor": {
+      "type": "string",
+      "default": ""
+    },
+    "hoverTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "hoverBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "textAlign": {
+      "type": "string",
+      "default": "left"
+    },
+    "paddingTop": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingRight": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingBottom": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingUnit": {
+      "type": "string",
+      "default": "PX"
+    },
+    "borderStyle": {
+      "type": "string",
+      "default": "none"
+    },
+    "borderRadiusTopLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusTopRight": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusBottomRight": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusBottomLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "marginTop": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginRight": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginBottom": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginLeft": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginUnit": {
+      "type": "string",
+      "default": "PX"
+    },
+    "fontFamily": {
+      "type": "string",
+      "default": ""
+    },
+    "fontSize": {
+      "type": "string",
+      "default": ""
+    },
+    "fontSizeUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "fontWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "lineHeight": {
+      "type": "string",
+      "default": ""
+    },
+    "lineHeightUnit": {
+      "type": "string",
+      "default": "em"
+    },
+    "letterSpacing": {
+      "type": "string",
+      "default": ""
+    },
+    "letterSpacingUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "textTransform": {
+      "type": "string",
+      "default": ""
+    },
+    "fontStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "textDecoration": {
+      "type": "string",
+      "default": ""
+    },
+    "format": {
+      "type": "string",
+      "default": "show_only_start_date"
+    },
+    "overlayOnImage": {
+      "type": "boolean",
+      "default": false
+    },
+    "iconPosition": {
+      "type": "string",
+      "default": "before"
+    },
+    "flexDirection": {
+      "type": "string",
+      "default": ""
+    },
+    "justifyContent": {
+      "type": "string",
+      "default": ""
+    },
+    "alignItems": {
+      "type": "string",
+      "default": ""
+    },
+    "flexWrap": {
+      "type": "string",
+      "default": ""
+    },
+    "flexGap": {
+      "type": "string",
+      "default": ""
+    },
+    "itemOrder": {
+      "type": "string",
+      "default": "category,time"
+    },
+    "layoutUnlocked": {
+      "type": "boolean",
+      "default": false
+    },
+    "borderWidth": {
+      "type": "string",
+      "default": ""
+    },
+    "borderColor": {
+      "type": "string",
+      "default": ""
+    },
+    "showBlockIcon": {
+      "type": "boolean",
+      "default": false
+    },
+    "blockIcon": {
+      "type": "string",
+      "default": ""
+    },
+    "blockIconSize": {
+      "type": "number",
+      "default": 18
+    },
+    "blockIconPos": {
+      "type": "string",
+      "default": "left"
+    },
+    "blockIconPlacement": {
+      "type": "string",
+      "default": "outside"
+    },
+    "blockIconColor": {
+      "type": "string",
+      "default": ""
+    },
+    "catTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "catBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "catHoverTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "catHoverBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "catPaddingTop": {
+      "type": "string",
+      "default": ""
+    },
+    "catPaddingRight": {
+      "type": "string",
+      "default": ""
+    },
+    "catPaddingBottom": {
+      "type": "string",
+      "default": ""
+    },
+    "catPaddingLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "catPaddingUnit": {
+      "type": "string",
+      "default": "PX"
+    },
+    "catMarginTop": {
+      "type": "string",
+      "default": "0"
+    },
+    "catMarginRight": {
+      "type": "string",
+      "default": "0"
+    },
+    "catMarginBottom": {
+      "type": "string",
+      "default": "0"
+    },
+    "catMarginLeft": {
+      "type": "string",
+      "default": "0"
+    },
+    "catMarginUnit": {
+      "type": "string",
+      "default": "PX"
+    },
+    "catFontFamily": {
+      "type": "string",
+      "default": ""
+    },
+    "catFontSize": {
+      "type": "string",
+      "default": ""
+    },
+    "catFontSizeUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "catFontWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "catLineHeight": {
+      "type": "string",
+      "default": ""
+    },
+    "catLineHeightUnit": {
+      "type": "string",
+      "default": "em"
+    },
+    "catLetterSpacing": {
+      "type": "string",
+      "default": ""
+    },
+    "catLetterSpacingUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "catTextTransform": {
+      "type": "string",
+      "default": ""
+    },
+    "catFontStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "catTextDecoration": {
+      "type": "string",
+      "default": ""
+    },
+    "items": {
+      "type": "array",
+      "default": []
+    },
+    "metaSeparator": {
+      "type": "string",
+      "default": "dot"
+    },
+    "metaGap": {
+      "type": "number",
+      "default": 8
+    },
+    "metaWrap": {
+      "type": "boolean",
+      "default": true
+    },
+    "badgeStyle": {
+      "type": "string",
+      "default": "text"
+    },
+    "badgeRadius": {
+      "type": "string",
+      "default": ""
+    },
+    "separatorColor": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "customClassName": true,
+    "inserter": false
+  },
+  "render": "file:./render.php",
+  "ancestor": [
+    "elb/loop-builder"
+  ]
+}

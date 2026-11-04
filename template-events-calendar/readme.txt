@@ -2,10 +2,10 @@
 Contributors: satindersingh, narinder-singh, coolplugins, eventscalendaraddons
 Donate link: https://donate.stripe.com/5kQdR92iBevO75WbPm6c00i
 Tags: the events calendar, shortcode, event, calendar, event calendar
-Requires at least: 5.6
-Tested up to: 7.1
-Requires PHP: 7.2
-Stable tag: 2.8.4
+Requires at least: 5.9.0
+Tested up to: 7.1.4
+Requires PHP: 7.4
+Stable tag: 3.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,18 +21,16 @@ If you are looking for **[The Events Calendar shortcode](https://eventscalendara
 
 👉 **View Plugin Demos: (*FREE*)**
  
-[Events List](https://eventscalendaraddons.com/shortcode/events-list/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_list&utm_content=below_video) | [Events Timeline](https://eventscalendaraddons.com/shortcode/events-timeline/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_timeline&utm_content=below_video) | [Events Minimal List](https://eventscalendaraddons.com/shortcode/events-minimal-list/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_minimal_list&utm_content=below_video)
+[Events List](https://eventscalendaraddons.com/shortcode/events-list/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_list&utm_content=below_video) | [Events Timeline](https://eventscalendaraddons.com/shortcode/events-timeline/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_timeline&utm_content=below_video) | [Events Minimal List](https://eventscalendaraddons.com/shortcode/events-minimal-list/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_minimal_list&utm_content=below_video) | [Events List (Bricks)](https://eventscalendaraddons.com/bricks/list/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo&utm_content=bricks_list)
 
 👉 **View Plugin Demos: (*PRO*)**
 
-[Events Grid](https://eventscalendaraddons.com/shortcode/events-grid/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_grid&utm_content=below_video) | [Events Accordion](https://eventscalendaraddons.com/shortcode/events-accordion/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_accordion&utm_content=below_video) | [Events Masonry](https://eventscalendaraddons.com/shortcode/events-masonry/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_masonry&utm_content=below_video) | [Highlighted Layout](https://eventscalendaraddons.com/shortcode/events-highlighted-layout/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_highlighted&utm_content=below_video)
-
-[Events Carousel](https://eventscalendaraddons.com/shortcode/events-carousel/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_carousel&utm_content=below_video) | [Events Slider](https://eventscalendaraddons.com/shortcode/events-slider/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_slider&utm_content=below_video) | [Events Filter Bar](https://eventscalendaraddons.com/shortcode/filter-bar/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_filterbar&utm_content=below_video) | **[View All Demos](https://eventscalendaraddons.com/demos/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_all&utm_content=below_video)**
+[Events Grid](https://eventscalendaraddons.com/shortcode/events-grid/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_grid&utm_content=below_video) | [Events Accordion](https://eventscalendaraddons.com/shortcode/events-accordion/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_accordion&utm_content=below_video) | [Events Masonry](https://eventscalendaraddons.com/shortcode/events-masonry/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_masonry&utm_content=below_video) | [Highlighted Layout](https://eventscalendaraddons.com/shortcode/events-highlighted-layout/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_highlighted&utm_content=below_video) | [Events Carousel](https://eventscalendaraddons.com/shortcode/events-carousel/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_carousel&utm_content=below_video) | [Events Slider](https://eventscalendaraddons.com/shortcode/events-slider/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_slider&utm_content=below_video) | [Events Filter Bar](https://eventscalendaraddons.com/shortcode/filter-bar/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_filterbar&utm_content=below_video) | [Events Grid (Bricks)](https://eventscalendaraddons.com/bricks/grid/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo&utm_content=bricks_grid) | **[View All Demos](https://eventscalendaraddons.com/demos/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=demo_all&utm_content=below_video)**
 
 ### Events Shortcodes Plugin Features
 
-* **The Events Calendar Shortcode & Block**  
-Insert events into any content area of your website using a dedicated Gutenberg events block or a simple [shortcode for The Events Calendar](https://eventscalendaraddons.com/doc/the-events-calendar-shortcode-attributes/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=docs&utm_content=features). You can place an event feed inside posts, landing pages, or widgets without modifying your theme files.  
+* **The Events Calendar Shortcode **  
+Insert events into any content area of your website using a simple [shortcode for The Events Calendar](https://eventscalendaraddons.com/doc/the-events-calendar-shortcode-attributes/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=docs&utm_content=features). You can place an event feed inside posts, landing pages, or widgets without modifying your theme files.  
   * `[events-calendar-templates category="all" template="default" style="style-1" date_format="default" start_date="" end_date="" limit="10" order="ASC" hide-venue="no" time="future" socialshare="no"]`
 
 * **Bricks Builder Integration:** Easily display The Events Calendar events inside Bricks Builder using the dedicated Events component. Add event listings to any Bricks page or template, customize layouts visually, and create dynamic event sections without using shortcodes or custom code.
@@ -45,6 +43,9 @@ Filter events by date range or event type such as future events, past events, or
 
 * **Event Category, Sorting & Limit**  
 Display events from specific categories and control how they appear on the page. You can sort events in ascending or descending order and limit how many events are shown in each listing. This helps create focused event sections such as featured events, category-based listings, or homepage event highlights.
+
+* **Events Loop Block**
+Create and customize event listings directly in the WordPress Gutenberg editor using the Events Loop block. Choose from ready-made event layouts and styles, filter upcoming, past, or all events, and control which event details appear on your website.
 
 ### Events Shortcodes [Pro Features](https://eventscalendaraddons.com/plugin/events-shortcodes-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=pro_features)
 
@@ -193,15 +194,15 @@ If you want to add your own styling:
 * **[Default Shortcode Example](https://eventscalendaraddons.com/doc/the-events-calendar-shortcode-attributes/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=docs&utm_content=installation):**
   `[events-calendar-templates category="all" template="default" style="style-1" date_format="default" start_date="" end_date="" limit="10" order="ASC" hide-venue="no" socialshare="no" time="future"]`
 
-= 7. Use Events Block (Gutenberg Editor) =
+= 7. Use Events Loop (Gutenberg Editor) =
 
 You can also display events using the block-based editor:
 
 * Create or edit a page.
-* Click **Add Block (+)** and search for **Events Block**.
+* Click Add Block (+) and search for the Events Loop Block.
 * Insert the block into the page.
-* Adjust settings from the block panel.
-* Publish or update the page and preview it.
+* Choose a layout and style, then adjust settings in the block panel.
+* After satisfied publish or update the page and preview it.
  
 https://youtu.be/sLGIOmlNPtY
 
@@ -263,7 +264,7 @@ To use it:
 
 1. Open any page or post in the WordPress editor  
 2. Click **Add Block (+)**  
-3. Search for **Events Block**  
+3. Search for **Events Loop**  
 4. Insert the block into the page  
 5. Configure event display options from the block settings panel  
 
@@ -403,6 +404,13 @@ For deeper integration with specific builders, you can use dedicated addons:
 * **[Events Widgets for Elementor](https://eventscalendaraddons.com/plugin/events-widgets-pro/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=faq)**  
 * **[Events Calendar Modules for Divi](https://eventscalendaraddons.com/plugin/the-events-calendar-modules-for-divi/?utm_source=ect_plugin&utm_medium=readme&utm_campaign=get_pro&utm_content=faq)**
 
+= What is the Events Loop block in WordPress? =
+The Events Loop block is a Gutenberg block included in the Events Shortcodes plugin. It allows you to display and customize events created with The Events Calendar directly inside the WordPress block editor.
+You can choose event layouts, apply filters, customize event cards, and arrange event details without writing custom code.
+
+= Is the Events Loop block available in the free version? =
+Yes. The Events Loop block is available in the free version of Events Shortcodes for The Events Calendar. You can create event listings, choose available layouts, filter events, and customize individual event cards using the Gutenberg editor.
+
 = How can I report security bugs? =
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities.
 [Report a security vulnerability](https://patchstack.com/database/vdp/template-events-calendar).
@@ -415,6 +423,16 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+
+= Version 3.0.0 | 04 Nov 2026 =
+* New: Introduced the Events Loop Builder, a block-based builder for creating custom event layouts in the WordPress block editor.
+* New: Added event blocks: Card Template, Event Image, Event Date, Event Time, Event Title, Event Excerpt, Event Meta, Event Info Row, Event Read More, Event Share, Flex Container, and Wrapper.
+* New: Added ready-made List layouts for the Events Loop Builder (Magazine, Monthly Agenda, and Minimal List).
+* New: Added event query controls with category filters and date range options (upcoming, past, or all events).
+* New: Added responsive styling options and hover effects for Loop Builder blocks.
+* New: Added a one-click migration tool to convert legacy Event blocks into the new Loop Builder blocks.
+* Improved: Optimized asset loading to load Loop Builder CSS and scripts only on pages containing Loop Builder blocks.
+* Improved: Added compatibility checks to load the Events Loop Builder only with PHP 7.4+, WordPress 6.7+, and an active The Events Calendar plugin.
 
 = 2.8.4 | Sept 16, 2026 =
 * Added: Smooth Free-to-Pro migration support for Bricks.

@@ -1,0 +1,89 @@
+/* Events Loop Builder — list-4 layout styles (loaded only when this layout is on the page). */
+/* Moved from frontend.css (original order kept; loads right after it). */
+
+/* Layout-file rules. */
+.elb-card--list-4 {
+  --elb-rm-link-fallback: var(--elb-slate-600); /* shared List 3/4 link reset in frontend.css */
+  /* Date column size, used by the base, desktop and migrated date column rules below. */
+  --elb-l4-date-basis: 22%;
+  --elb-l4-date-max: 160px;
+  --elb-l4-date-min: 84px;
+}
+.elb-loop-output .elb-card--list-4 .wp-block-elb-event-read-more:not(.elb-rm-user-colors) a.elb-ticket-link--auto-primary:hover,
+.elb-loop-output .elb-card--list-4 .wp-block-elb-event-read-more:not(.elb-rm-user-colors) a.elb-ticket-link[style*="background-color:#2563eb"]:hover {
+  color: var(--elb-blue-600) !important;
+}
+@media (min-width: 768px) {
+	.elb-loop-output .wp-block-elb-flex-container.elb-card--list-4 > .wp-block-elb-flex-container.elb-card__date-col--list-4:not(.elb-user-width),
+  .elb-loop-output .wp-block-elb-flex-container.elb-card--list-4 > .elb-flex-container-inner-blocks-wrap > .wp-block-elb-flex-container.elb-card__date-col--list-4:not(.elb-user-width) {
+    flex: 0 0 var(--elb-l4-date-basis);
+    max-width: var(--elb-l4-date-max);
+    min-width: var(--elb-l4-date-min);
+  }
+}
+.elb-card--list-4 .elb-card__date-col--list-4:not(.elb-user-width) {
+  flex: 0 0 var(--elb-l4-date-basis);
+  max-width: var(--elb-l4-date-max);
+  min-width: var(--elb-l4-date-min);
+}
+.elb-card--list-4 .elb-card__body--list-4 {
+  flex: 1 1 0;
+  min-width: 0;
+}
+/* Date + Time (Event Meta): fill the body so Layout → Alignment can justify items.
+   Body uses align-items:flex-start, which otherwise shrink-wraps the row. */
+.elb-card--list-4 .elb-card__body--list-4 .wp-block-elb-event-meta,
+.elb-card--list-4 .elb-card__body--list-4 .elb-meta {
+  align-self: stretch;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+:where(.elb-card--list-4 .elb-card__date-col--list-4) {
+  background-color: #4fc3f7;
+  border-left: 4px solid #1e88e5;
+}
+.elb-event-color-scope .elb-card--list-4 .elb-card__date-col--list-4 {
+  background-color: color-mix(in srgb, var(--elb-event-color) 60%, var(--elb-white)) !important;
+  border-left-color: color-mix(in srgb, var(--elb-event-color) 80%, #000) !important;
+}
+:where(.elb-card--list-4) {
+  --elb-mini-month-weight: 700;
+  --elb-mini-day-size: 26px;
+  --elb-mini-day-weight: 800;
+}
+@media (max-width: 767px) {
+	.elb-loop-output .elb-card--list-4 .elb-card__date-col--list-4:not(.elb-user-width) {
+    flex: 0 0 76px !important;
+    width: 76px !important;
+    min-width: 0 !important;
+  }
+	.elb-loop-output .elb-card--list-4 .elb-card__body--list-4:not(.elb-user-width) {
+    flex: 1 1 0 !important;
+    width: auto !important;
+  }
+	.elb-loop-output .elb-card--list-4 .wp-block-elb-event-title {
+    font-size: var(--elb-field-font-size, 1.125rem);
+  }
+}
+
+/* Migrated Minimal List (single source of its geometry; the migrator writes none):
+   Event Block same-month card gap (margin 5px / 20px). */
+.elb-loop-output .elb-card--list-4.ect-migrated-legacy-minimal-card,
+.elb-editor-loop-clone-preview .elb-card--list-4.ect-migrated-legacy-minimal-card {
+  margin: 5px auto 20px !important;
+}
+/* Migrated Minimal List: same columns in editor clone preview and on the frontend. */
+.elb-loop-output .elb-card--list-4.ect-migrated-legacy-minimal-card .ect-migrated-legacy-minimal-date-col,
+.elb-editor-loop-clone-preview .elb-card--list-4.ect-migrated-legacy-minimal-card .ect-migrated-legacy-minimal-date-col {
+  flex: 0 0 var(--elb-l4-date-basis) !important;
+  width: var(--elb-l4-date-basis) !important;
+  max-width: var(--elb-l4-date-max) !important;
+  min-width: var(--elb-l4-date-min) !important;
+}
+.elb-loop-output .elb-card--list-4.ect-migrated-legacy-minimal-card .ect-migrated-legacy-minimal-body,
+.elb-editor-loop-clone-preview .elb-card--list-4.ect-migrated-legacy-minimal-card .ect-migrated-legacy-minimal-body {
+  flex: 1 1 0 !important;
+  width: auto !important;
+  min-width: 0 !important;
+}

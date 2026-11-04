@@ -35,7 +35,8 @@
 
    The walkthrough video ids live on the Step-1 editor cards in the HTML
    (data-youtube-id) and are owner-canonical:
-     block / shortcode / bricks / wpbakery → uL3ToWGncbM  (Events Shortcodes & Blocks)
+     block → 53a8fLTC1bY  (Events Loop / Loop Builder)
+     shortcode / bricks / wpbakery → uL3ToWGncbM  (Events Shortcodes & Blocks)
      elementor                  → 2m74nSrEo0g  (Events Widgets for Elementor)
      divi                       → Z9s-7RgxZu8  (Events Calendar Modules for Divi)
    ========================================================================= */
@@ -81,7 +82,7 @@ var ECT_ONBOARDING_CONFIG = {
 //                            preference.
 window.__ECT = {
   BUILDER_LABEL: {
-    block:     'Block Editor',
+    block:     'Events Loop (Loop Builder)',
     bricks:    'Bricks Builder',
     wpbakery:  'WPBakery',
     elementor: 'Elementor',
@@ -312,6 +313,7 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
 
     updateLayoutDemoLink(editor);
     applyBricksLayoutStyles(editor);
+    applyElbLayoutStyles(editor);
   }
 
   function updateLayoutDemoLink(editor) {
@@ -330,7 +332,7 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
 
   // Bricks-only: List has Style 1 + 2; Grid has Style 1. Do not mutate other editors.
   function applyBricksLayoutStyles(editor) {
-    var cards = step2.querySelectorAll('.ect-style-card');
+    var cards = step2.querySelectorAll('.ect-style-card:not([data-elb-layouts])');
     if (editor !== 'bricks') {
       cards.forEach(function (card) {
         if (!card.hasAttribute('data-ect-bricks-hidden')) return;
@@ -355,12 +357,66 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
         card.removeAttribute('data-ect-bricks-hidden');
       }
     });
-    var styleGroup = step2.querySelector('[data-required-selection="style"]');
+    var styleGroup = visibleStyleGroup();
+    if (!styleGroup) return;
+    if (styleGroup.querySelector('.ect-style-card.is-selected:not([hidden])')) return;
+    var first = styleGroup.querySelector('.ect-style-card:not([hidden]):not([data-pro])')
+      || styleGroup.querySelector('.ect-style-card:not([hidden])');
+    if (first) first.click();
+  }
+
+  function visibleStyleGroup() {
+    var groups = step2.querySelectorAll('[data-required-selection="style"]');
+    for (var i = 0; i < groups.length; i++) {
+      if (!groups[i].hidden && !groups[i].closest('[hidden]')) return groups[i];
+    }
+    return null;
+  }
+
+  // Event Loop Builder: Grid shows Classic/Modern cards; List shows the four list styles.
+  function applyElbLayoutStyles(editor) {
+    var cards = step2.querySelectorAll('.ect-style-card[data-elb-layouts]');
+    if (editor !== 'block') {
+      cards.forEach(function (card) {
+        card.hidden = false;
+        card.classList.remove('is-selected');
+      });
+      return;
+    }
+    var layoutCard = step2.querySelector('[data-editor-only="block"] .ect-layout-card.is-selected');
+    var layout = layoutCard ? layoutCard.dataset.value : 'list';
+    cards.forEach(function (card) {
+      var layouts = (card.getAttribute('data-elb-layouts') || '').split(/\s+/).filter(Boolean);
+      var hide = layouts.length > 0 && layouts.indexOf(layout) === -1;
+      card.hidden = hide;
+      if (hide) card.classList.remove('is-selected');
+    });
+    var styleGroup = step2.querySelector('[data-editor-only="block"] [data-required-selection="style"]');
     if (!styleGroup || styleGroup.hidden || styleGroup.closest('[hidden]')) return;
     if (styleGroup.querySelector('.ect-style-card.is-selected:not([hidden])')) return;
     var first = styleGroup.querySelector('.ect-style-card:not([hidden]):not([data-pro])')
       || styleGroup.querySelector('.ect-style-card:not([hidden])');
     if (first) first.click();
+  }
+
+  // Fill the Event Loop Builder date-format select with the style's own
+  // default. The user can still change it afterwards.
+  function syncElbStyleDateFormat(card) {
+    if (!card) return;
+    var fmt = card.getAttribute('data-elb-date-format');
+    if (!fmt) return;
+    var select = step2.querySelector('.ect-date-format[data-editor-only="block"]');
+    if (!select) return;
+    var hasOption = false;
+    for (var i = 0; i < select.options.length; i++) {
+      if (select.options[i].value === fmt) {
+        hasOption = true;
+        break;
+      }
+    }
+    if (!hasOption || select.value === fmt) return;
+    select.value = fmt;
+    select.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
   function updateEditorSelectedBodyAttr() {
@@ -462,7 +518,7 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
     });
   }
 
-  // Native Events Block — align persisted layout with block options (default | minimal).
+  // Event Loop Builder — persist List | Grid (map leftover default/minimal slugs).
   function normalizeBlockLayoutSelection() {
     var builder = document.body.getAttribute('data-editor-selected') || 'shortcode';
     var displayMode = document.body.getAttribute('data-display-mode') || 'native';
@@ -477,9 +533,11 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
         layoutVal = s && s.selections && s.selections.layout;
       }
     } catch (_) {}
-    if (layoutVal === 'minimal-list') layoutVal = 'minimal';
-    var allowed = ['default', 'minimal'];
-    if (!layoutVal || allowed.indexOf(layoutVal) === -1) layoutVal = 'default';
+    if (layoutVal === 'minimal' || layoutVal === 'minimal-list' || layoutVal === 'default') {
+      layoutVal = 'list';
+    }
+    var allowed = ['grid', 'list'];
+    if (!layoutVal || allowed.indexOf(layoutVal) === -1) layoutVal = 'list';
     var card = blockGrid.querySelector('.ect-layout-card[data-value="' + layoutVal + '"]');
     if (card && !card.classList.contains('is-selected')) card.click();
   }
@@ -496,6 +554,13 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
       if (editor === 'elementor' || editor === 'divi' || editor === 'wpbakery') editor = 'shortcode';
       if (editor === 'bricks' && e.target.closest('.ect-layout-card')) {
         applyBricksLayoutStyles(editor);
+      }
+      if (editor === 'block' && e.target.closest('.ect-layout-card')) {
+        applyElbLayoutStyles(editor);
+      }
+      var elbStyle = e.target.closest('.ect-style-card[data-elb-layouts]');
+      if (editor === 'block' && elbStyle && !elbStyle.hidden) {
+        syncElbStyleDateFormat(elbStyle);
       }
       updateProState();
       updateFilterBarDemoLink();
@@ -597,17 +662,28 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
       var vals = getValues();
       chips.innerHTML = '';
       vals.forEach(function (v) {
-        var opt = root.querySelector('[data-multiselect-option][data-value="' + v + '"]');
+        var opt = null;
+        for (var i = 0; i < options.length; i++) {
+          if (options[i].dataset.value === v) {
+            opt = options[i];
+            break;
+          }
+        }
         if (!opt) return;
         var label = opt.querySelector('.ect-multiselect__label').textContent;
         var chip = document.createElement('span');
         chip.className = 'ect-multiselect__chip';
-        chip.innerHTML =
-          '<span>' + label + '</span>' +
-          '<span class="ect-multiselect__chip-remove" role="button" tabindex="0" ' +
-            'data-multiselect-remove="' + v + '" aria-label="Remove ' + label + '">' +
-            '<span class="dashicons dashicons-no-alt" aria-hidden="true"></span>' +
-          '</span>';
+        var labelEl = document.createElement('span');
+        labelEl.textContent = label;
+        var remove = document.createElement('span');
+        remove.className = 'ect-multiselect__chip-remove';
+        remove.setAttribute('role', 'button');
+        remove.setAttribute('tabindex', '0');
+        remove.dataset.multiselectRemove = v;
+        remove.setAttribute('aria-label', 'Remove ' + label);
+        remove.innerHTML = '<span class="dashicons dashicons-no-alt" aria-hidden="true"></span>';
+        chip.appendChild(labelEl);
+        chip.appendChild(remove);
         chips.appendChild(chip);
       });
       if (placeholder) placeholder.hidden = vals.length > 0;
@@ -762,7 +838,7 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
   // and never create a page). Block / Bricks users get "Create Draft
   // Page" — clicking it also flips body[data-page-created] so Step 4
   // opens in the post-create state. A small hint appears to the LEFT of
-  // the button explaining what will be inserted ("Insert Events Block in
+  // the button explaining what will be inserted ("Insert Events Loop in
   // Block Editor" / "Insert Events Element in Bricks Builder").
   function updateStep3PrimaryCta() {
     var label = step3.querySelector('[data-step3-primary-label]');
@@ -776,7 +852,7 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
       if (hint) {
         var builder = document.body.getAttribute('data-editor-selected') || 'shortcode';
         if (builder === 'block') {
-          hint.textContent = 'Insert Events Block in Block Editor';
+          hint.textContent = 'Insert Events Loop in Block Editor';
         } else if (builder === 'wpbakery') {
           hint.textContent = 'Insert Events Shortcode module in WPBakery';
         } else if (builder === 'shortcode') {
@@ -851,7 +927,7 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
     'ldf': 'ldF', 'mdl': 'Mdl', 'd-ml': 'd.Ml', 'dft': 'dFT'
   };
   var BUILDER_INFO = {
-    block:     { label: 'Block Editor',    thing: 'block',             logo: __ECT.getEditorIcon('block') },
+    block:     { label: 'Events Loop (Loop Builder)', thing: 'block',  logo: __ECT.getEditorIcon('block') },
     bricks:    { label: 'Bricks Builder',  thing: 'element',           logo: __ECT.getEditorIcon('bricks') },
     wpbakery:  { label: 'WPBakery',        thing: 'shortcode module',  logo: __ECT.getEditorIcon('wpbakery') },
     elementor: { label: 'Elementor',       thing: 'shortcode',         logo: __ECT.getEditorIcon('elementor') },
@@ -918,20 +994,22 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
       };
     });
 
-    // Native block: map shortcode slug minimal-list → ebec `minimal`; drop unsupported layouts.
+    // Native loop: map leftover Event Block slugs to List | Grid.
     if (
       state.builder === 'block'
       && state.displayMode !== 'shortcode'
       && state.layout
     ) {
       var blockLayout = state.layout.value;
-      if (blockLayout === 'minimal-list') blockLayout = 'minimal';
-      if (blockLayout !== 'default' && blockLayout !== 'minimal') blockLayout = 'default';
+      if (blockLayout === 'minimal' || blockLayout === 'minimal-list' || blockLayout === 'default') {
+        blockLayout = 'list';
+      }
+      if (blockLayout !== 'grid' && blockLayout !== 'list') blockLayout = 'list';
       if (blockLayout !== state.layout.value) {
         state.layout = {
           value: blockLayout,
-          label: blockLayout === 'minimal' ? 'Minimal' : 'Default (List)',
-          isPro: false
+          label: blockLayout === 'grid' ? 'Grid' : 'List',
+          isPro: blockLayout === 'grid'
         };
       }
     }
@@ -942,12 +1020,22 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
       || (document.querySelector('[data-wizard-input="category"]') || {}).value
       || 'all';
 
-    var dfValue = persisted['date-format']
-      || (document.querySelector('.ect-date-format') || {}).value;
+    var isElb = state.builder === 'block' && state.displayMode !== 'shortcode';
+    var dfSelect = isElb
+      ? document.querySelector('.ect-date-format[data-editor-only="block"]')
+      : document.querySelector('.ect-date-format:not([data-editor-only="block"])');
+    var dfValue = '';
+    if (dfSelect && dfSelect.value) {
+      for (var d = 0; d < dfSelect.options.length; d++) {
+        if (dfSelect.options[d].value === dfSelect.value) {
+          dfValue = dfSelect.value;
+          break;
+        }
+      }
+    }
+    if (!dfValue) dfValue = persisted['date-format'] || '';
     if (dfValue) {
       state.dateFormatValue = dfValue;
-      // Look up the display label from the select options
-      var dfSelect = document.querySelector('.ect-date-format');
       if (dfSelect) {
         for (var j = 0; j < dfSelect.options.length; j++) {
           if (dfSelect.options[j].value === dfValue) {
@@ -1093,7 +1181,7 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
     if (method === 'wpbakery') method = 'shortcode';
     var layoutLabel = (state.layout && state.layout.label) || 'Events';
     return {
-      // block → ebec; shortcode on Block Editor → ect/shortcode (Events Shortcodes)
+      // block → elb/loop-builder; shortcode on Block Editor → ect/shortcode (Events Shortcodes)
       method: method === 'block' ? 'block' : 'shortcode',
       title: 'Events — ' + layoutLabel,
       shortcode: composeShortcode(state),
@@ -1185,7 +1273,11 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
       var title= bldrPanel.querySelector('[data-review-builder-title]');
       var desc = bldrPanel.querySelector('[data-review-builder-desc]');
       if (logo) logo.src = info.logo;
-      if (title) title.textContent = 'Events ' + info.thing + ' inserted in ' + info.label;
+      if (title) {
+        title.textContent = state.builder === 'block'
+          ? 'Events Loop inserted in Block Editor'
+          : ('Events ' + info.thing + ' inserted in ' + info.label);
+      }
       if (desc) desc.textContent = 'Preview or open the draft to fine-tune anything.';
     }
 
@@ -1251,7 +1343,7 @@ else document.addEventListener('DOMContentLoaded', window.__ECT.applyUtm);
 
   // ----- Step-enter refresh + auto-create for Gutenberg/block ---------
   // Block users click "Create Draft Page" on Step 3 which only marks the
-  // flag; the actual WP draft (with ebec/event-list block) is created here
+  // flag; the actual WP draft (with elb/loop-builder) is created here
   // when Step 4 opens, if it does not already exist.
   var creatingDraft = false;
   var draftPending = [];

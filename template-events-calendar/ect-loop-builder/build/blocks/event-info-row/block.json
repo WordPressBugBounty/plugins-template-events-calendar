@@ -1,0 +1,325 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "elb/event-info-row",
+  "textdomain": "template-events-calendar",
+  "title": "Venue, Time & Price",
+  "icon": "location",
+  "category": "widgets",
+  "keywords": [
+    "venue",
+    "time",
+    "ticket",
+    "location",
+    "info"
+  ],
+  "editorScript": "elb-editor",
+  "usesContext": [
+    "elb/postId"
+  ],
+  "attributes": {
+    "showInfoRow": {
+      "type": "boolean",
+      "default": true
+    },
+    "showVenue": {
+      "type": "boolean",
+      "default": true
+    },
+    "showTime": {
+      "type": "boolean",
+      "default": true
+    },
+    "showTicket": {
+      "type": "boolean",
+      "default": true
+    },
+    "itemOrder": {
+      "type": "string",
+      "default": "venue,time,ticket"
+    },
+    "layoutUnlocked": {
+      "type": "boolean",
+      "default": false
+    },
+    "textAlign": {
+      "type": "string",
+      "default": "left"
+    },
+    "flexDirection": {
+      "type": "string",
+      "default": ""
+    },
+    "justifyContent": {
+      "type": "string",
+      "default": ""
+    },
+    "alignItems": {
+      "type": "string",
+      "default": ""
+    },
+    "flexWrap": {
+      "type": "string",
+      "default": ""
+    },
+    "flexGap": {
+      "type": "string",
+      "default": "32"
+    },
+    "textColor": {
+      "type": "string",
+      "default": "#64748b"
+    },
+    "fontSize": {
+      "type": "string",
+      "default": "14"
+    },
+    "fontSizeUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "fontWeight": {
+      "type": "string",
+      "default": "400"
+    },
+    "fontFamily": {
+      "type": "string",
+      "default": ""
+    },
+    "fontStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "textTransform": {
+      "type": "string",
+      "default": ""
+    },
+    "textDecoration": {
+      "type": "string",
+      "default": ""
+    },
+    "letterSpacing": {
+      "type": "string",
+      "default": ""
+    },
+    "letterSpacingUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "lineHeight": {
+      "type": "string",
+      "default": ""
+    },
+    "lineHeightUnit": {
+      "type": "string",
+      "default": "em"
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "iconColor": {
+      "type": "string",
+      "default": ""
+    },
+    "iconBg": {
+      "type": "string",
+      "default": "#eff6ff"
+    },
+    "iconSize": {
+      "type": "number",
+      "default": 18
+    },
+    "venueTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "venueIconColor": {
+      "type": "string",
+      "default": ""
+    },
+    "venueIconBg": {
+      "type": "string",
+      "default": ""
+    },
+    "venueIcon": {
+      "type": "string",
+      "default": "mapMarker"
+    },
+    "venueFontFamily": {
+      "type": "string",
+      "default": ""
+    },
+    "venueFontSize": {
+      "type": "string",
+      "default": ""
+    },
+    "venueFontSizeUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "venueFontWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "venueLineHeight": {
+      "type": "string",
+      "default": ""
+    },
+    "venueLineHeightUnit": {
+      "type": "string",
+      "default": "em"
+    },
+    "venueLetterSpacing": {
+      "type": "string",
+      "default": ""
+    },
+    "venueLetterSpacingUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "venueTextTransform": {
+      "type": "string",
+      "default": ""
+    },
+    "venueFontStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "venueTextDecoration": {
+      "type": "string",
+      "default": ""
+    },
+    "timeTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "timeIconColor": {
+      "type": "string",
+      "default": ""
+    },
+    "timeIconBg": {
+      "type": "string",
+      "default": ""
+    },
+    "timeIcon": {
+      "type": "string",
+      "default": "timeToRead"
+    },
+    "timeFontFamily": {
+      "type": "string",
+      "default": ""
+    },
+    "timeFontSize": {
+      "type": "string",
+      "default": ""
+    },
+    "timeFontSizeUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "timeFontWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "timeLineHeight": {
+      "type": "string",
+      "default": ""
+    },
+    "timeLineHeightUnit": {
+      "type": "string",
+      "default": "em"
+    },
+    "timeLetterSpacing": {
+      "type": "string",
+      "default": ""
+    },
+    "timeLetterSpacingUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "timeTextTransform": {
+      "type": "string",
+      "default": ""
+    },
+    "timeFontStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "timeTextDecoration": {
+      "type": "string",
+      "default": ""
+    },
+    "ticketTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "ticketIconColor": {
+      "type": "string",
+      "default": ""
+    },
+    "ticketIconBg": {
+      "type": "string",
+      "default": ""
+    },
+    "ticketIcon": {
+      "type": "string",
+      "default": "ticket"
+    },
+    "ticketFontFamily": {
+      "type": "string",
+      "default": ""
+    },
+    "ticketFontSize": {
+      "type": "string",
+      "default": ""
+    },
+    "ticketFontSizeUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "ticketFontWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "ticketLineHeight": {
+      "type": "string",
+      "default": ""
+    },
+    "ticketLineHeightUnit": {
+      "type": "string",
+      "default": "em"
+    },
+    "ticketLetterSpacing": {
+      "type": "string",
+      "default": ""
+    },
+    "ticketLetterSpacingUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "ticketTextTransform": {
+      "type": "string",
+      "default": ""
+    },
+    "ticketFontStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "ticketTextDecoration": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "customClassName": true,
+    "inserter": false
+  },
+  "render": "file:./render.php",
+  "description": "Show the venue, time and ticket link in one row.",
+  "ancestor": [
+    "elb/loop-builder"
+  ]
+}

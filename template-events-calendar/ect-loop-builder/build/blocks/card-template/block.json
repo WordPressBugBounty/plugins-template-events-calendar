@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "elb/card-template",
+  "textdomain": "template-events-calendar",
+  "title": "Card Template",
+  "icon": "layout",
+  "category": "widgets",
+  "description": "Marks the repeating card inside an Events Loop. Everything inside renders once per event.",
+  "keywords": [
+    "events",
+    "loop",
+    "card",
+    "template"
+  ],
+  "editorScript": "elb-editor",
+  "supports": {
+    "html": false,
+    "inserter": false
+  }
+}

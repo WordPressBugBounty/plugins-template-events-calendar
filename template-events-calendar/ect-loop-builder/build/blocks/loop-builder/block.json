@@ -1,0 +1,383 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "elb/loop-builder",
+  "textdomain": "template-events-calendar",
+  "title": "Events Loop",
+  "category": "widgets",
+  "icon": "layout",
+  "description": "Show events in a grid or list, filtered by date, category and more.",
+  "keywords": [
+    "events",
+    "calendar",
+    "upcoming events",
+    "event list",
+    "event grid",
+    "event carousel"
+  ],
+  "editorScript": "elb-editor",
+  "viewScript": "elb-frontend",
+  "editorStyle": "elb-editor",
+  "attributes": {
+    "postId": {
+      "type": "number",
+      "default": 0
+    },
+    "postType": {
+      "type": "string",
+      "default": "tribe_events"
+    },
+    "perPage": {
+      "type": "number",
+      "default": 6
+    },
+    "dateFrom": {
+      "type": "string",
+      "default": ""
+    },
+    "dateTo": {
+      "type": "string",
+      "default": ""
+    },
+    "categoryIds": {
+      "type": "array",
+      "default": []
+    },
+    "showMonthHeading": {
+      "type": "boolean",
+      "default": true
+    },
+    "monthHeadingColor": {
+      "type": "string",
+      "default": ""
+    },
+    "monthHeadingFontSize": {
+      "type": "string",
+      "default": ""
+    },
+    "monthHeadingFontWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "monthHeadingShowLine": {
+      "type": "boolean",
+      "default": true
+    },
+    "monthHeadingLineColor": {
+      "type": "string",
+      "default": ""
+    },
+    "monthHeadingLineWidth": {
+      "type": "string",
+      "default": ""
+    },
+    "monthHeadingLineStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "monthHeadingGap": {
+      "type": "string",
+      "default": ""
+    },
+    "monthHeadingMarginBottom": {
+      "type": "string",
+      "default": ""
+    },
+    "timelineShowLine": {
+      "type": "boolean",
+      "default": true
+    },
+    "timelineLineColor": {
+      "type": "string",
+      "default": ""
+    },
+    "timelineLineWidth": {
+      "type": "string",
+      "default": ""
+    },
+    "timelineLineStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "useCategoryColor": {
+      "type": "boolean",
+      "default": true
+    },
+    "textColor": {
+      "type": "string",
+      "default": ""
+    },
+    "hoverTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "hoverBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingTop": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingRight": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingBottom": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "paddingUnit": {
+      "type": "string",
+      "default": "PX"
+    },
+    "borderStyle": {
+      "type": "string",
+      "default": "none"
+    },
+    "borderWidth": {
+      "type": "string",
+      "default": ""
+    },
+    "borderColor": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusTopLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusTopRight": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusBottomRight": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusBottomLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadiusUnit": {
+      "type": "string",
+      "default": "PX"
+    },
+    "marginTop": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginRight": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginBottom": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginLeft": {
+      "type": "string",
+      "default": "0"
+    },
+    "marginUnit": {
+      "type": "string",
+      "default": "PX"
+    },
+    "fontFamily": {
+      "type": "string",
+      "default": ""
+    },
+    "fontSize": {
+      "type": "string",
+      "default": ""
+    },
+    "fontSizeUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "fontWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "lineHeight": {
+      "type": "string",
+      "default": ""
+    },
+    "lineHeightUnit": {
+      "type": "string",
+      "default": "em"
+    },
+    "letterSpacing": {
+      "type": "string",
+      "default": ""
+    },
+    "letterSpacingUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "textTransform": {
+      "type": "string",
+      "default": ""
+    },
+    "fontStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "textDecoration": {
+      "type": "string",
+      "default": ""
+    },
+    "statusTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "statusBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "statusHoverTextColor": {
+      "type": "string",
+      "default": ""
+    },
+    "statusHoverBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "statusPaddingTop": {
+      "type": "string",
+      "default": ""
+    },
+    "statusPaddingRight": {
+      "type": "string",
+      "default": ""
+    },
+    "statusPaddingBottom": {
+      "type": "string",
+      "default": ""
+    },
+    "statusPaddingLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "statusPaddingUnit": {
+      "type": "string",
+      "default": "PX"
+    },
+    "statusMarginTop": {
+      "type": "string",
+      "default": "0"
+    },
+    "statusMarginRight": {
+      "type": "string",
+      "default": "0"
+    },
+    "statusMarginBottom": {
+      "type": "string",
+      "default": "0"
+    },
+    "statusMarginLeft": {
+      "type": "string",
+      "default": "0"
+    },
+    "statusMarginUnit": {
+      "type": "string",
+      "default": "PX"
+    },
+    "statusFontFamily": {
+      "type": "string",
+      "default": ""
+    },
+    "statusFontSize": {
+      "type": "string",
+      "default": ""
+    },
+    "statusFontSizeUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "statusFontWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "statusLineHeight": {
+      "type": "string",
+      "default": ""
+    },
+    "statusLineHeightUnit": {
+      "type": "string",
+      "default": "em"
+    },
+    "statusLetterSpacing": {
+      "type": "string",
+      "default": ""
+    },
+    "statusLetterSpacingUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "statusTextTransform": {
+      "type": "string",
+      "default": ""
+    },
+    "statusFontStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "statusTextDecoration": {
+      "type": "string",
+      "default": ""
+    },
+    "noResultsText": {
+      "type": "string",
+      "default": ""
+    },
+    "isSetup": {
+      "type": "boolean",
+      "default": false
+    },
+    "layoutStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "layoutVersions": {
+      "type": "object",
+      "default": {}
+    },
+    "eventsTime": {
+      "type": "string",
+      "default": "all"
+    },
+    "showEvents": {
+      "type": "string",
+      "default": "both"
+    },
+    "eventsOrder": {
+      "type": "string",
+      "default": "ASC"
+    },
+    "eventsOrderBy": {
+      "type": "string",
+      "default": "start_date"
+    },
+    "selectedCategories": {
+      "type": "array",
+      "default": []
+    }
+  },
+  "providesContext": {
+    "elb/postId": "postId",
+    "elb/postType": "postType"
+  },
+  "supports": {
+    "html": false
+  },
+  "render": "file:./render.php"
+}
